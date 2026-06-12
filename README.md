@@ -32,3 +32,16 @@ Paleta corporativa aplicada:
 - Gris: #8B827A
 - Negro: #000000
 - Blanco: #FFFFFF
+
+
+## Versión 0.4
+
+Mejoras incluidas:
+
+- Directorio con tarjetas colapsables.
+- Buscador de dependencias, encargados y notas.
+- Examen con barra de progreso.
+- Estadísticas rápidas del simulador.
+- Resultado por tema.
+- Repaso de preguntas falladas.
+- Limpieza de historial local.
