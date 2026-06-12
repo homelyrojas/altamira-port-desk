@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b1f3a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Port Desk">
+  <title>Altamira Port Desk</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.svg">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="hero">
+    <p class="eyebrow">MSC México · Altamira</p>
+    <h1>Altamira Port Desk</h1>
+    <p class="subtitle">Directorio operativo y simulador de estudio para gestión portuaria.</p>
+  </header>
+
+  <main class="home-grid">
+    <button class="feature-card" onclick="renderDirectory()">
+      <span>📇</span>
+      <strong>Directorio</strong>
+      <small>Autoridades y contactos clave</small>
+    </button>
+
+    <button class="feature-card" onclick="renderExamHome()">
+      <span>🎓</span>
+      <strong>Examen</strong>
+      <small>Simulador de estudio diario</small>
+    </button>
+  </main>
+
+  <section id="content" class="panel">
+    <h2>Bienvenido</h2>
+    <p>Selecciona un módulo para iniciar. La idea es simple: consultar rápido y estudiar diario.</p>
+  </section>
+
+  <nav class="bottom-nav">
+    <button onclick="renderHome()">Inicio</button>
+    <button onclick="renderDirectory()">Directorio</button>
+    <button onclick="renderExamHome()">Examen</button>
+  </nav>
+
+  <script src="app.js"></script>
+</body>
+</html>

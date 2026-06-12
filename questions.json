@@ -1,0 +1,132 @@
+[
+  {
+    "id": 1,
+    "tema": "Capitanía",
+    "pregunta": "¿Qué documento autoriza formalmente la salida de una embarcación?",
+    "opciones": [
+      "Patente",
+      "Despacho",
+      "Rol de tripulación",
+      "Bill of Lading"
+    ],
+    "correcta": 1,
+    "explicacion": "El despacho es la autorización formal para que una embarcación pueda zarpar."
+  },
+  {
+    "id": 2,
+    "tema": "Operación Portuaria",
+    "pregunta": "¿Cuál es una función clave del Boarding Agent durante la estadía del buque?",
+    "opciones": [
+      "Emitir facturas comerciales",
+      "Coordinar comunicaciones entre buque, terminal y autoridades",
+      "Asignar rutas ferroviarias",
+      "Vender espacios de carga"
+    ],
+    "correcta": 1,
+    "explicacion": "El Boarding Agent funge como enlace operativo entre buque, agencia, terminal y autoridades."
+  },
+  {
+    "id": 3,
+    "tema": "Migración",
+    "pregunta": "¿Qué autoridad participa en la revisión migratoria de la tripulación?",
+    "opciones": [
+      "ASIPONA",
+      "Instituto Nacional de Migración",
+      "Pilotos",
+      "Aduana únicamente"
+    ],
+    "correcta": 1,
+    "explicacion": "El Instituto Nacional de Migración interviene en temas migratorios de tripulantes."
+  },
+  {
+    "id": 4,
+    "tema": "SENASICA",
+    "pregunta": "¿Qué dependencia atiende asuntos de sanidad agropecuaria en el puerto?",
+    "opciones": [
+      "SENASICA / OISA",
+      "INM",
+      "Capitanía",
+      "AMANAC"
+    ],
+    "correcta": 0,
+    "explicacion": "SENASICA, mediante OISA, atiende inspecciones y controles de sanidad agropecuaria."
+  },
+  {
+    "id": 5,
+    "tema": "Pilotaje",
+    "pregunta": "¿Qué servicio es esencial para las maniobras de entrada y salida del buque en puerto?",
+    "opciones": [
+      "Servicio de pilotaje",
+      "Servicio de mensajería",
+      "Servicio de facturación",
+      "Servicio de almacén fiscal"
+    ],
+    "correcta": 0,
+    "explicacion": "El pilotaje es esencial para asistir maniobras de navegación dentro del puerto."
+  },
+  {
+    "id": 6,
+    "tema": "ASIPONA",
+    "pregunta": "¿Qué entidad administra la infraestructura y operación general del recinto portuario?",
+    "opciones": [
+      "ASIPONA",
+      "INM",
+      "SENASICA",
+      "Tripulación"
+    ],
+    "correcta": 0,
+    "explicacion": "ASIPONA es la administración del sistema portuario correspondiente."
+  },
+  {
+    "id": 7,
+    "tema": "Capitanía",
+    "pregunta": "¿Qué autoridad marítima tiene intervención directa en arribo y despacho de embarcaciones?",
+    "opciones": [
+      "Capitanía de Puerto",
+      "Banco de México",
+      "SAT exclusivamente",
+      "Cámara de Comercio"
+    ],
+    "correcta": 0,
+    "explicacion": "Capitanía de Puerto es la autoridad marítima competente para trámites de arribo y despacho."
+  },
+  {
+    "id": 8,
+    "tema": "Operación Portuaria",
+    "pregunta": "Antes del arribo, ¿qué dato operativo resulta indispensable confirmar?",
+    "opciones": [
+      "Color del casco",
+      "ETA",
+      "Nombre del proveedor de café",
+      "Número de factura del cliente"
+    ],
+    "correcta": 1,
+    "explicacion": "El ETA permite coordinar programación, pilotos, terminal y atención de autoridades."
+  },
+  {
+    "id": 9,
+    "tema": "Documentación",
+    "pregunta": "¿Qué documento relaciona a los tripulantes de una embarcación?",
+    "opciones": [
+      "Rol de tripulación",
+      "Carta porte",
+      "Factura proforma",
+      "Pedimento consolidado"
+    ],
+    "correcta": 0,
+    "explicacion": "El rol de tripulación identifica a los integrantes de la dotación del buque."
+  },
+  {
+    "id": 10,
+    "tema": "Sanidad",
+    "pregunta": "¿Qué área puede intervenir en revisiones sanitarias vinculadas al arribo de embarcaciones?",
+    "opciones": [
+      "Sanidad Internacional",
+      "Recursos Humanos",
+      "Marketing",
+      "Compras"
+    ],
+    "correcta": 0,
+    "explicacion": "Sanidad Internacional participa en controles sanitarios aplicables a embarcaciones y tripulación."
+  }
+]

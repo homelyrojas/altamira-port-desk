@@ -1,2 +1,34 @@
-# altamira-port-desk
-PWA para estudio y operaciones portuarias
+# Altamira Port Desk
+
+PWA offline-first para iPhone enfocada en dos módulos:
+
+1. Directorio operativo
+2. Simulador de examen
+
+## Archivos editables
+
+- directory.json: contactos y autoridades.
+- questions.json: banco de preguntas del examen.
+
+## Publicación en GitHub Pages
+
+1. Subir todos los archivos descomprimidos al repositorio.
+2. Ir a Settings > Pages.
+3. Source: Deploy from a branch.
+4. Branch: main.
+5. Folder: /root.
+6. Save.
+
+URL esperada:
+
+https://homelyrojas.github.io/altamira-port-desk/
+
+
+## Versión 0.3
+
+Paleta corporativa aplicada:
+
+- Amarillo: #EED484
+- Gris: #8B827A
+- Negro: #000000
+- Blanco: #FFFFFF

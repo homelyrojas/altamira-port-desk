@@ -1,0 +1,92 @@
+[
+  {
+    "id": "capitania-altamira",
+    "dependencia": "Capitanía de Puerto Altamira",
+    "categoria": "Autoridad marítima",
+    "encargado": "Cap. Alt. Jean Paul López Rodríguez",
+    "cargo": "Titular de la Capitanía en Altamira",
+    "telefono": "",
+    "correo": "",
+    "notas": "Información actualizada con el último registro interno disponible."
+  },
+  {
+    "id": "pilotos-tampico-altamira",
+    "dependencia": "Pilotos Tampico / Altamira",
+    "categoria": "Pilotaje",
+    "encargado": "Cap. Alt. Oscar Benito Bernal Méndez",
+    "cargo": "Piloto Coordinador",
+    "telefono": "833 312 97 97",
+    "correo": "",
+    "notas": "Oficina de coordinación de prácticos."
+  },
+  {
+    "id": "aduana-altamira",
+    "dependencia": "Aduana Altamira / ANAM",
+    "categoria": "Autoridad aduanera",
+    "encargado": "Ing. Néstor Manuel Jiménez Barradas",
+    "cargo": "Titular registrado",
+    "telefono": "83 32 60 24 02 / 55 88 89 04 00 Ext. 0234",
+    "correo": "",
+    "notas": "Validar datos antes de gestión formal."
+  },
+  {
+    "id": "inm-altamira",
+    "dependencia": "Instituto Nacional de Migración / Altamira",
+    "categoria": "Migración",
+    "encargado": "Lic. Raúl Heriberto Carral Ramos",
+    "cargo": "Representante Local registrado",
+    "telefono": "",
+    "correo": "",
+    "notas": "Registro interno sujeto a confirmación operativa."
+  },
+  {
+    "id": "senasica-oisa-altamira",
+    "dependencia": "SENASICA / OISA Altamira",
+    "categoria": "Sanidad agropecuaria",
+    "encargado": "Ing. José Ángel De la Cruz Hernández",
+    "cargo": "Jefe de la Oficina de Inspección de Sanidad Agropecuaria",
+    "telefono": "",
+    "correo": "jose.cruz@senasica.gob.mx",
+    "notas": "Correo pendiente de confirmación."
+  },
+  {
+    "id": "sanidad-internacional",
+    "dependencia": "Sanidad Internacional / Tamaulipas",
+    "categoria": "Sanidad internacional",
+    "encargado": "José Alfredo López de León",
+    "cargo": "Director",
+    "telefono": "",
+    "correo": "",
+    "notas": "Registro interno disponible."
+  },
+  {
+    "id": "asipona-altamira",
+    "dependencia": "ASIPONA Altamira",
+    "categoria": "Administración portuaria",
+    "encargado": "Vicealmirante CG DEM RET. Fidel Maldonado López",
+    "cargo": "Director General registrado",
+    "telefono": "",
+    "correo": "",
+    "notas": "Operaciones: Piloto Naval Orlando Delgado del Ángel."
+  },
+  {
+    "id": "amanac",
+    "dependencia": "AMANAC",
+    "categoria": "Asociación",
+    "encargado": "Miguel Ángel Andrade",
+    "cargo": "Director General",
+    "telefono": "",
+    "correo": "",
+    "notas": "Delegado Tampico-Altamira registrado: Armando Reyna."
+  },
+  {
+    "id": "aaat",
+    "dependencia": "AAAT",
+    "categoria": "Asociación",
+    "encargado": "Juan Cruz Hernández",
+    "cargo": "Director General",
+    "telefono": "",
+    "correo": "",
+    "notas": "Asociación local relacionada con comercio exterior y operación aduanera."
+  }
+]

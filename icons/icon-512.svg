@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#000000"/>
+  <path d="M96 326h320l-38 70H134z" fill="#EED484"/>
+  <path d="M132 286h248v40H132z" fill="#FFFFFF"/>
+  <circle cx="190" cy="188" r="44" fill="#EED484"/>
+  <path d="M254 154h96v26h-96zM254 204h126v26H254z" fill="#FFFFFF"/>
+  <text x="256" y="438" text-anchor="middle" font-size="40" font-family="Arial, sans-serif" font-weight="700" fill="#FFFFFF">DESK</text>
+</svg>
