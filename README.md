@@ -45,3 +45,10 @@ Mejoras incluidas:
 - Resultado por tema.
 - Repaso de preguntas falladas.
 - Limpieza de historial local.
+
+
+## Versión 0.5.1
+
+Mejora incluida:
+
+- Se muestra el campo `fundamento` de cada pregunta en un recuadro de Fundamento Legal después de responder.

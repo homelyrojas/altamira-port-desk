@@ -145,7 +145,16 @@ function answerQuestion(selected){
     <div class="progress-track"><div class="progress-fill" style="width:${percent}%"></div></div>
     <p><strong>${q.pregunta}</strong></p>
     ${buttons}
-    <div class="details"><strong>Explicación:</strong><p>${q.explicacion}</p></div>
+    <div class="details">
+      <strong>Explicación:</strong>
+      <p>${q.explicacion}</p>
+    </div>
+    ${q.fundamento ? `
+      <div class="legal-box">
+        <strong>📖 Fundamento Legal:</strong>
+        <p>${q.fundamento}</p>
+      </div>
+    ` : ""}
     <div class="toolbar">
       <button class="action" onclick="nextQuestion()">${currentIndex + 1 === currentExam.length ? "Ver resultado" : "Siguiente"}</button>
     </div>

@@ -1,786 +1,132 @@
 [
   {
     "id": 1,
-    "tema": "Agente Naviero",
-    "pregunta": "¿Qué es un Agente Naviero?",
+    "tema": "Capitanía",
+    "pregunta": "¿Qué documento autoriza formalmente la salida de una embarcación?",
     "opciones": [
-      "Persona que administra una terminal portuaria",
-      "Persona física o moral facultada para actuar en nombre del naviero u operador",
-      "Persona encargada únicamente de la estiba",
-      "Autoridad marítima responsable del despacho"
+      "Patente",
+      "Despacho",
+      "Rol de tripulación",
+      "Bill of Lading"
     ],
     "correcta": 1,
-    "explicacion": "El Agente Naviero es la persona física o moral autorizada para actuar en nombre del naviero u operador, bajo la figura de mandatario o comisionista mercantil.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos, Artículo 22."
+    "explicacion": "El despacho es la autorización formal para que una embarcación pueda zarpar."
   },
   {
     "id": 2,
-    "tema": "Agente Naviero",
-    "pregunta": "¿Qué tipo de Agente Naviero debe garantizar que el interesado pasará por lo que él haga y pagará lo juzgado y sentenciado?",
+    "tema": "Operación Portuaria",
+    "pregunta": "¿Cuál es una función clave del Boarding Agent durante la estadía del buque?",
     "opciones": [
-      "Agente Naviero General",
-      "Agente Naviero Protector",
-      "Agente Naviero Consignatario",
-      "Operador Portuario"
+      "Emitir facturas comerciales",
+      "Coordinar comunicaciones entre buque, terminal y autoridades",
+      "Asignar rutas ferroviarias",
+      "Vender espacios de carga"
     ],
-    "correcta": 2,
-    "explicacion": "El Agente Naviero Consignatario responde frente a las autoridades y terceros por los actos realizados dentro de la representación conferida.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos, Artículos 22 y 24."
+    "correcta": 1,
+    "explicacion": "El Boarding Agent funge como enlace operativo entre buque, agencia, terminal y autoridades."
   },
   {
     "id": 3,
-    "tema": "Agente Naviero",
-    "pregunta": "¿Qué autoridad otorga la autorización para actuar como Agente Naviero?",
+    "tema": "Migración",
+    "pregunta": "¿Qué autoridad participa en la revisión migratoria de la tripulación?",
     "opciones": [
-      "Secretaría de Economía",
       "ASIPONA",
-      "Secretaría de Marina",
-      "Aduana"
+      "Instituto Nacional de Migración",
+      "Pilotos",
+      "Aduana únicamente"
     ],
-    "correcta": 2,
-    "explicacion": "La Secretaría de Marina, a través de la Autoridad Marítima Nacional, es la competente para autorizar a los agentes navieros.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos, Artículos 8, 22 y correlativos."
+    "correcta": 1,
+    "explicacion": "El Instituto Nacional de Migración interviene en temas migratorios de tripulantes."
   },
   {
     "id": 4,
-    "tema": "Agente Naviero",
-    "pregunta": "¿Cuál de los siguientes es requisito para obtener autorización como Agente Naviero?",
+    "tema": "SENASICA",
+    "pregunta": "¿Qué dependencia atiende asuntos de sanidad agropecuaria en el puerto?",
     "opciones": [
-      "Ser propietario de una embarcación de 500 TRB",
-      "Tener domicilio social en territorio nacional",
-      "Ser capitán de altura",
-      "Poseer una concesión portuaria"
+      "SENASICA / OISA",
+      "INM",
+      "Capitanía",
+      "AMANAC"
     ],
-    "correcta": 1,
-    "explicacion": "Entre los requisitos se encuentra tener domicilio social en territorio nacional y acreditar la representación otorgada por el naviero u operador.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos, Artículo 23."
+    "correcta": 0,
+    "explicacion": "SENASICA, mediante OISA, atiende inspecciones y controles de sanidad agropecuaria."
   },
   {
     "id": 5,
-    "tema": "Agente Naviero",
-    "pregunta": "¿Cuál de las siguientes funciones corresponde al Agente Naviero Consignatario?",
+    "tema": "Pilotaje",
+    "pregunta": "¿Qué servicio es esencial para las maniobras de entrada y salida del buque en puerto?",
     "opciones": [
-      "Autorizar el despacho de embarcaciones",
-      "Realizar inspecciones aduaneras",
-      "Recibir y asistir a la embarcación consignada en puerto",
-      "Expedir certificados de matrícula"
+      "Servicio de pilotaje",
+      "Servicio de mensajería",
+      "Servicio de facturación",
+      "Servicio de almacén fiscal"
     ],
-    "correcta": 2,
-    "explicacion": "El Agente Naviero Consignatario representa al buque en puerto y realiza las gestiones necesarias para su atención y despacho.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos, Artículo 24."
+    "correcta": 0,
+    "explicacion": "El pilotaje es esencial para asistir maniobras de navegación dentro del puerto."
   },
   {
     "id": 6,
-    "tema": "Agente Naviero",
-    "pregunta": "¿Qué artículo establece las funciones del Agente Naviero Consignatario?",
+    "tema": "ASIPONA",
+    "pregunta": "¿Qué entidad administra la infraestructura y operación general del recinto portuario?",
     "opciones": [
-      "Artículo 22",
-      "Artículo 24",
-      "Artículo 40",
-      "Artículo 17"
+      "ASIPONA",
+      "INM",
+      "SENASICA",
+      "Tripulación"
     ],
-    "correcta": 1,
-    "explicacion": "El Artículo 24 de la Ley de Navegación y Comercio Marítimos establece las funciones y obligaciones del Agente Naviero Consignatario.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos, Artículo 24."
+    "correcta": 0,
+    "explicacion": "ASIPONA es la administración del sistema portuario correspondiente."
   },
   {
     "id": 7,
-    "tema": "Agente Naviero",
-    "pregunta": "¿Los navieros extranjeros están obligados a designar un Agente Naviero Consignatario en los puertos mexicanos donde operen?",
+    "tema": "Capitanía",
+    "pregunta": "¿Qué autoridad marítima tiene intervención directa en arribo y despacho de embarcaciones?",
     "opciones": [
-      "No",
-      "Sólo en navegación interior",
-      "Sí",
-      "Sólo cuando transporten pasajeros"
+      "Capitanía de Puerto",
+      "Banco de México",
+      "SAT exclusivamente",
+      "Cámara de Comercio"
     ],
-    "correcta": 2,
-    "explicacion": "Los navieros extranjeros deben actuar mediante un Agente Naviero autorizado para representar sus intereses ante las autoridades mexicanas.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos, Artículos 22 y 23."
+    "correcta": 0,
+    "explicacion": "Capitanía de Puerto es la autoridad marítima competente para trámites de arribo y despacho."
   },
   {
     "id": 8,
-    "tema": "Agente Naviero",
-    "pregunta": "Si se presume abandono de la tripulación o riesgo para su integridad física, la Capitanía de Puerto deberá citar al Agente Naviero Consignatario para una audiencia dentro de:",
+    "tema": "Operación Portuaria",
+    "pregunta": "Antes del arribo, ¿qué dato operativo resulta indispensable confirmar?",
     "opciones": [
-      "3 días hábiles",
-      "5 días hábiles",
-      "10 días hábiles",
-      "15 días hábiles"
+      "Color del casco",
+      "ETA",
+      "Nombre del proveedor de café",
+      "Número de factura del cliente"
     ],
-    "correcta": 2,
-    "explicacion": "La legislación prevé una audiencia para que el agente naviero y, en su caso, el propietario, presenten mecanismos para solucionar la situación de la tripulación.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos, disposiciones relativas a protección de la gente de mar."
+    "correcta": 1,
+    "explicacion": "El ETA permite coordinar programación, pilotos, terminal y atención de autoridades."
   },
   {
     "id": 9,
-    "tema": "Autoridad Marítima / Capitanía",
-    "pregunta": "¿Qué autoridad tiene competencia para ejercer la Autoridad Marítima Mercante en cada puerto?",
+    "tema": "Documentación",
+    "pregunta": "¿Qué documento relaciona a los tripulantes de una embarcación?",
     "opciones": [
-      "Aduana",
-      "ASIPONA",
-      "INM",
-      "Capitanía de Puerto"
+      "Rol de tripulación",
+      "Carta porte",
+      "Factura proforma",
+      "Pedimento consolidado"
     ],
-    "correcta": 3,
-    "explicacion": "La Capitanía de Puerto es la unidad administrativa que ejerce la Autoridad Marítima Mercante en cada puerto.",
-    "fundamento": "Reglamento de la Ley de Navegación y Comercio Marítimos, Artículo 10, fracción IX."
+    "correcta": 0,
+    "explicacion": "El rol de tripulación identifica a los integrantes de la dotación del buque."
   },
   {
     "id": 10,
-    "tema": "Autoridad Marítima / Capitanía",
-    "pregunta": "¿Qué dependencia federal constituye actualmente la Autoridad Marítima Nacional en México?",
+    "tema": "Sanidad",
+    "pregunta": "¿Qué área puede intervenir en revisiones sanitarias vinculadas al arribo de embarcaciones?",
     "opciones": [
-      "Secretaría de Infraestructura, Comunicaciones y Transportes",
-      "Secretaría de Economía",
-      "Secretaría de Marina",
-      "Secretaría de Hacienda y Crédito Público"
-    ],
-    "correcta": 2,
-    "explicacion": "A partir de las reformas vigentes, la Secretaría de Marina ejerce la Autoridad Marítima Nacional y las funciones marítimas mercantes.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos, Artículo 2, fracción I."
-  },
-  {
-    "id": 11,
-    "tema": "Arribo y Despacho",
-    "pregunta": "¿Qué requisitos deberá presentar ante la Capitanía de Puerto para obtener la autorización de arribo de una embarcación mayor en navegación de altura?",
-    "opciones": [
-      "Únicamente el manifiesto de carga",
-      "Solicitud de arribo, despacho del puerto de procedencia y documentación correspondiente del buque",
-      "Sólo la lista de tripulantes",
-      "Únicamente el certificado de matrícula"
-    ],
-    "correcta": 1,
-    "explicacion": "La autorización de arribo requiere la presentación de la documentación establecida por la Autoridad Marítima para acreditar la procedencia, condiciones y operación de la embarcación.",
-    "fundamento": "Reglamento de la Ley de Navegación y Comercio Marítimos, artículos relativos al arribo de embarcaciones."
-  },
-  {
-    "id": 12,
-    "tema": "Arribo y Despacho",
-    "pregunta": "¿Cuál es la vigencia de un despacho de salida para un buque mercante?",
-    "opciones": [
-      "24 horas",
-      "48 horas",
-      "72 horas",
-      "96 horas"
-    ],
-    "correcta": 1,
-    "explicacion": "El despacho de salida queda sin efectos si no es utilizado dentro de las 48 horas siguientes a su expedición.",
-    "fundamento": "Reglamento de la Ley de Navegación y Comercio Marítimos, Artículo 460."
-  },
-  {
-    "id": 13,
-    "tema": "Arribo y Despacho",
-    "pregunta": "¿En qué caso la Autoridad Marítima puede negar o dejar sin efecto el despacho de una embarcación?",
-    "opciones": [
-      "Cuando el agente naviero lo solicite",
-      "Cuando existan razones de protección marítima y portuaria o incumplimientos legales",
-      "Cuando el buque tenga más de diez años de antigüedad",
-      "Cuando la tripulación sea extranjera"
-    ],
-    "correcta": 1,
-    "explicacion": "La Capitanía de Puerto puede negar o cancelar un despacho como medida precautoria para proteger la seguridad marítima y portuaria.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos, Artículo 49."
-  },
-  {
-    "id": 14,
-    "tema": "Arribo y Despacho",
-    "pregunta": "¿Cuál es la vigencia máxima que puede otorgarse a un despacho vía la pesca?",
-    "opciones": [
-      "30 días",
-      "60 días",
-      "La establecida en la concesión o permiso correspondiente",
-      "Un año"
-    ],
-    "correcta": 2,
-    "explicacion": "La vigencia está vinculada a la autorización o permiso pesquero emitido por la autoridad competente.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos y disposiciones pesqueras aplicables."
-  },
-  {
-    "id": 15,
-    "tema": "Arribo y Despacho",
-    "pregunta": "¿Con cuánta anticipación puede la Capitanía de Puerto autorizar el arribo de una embarcación?",
-    "opciones": [
-      "24 horas",
-      "36 horas",
-      "48 horas",
-      "72 horas"
-    ],
-    "correcta": 2,
-    "explicacion": "La autorización de arribo puede emitirse hasta 48 horas antes de la llegada estimada de la embarcación.",
-    "fundamento": "Reglamento de la Ley de Navegación y Comercio Marítimos, Artículo 104."
-  },
-  {
-    "id": 16,
-    "tema": "Arribo y Despacho",
-    "pregunta": "¿Cuál es la vigencia de una autorización de arribo?",
-    "opciones": [
-      "24 horas",
-      "36 horas",
-      "48 horas",
-      "72 horas"
-    ],
-    "correcta": 2,
-    "explicacion": "La autorización de arribo conserva su vigencia durante 48 horas a partir de su expedición.",
-    "fundamento": "Reglamento de la Ley de Navegación y Comercio Marítimos, Artículo 105."
-  },
-  {
-    "id": 17,
-    "tema": "Arribo y Despacho",
-    "pregunta": "¿Cuáles son los tipos de arribada reconocidos por la legislación marítima mexicana?",
-    "opciones": [
-      "Nacional e internacional",
-      "Comercial y turística",
-      "Prevista, imprevista y forzosa",
-      "Ordinaria y extraordinaria"
-    ],
-    "correcta": 2,
-    "explicacion": "La legislación reconoce distintas clases de arribada según las circunstancias que motivan el ingreso de una embarcación a puerto.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos, Artículo 17."
-  },
-  {
-    "id": 18,
-    "tema": "Arribo y Despacho",
-    "pregunta": "¿Qué es el sistema “Puerto Sin Papeles” (Paperless)?",
-    "opciones": [
-      "Un sistema para eliminar manifiestos de carga",
-      "Una plataforma electrónica para gestionar trámites portuarios y marítimos",
-      "Un sistema de control migratorio",
-      "Un programa de inspección aduanera"
-    ],
-    "correcta": 1,
-    "explicacion": "Permite el intercambio electrónico de información entre autoridades y usuarios del puerto, reduciendo tiempos y uso de documentos físicos.",
-    "fundamento": "Programa de digitalización de trámites marítimos y portuarios implementado por la Autoridad Marítima."
-  },
-  {
-    "id": 19,
-    "tema": "Mercancías Peligrosas",
-    "pregunta": "Para obtener autorización de tránsito o descarga de mercancías peligrosas en puerto, ¿cuál de los siguientes requisitos es indispensable?",
-    "opciones": [
-      "Licencia de conducir del capitán",
-      "Declaración de mercancías peligrosas y cumplimiento de la normativa aplicable",
-      "Contrato de remolque",
-      "Certificado de arqueo"
-    ],
-    "correcta": 1,
-    "explicacion": "Las mercancías peligrosas requieren identificación, clasificación y autorización específica conforme a la normativa nacional e internacional.",
-    "fundamento": "Reglamento de la Ley de Navegación y Comercio Marítimos y Código IMDG."
-  },
-  {
-    "id": 20,
-    "tema": "Operación Portuaria",
-    "pregunta": "Al ser designado como Agente Naviero Consignatario, ¿cuál es una de sus principales responsabilidades antes del arribo del buque?",
-    "opciones": [
-      "Emitir certificados de seguridad marítima",
-      "Coordinar servicios y gestiones necesarias para la atención del buque, capitán y tripulación",
-      "Autorizar el despacho de salida",
-      "Realizar inspecciones sanitarias"
-    ],
-    "correcta": 1,
-    "explicacion": "El agente coordina todos los servicios necesarios para la operación segura y eficiente de la embarcación durante su escala en puerto.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos, Artículo 24."
-  },
-  {
-    "id": 21,
-    "tema": "Documentación Marítima",
-    "pregunta": "A bordo de un buque mercante, ¿qué representa el Capitán del buque?",
-    "opciones": [
-      "Únicamente al propietario del buque",
-      "La máxima autoridad a bordo y representante del naviero",
-      "Al agente naviero consignatario",
-      "A la Capitanía de Puerto"
-    ],
-    "correcta": 1,
-    "explicacion": "El Capitán ejerce el mando de la embarcación, representa al naviero y es responsable de la seguridad del buque, tripulación, pasajeros y carga.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos, disposiciones relativas al Capitán."
-  },
-  {
-    "id": 22,
-    "tema": "Arribo y Despacho",
-    "pregunta": "¿Qué documento del buque se utiliza para determinar el pago de derechos por arribo, fondeo o despacho?",
-    "opciones": [
-      "Certificado de francobordo",
-      "Certificado de arqueo",
-      "Certificado de tripulación mínima",
-      "Diario de navegación"
-    ],
-    "correcta": 1,
-    "explicacion": "Los derechos se calculan con base en el arqueo bruto de la embarcación.",
-    "fundamento": "Ley Federal de Derechos, disposiciones aplicables a servicios marítimos."
-  },
-  {
-    "id": 23,
-    "tema": "Arribo y Despacho",
-    "pregunta": "¿Cuáles de los siguientes trámites se concluyen ante la Capitanía de Puerto?",
-    "opciones": [
-      "Arribo, fondeo, enmienda y despacho",
-      "Importación definitiva de mercancías",
-      "Nacionalización de embarcaciones",
-      "Certificación fitosanitaria"
+      "Sanidad Internacional",
+      "Recursos Humanos",
+      "Marketing",
+      "Compras"
     ],
     "correcta": 0,
-    "explicacion": "La Capitanía interviene en los trámites relacionados con el movimiento operativo de las embarcaciones.",
-    "fundamento": "Ley Federal de Derechos y Reglamento de la Ley de Navegación y Comercio Marítimos."
-  },
-  {
-    "id": 24,
-    "tema": "Arribo y Despacho",
-    "pregunta": "Cuando una embarcación arriba con despacho para otro puerto, ¿qué debe solicitarse al Capitán para justificar su arribo?",
-    "opciones": [
-      "Un nuevo certificado de arqueo",
-      "Una justificación documental de la causa del arribo",
-      "El contrato de fletamento",
-      "Una carta del consignatario anterior"
-    ],
-    "correcta": 1,
-    "explicacion": "Toda modificación al destino originalmente despachado debe justificarse ante la autoridad marítima.",
-    "fundamento": "Reglamento de la Ley de Navegación y Comercio Marítimos, disposiciones sobre arribadas."
-  },
-  {
-    "id": 25,
-    "tema": "Documentación Marítima",
-    "pregunta": "Las embarcaciones y artefactos navales extranjeros que se encuentren en aguas mexicanas, ¿están sujetos a la legislación nacional?",
-    "opciones": [
-      "No",
-      "Sólo en puertos",
-      "Sí",
-      "Sólo cuando transportan mercancías peligrosas"
-    ],
-    "correcta": 2,
-    "explicacion": "Las embarcaciones extranjeras que navegan en aguas mexicanas quedan sujetas a la jurisdicción nacional.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos, Artículo 5."
-  },
-  {
-    "id": 26,
-    "tema": "Documentación Marítima",
-    "pregunta": "¿Qué es una Libreta de Mar?",
-    "opciones": [
-      "Un permiso de pesca",
-      "Un documento de identidad y control laboral para el personal embarcado",
-      "Un certificado de matrícula",
-      "Un permiso migratorio"
-    ],
-    "correcta": 1,
-    "explicacion": "La Libreta de Mar acredita la identidad, categoría y experiencia marítima de la gente de mar.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos y Reglamento correspondiente."
-  },
-  {
-    "id": 27,
-    "tema": "Documentación Marítima",
-    "pregunta": "¿Qué significan las siglas OPIP y OPB?",
-    "opciones": [
-      "Oficial Portuario de Inspección y Oficial de Buque",
-      "Oficial de Protección de la Instalación Portuaria y Oficial de Protección del Buque",
-      "Operador Portuario Internacional y Operador Portuario Básico",
-      "Oficial de Puerto e Inspector de Buques"
-    ],
-    "correcta": 1,
-    "explicacion": "Son figuras establecidas por el Código PBIP para coordinar las medidas de protección marítima y portuaria.",
-    "fundamento": "Código PBIP (ISPS Code)."
-  },
-  {
-    "id": 28,
-    "tema": "Documentación Marítima",
-    "pregunta": "¿Qué es un Conocimiento de Embarque (Bill of Lading)?",
-    "opciones": [
-      "Un permiso de navegación",
-      "Un certificado sanitario",
-      "Un documento que acredita el contrato de transporte y la recepción de la mercancía",
-      "Una autorización de despacho"
-    ],
-    "correcta": 2,
-    "explicacion": "El Bill of Lading funciona como recibo de carga, evidencia del contrato de transporte y documento representativo de la mercancía.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos, Artículo 129."
-  },
-  {
-    "id": 29,
-    "tema": "Comercio Exterior",
-    "pregunta": "¿Cuál es la función principal de un Club de Protección e Indemnización (P&I Club)?",
-    "opciones": [
-      "Financiar la construcción de buques",
-      "Otorgar créditos a navieras",
-      "Cubrir responsabilidades civiles y riesgos marítimos de los armadores",
-      "Administrar terminales portuarias"
-    ],
-    "correcta": 2,
-    "explicacion": "Los P&I Clubs proporcionan cobertura mutualista para riesgos de responsabilidad civil marítima.",
-    "fundamento": "Convenios internacionales y práctica marítima internacional."
-  },
-  {
-    "id": 30,
-    "tema": "Comercio Exterior",
-    "pregunta": "¿Qué es un Recinto Fiscal?",
-    "opciones": [
-      "Área destinada a la reparación de embarcaciones",
-      "Zona de almacenamiento operada por la ASIPONA",
-      "Lugar donde las autoridades aduaneras ejercen funciones de manejo, almacenaje y custodia de mercancías",
-      "Zona exclusiva para mercancías peligrosas"
-    ],
-    "correcta": 2,
-    "explicacion": "El recinto fiscal es el espacio donde la autoridad aduanera controla las mercancías de comercio exterior.",
-    "fundamento": "Ley Aduanera, Artículo 14."
-  },
-  {
-    "id": 31,
-    "tema": "Comercio Exterior",
-    "pregunta": "¿Qué es un Recinto Fiscalizado?",
-    "opciones": [
-      "Un área militar dentro del puerto",
-      "Un área concesionada a particulares para realizar manejo, almacenaje y custodia de mercancías bajo supervisión aduanera",
-      "Una zona exclusiva para carga peligrosa",
-      "Un patio de contenedores administrado por la naviera"
-    ],
-    "correcta": 1,
-    "explicacion": "Los recintos fiscalizados son espacios autorizados por la autoridad aduanera donde particulares realizan servicios relacionados con mercancías de comercio exterior.",
-    "fundamento": "Ley Aduanera, Artículo 14-A."
-  },
-  {
-    "id": 32,
-    "tema": "Ley de Puertos",
-    "pregunta": "32. ¿Qué es un Recinto Portuario?",
-    "opciones": [
-      "El área donde únicamente atracan los buques",
-      "La zona federal delimitada destinada a instalaciones y servicios portuarios",
-      "El área de almacenamiento de mercancías",
-      "La terminal especializada de contenedores"
-    ],
-    "correcta": 1,
-    "explicacion": "El recinto portuario comprende las áreas de agua y terrenos de dominio público destinados a instalaciones y servicios portuarios.",
-    "fundamento": "Ley de Puertos, Artículo 2, fracción III."
-  },
-  {
-    "id": 33,
-    "tema": "Ley de Puertos",
-    "pregunta": "33. ¿Qué es un Puerto?",
-    "opciones": [
-      "Cualquier lugar donde pueda fondear un buque",
-      "Un recinto fiscalizado estratégico",
-      "El lugar habilitado por el Ejecutivo Federal para la recepción, abrigo y atención de embarcaciones",
-      "Una terminal marítima privada"
-    ],
-    "correcta": 2,
-    "explicacion": "Un puerto es una instalación oficialmente habilitada para recibir embarcaciones y facilitar operaciones marítimas y logísticas.",
-    "fundamento": "Ley de Puertos, Artículo 2, fracción II."
-  },
-  {
-    "id": 34,
-    "tema": "Arribo y Despacho",
-    "pregunta": "34. ¿Qué es una Arribada Forzosa?",
-    "opciones": [
-      "El arribo programado de una embarcación",
-      "El ingreso de un buque para cargar combustible",
-      "El ingreso obligado por mal tiempo, avería, riesgo para la vida humana o fuerza mayor",
-      "El arribo de un buque militar extranjero"
-    ],
-    "correcta": 2,
-    "explicacion": "La arribada forzosa ocurre cuando una embarcación debe ingresar a puerto por circunstancias extraordinarias que afectan su seguridad o la de las personas a bordo.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos, Artículo 17."
-  },
-  {
-    "id": 35,
-    "tema": "Protección Marítima y Portuaria",
-    "pregunta": "35. ¿Qué es la Protección Marítima y Portuaria?",
-    "opciones": [
-      "La vigilancia de las aduanas marítimas",
-      "El conjunto de medidas destinadas a proteger puertos, instalaciones portuarias, embarcaciones, personas y carga",
-      "El servicio de vigilancia privada de una terminal",
-      "La inspección sanitaria de los buques"
-    ],
-    "correcta": 1,
-    "explicacion": "La protección marítima y portuaria busca prevenir actos ilícitos que puedan afectar la seguridad de buques e instalaciones.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos, Artículo 2, fracción VII Bis."
-  },
-  {
-    "id": 36,
-    "tema": "Comercio Exterior",
-    "pregunta": "36. ¿Qué son los INCOTERMS?",
-    "opciones": [
-      "Reglas de navegación internacional",
-      "Reglas internacionales que determinan responsabilidades entre comprador y vendedor en operaciones de comercio exterior",
-      "Normas para la construcción de buques",
-      "Requisitos de protección marítima"
-    ],
-    "correcta": 1,
-    "explicacion": "Los INCOTERMS establecen obligaciones, riesgos y costos entre las partes en una compraventa internacional.",
-    "fundamento": "ICC Incoterms 2020."
-  },
-  {
-    "id": 37,
-    "tema": "Evaluación / Certificación",
-    "pregunta": "37. ¿Cuál de los siguientes documentos puede utilizarse para acreditar experiencia en el comercio marítimo?",
-    "opciones": [
-      "Licencia de conducir",
-      "Acta constitutiva",
-      "Constancia laboral, nombramiento o evidencia documental de experiencia marítima",
-      "Certificado médico"
-    ],
-    "correcta": 2,
-    "explicacion": "La experiencia marítima puede acreditarse mediante documentos que demuestren participación profesional en actividades del sector marítimo-portuario.",
-    "fundamento": "Requisitos de evaluación para Agente Naviero establecidos por la Autoridad Marítima."
-  },
-  {
-    "id": 38,
-    "tema": "Arribo y Despacho",
-    "pregunta": "38. ¿Qué documentos deben presentarse ante la Capitanía de Puerto para solicitar un despacho?",
-    "opciones": [
-      "Únicamente la lista de tripulantes",
-      "Únicamente el manifiesto de carga",
-      "Documentación operativa del buque, listas de tripulación y demás requisitos establecidos por la autoridad marítima",
-      "Sólo el certificado de matrícula"
-    ],
-    "correcta": 2,
-    "explicacion": "La solicitud de despacho requiere diversos documentos que acrediten la situación legal y operativa de la embarcación.",
-    "fundamento": "Reglamento de la Ley de Navegación y Comercio Marítimos, Artículos 457 y 458."
-  },
-  {
-    "id": 39,
-    "tema": "Convenios Internacionales",
-    "pregunta": "39. ¿Cuál de los siguientes convenios internacionales debe conocer un Agente Naviero Consignatario?",
-    "opciones": [
-      "SOLAS",
-      "MARPOL",
-      "STCW",
-      "Todas las anteriores"
-    ],
-    "correcta": 3,
-    "explicacion": "El Agente Naviero debe conocer los principales convenios internacionales que regulan la seguridad, protección y prevención de la contaminación marítima.",
-    "fundamento": "Convenios de la OMI aplicables en México."
-  },
-  {
-    "id": 40,
-    "tema": "Arribo y Despacho",
-    "pregunta": "40. ¿Cuándo debe tramitarse un nuevo despacho?",
-    "opciones": [
-      "Únicamente cuando cambia el capitán",
-      "Sólo cuando cambia la bandera del buque",
-      "Cuando vence la vigencia del despacho o cambian las condiciones que dieron origen al mismo",
-      "Cada vez que el buque toma combustible"
-    ],
-    "correcta": 2,
-    "explicacion": "Un nuevo despacho es necesario cuando el anterior pierde vigencia o cuando existen cambios sustanciales en la operación de la embarcación.",
-    "fundamento": "Reglamento de la Ley de Navegación y Comercio Marítimos, Artículo 460."
-  },
-  {
-    "id": 41,
-    "tema": "Agente Naviero",
-    "pregunta": "¿Qué embarcaciones no están obligadas a contratar los servicios de un Agente Naviero?",
-    "opciones": [
-      "Las embarcaciones pesqueras",
-      "Las embarcaciones militares",
-      "Las embarcaciones de navieros mexicanos que cuenten con oficinas y representante en el puerto y hayan dado aviso a la Secretaría",
-      "Las embarcaciones de recreo"
-    ],
-    "correcta": 2,
-    "explicacion": "Los navieros mexicanos pueden atender directamente sus embarcaciones siempre que cuenten con oficinas establecidas en el puerto y hayan notificado previamente a la Autoridad Marítima.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos, Artículo 24."
-  },
-  {
-    "id": 42,
-    "tema": "Operación Portuaria",
-    "pregunta": "42. ¿Qué autoridades intervienen normalmente en un despacho de navegación de altura?",
-    "opciones": [
-      "Capitanía de Puerto, INM, Aduana y Sanidad Internacional",
-      "Únicamente Capitanía de Puerto",
-      "Capitanía de Puerto y ASIPONA",
-      "Aduana y SENASICA únicamente"
-    ],
-    "correcta": 0,
-    "explicacion": "El despacho de altura requiere la intervención de diversas autoridades federales relacionadas con aspectos marítimos, migratorios, aduaneros y sanitarios.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos y procedimientos operativos portuarios."
-  },
-  {
-    "id": 43,
-    "tema": "Operación Portuaria",
-    "pregunta": "43. ¿Quién puede solicitar el servicio de pilotaje para una embarcación?",
-    "opciones": [
-      "Solamente el Capitán de Puerto",
-      "El naviero, su representante, el agente naviero o el capitán de la embarcación",
-      "Únicamente la ASIPONA",
-      "Sólo la Aduana"
-    ],
-    "correcta": 1,
-    "explicacion": "La legislación permite que el naviero, su representante, el agente consignatario o el capitán soliciten el servicio de pilotaje.",
-    "fundamento": "Reglamento de la Ley de Navegación y Comercio Marítimos, Artículo 517."
-  },
-  {
-    "id": 44,
-    "tema": "Agente Naviero",
-    "pregunta": "44. ¿Puede un agente naviero extranjero operar directamente como Agente Naviero en puertos mexicanos?",
-    "opciones": [
-      "Sí, sin restricciones",
-      "Sí, siempre que tenga oficinas en el extranjero",
-      "No, debe cumplir los requisitos establecidos por la legislación mexicana",
-      "Sólo en navegación de altura"
-    ],
-    "correcta": 2,
-    "explicacion": "La ley exige que el agente naviero sea persona física mexicana o persona moral constituida conforme a las leyes mexicanas.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos, Artículo 23."
-  },
-  {
-    "id": 45,
-    "tema": "Agente Naviero",
-    "pregunta": "45. ¿Los navieros mexicanos están obligados a designar agentes navieros consignatarios para atender sus propias embarcaciones?",
-    "opciones": [
-      "Sí, siempre",
-      "No, cuando cuenten con oficinas y representante en el puerto correspondiente",
-      "Sólo en navegación internacional",
-      "Sólo para embarcaciones mayores"
-    ],
-    "correcta": 1,
-    "explicacion": "La ley contempla una excepción para navieros mexicanos que operen directamente sus embarcaciones bajo determinadas condiciones.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos, Artículo 24."
-  },
-  {
-    "id": 46,
-    "tema": "Agente Naviero",
-    "pregunta": "46. ¿Cuál de las siguientes es una causa de terminación de la autorización como Agente Naviero?",
-    "opciones": [
-      "Cambio de puerto de operación",
-      "Cambio de nombre de la empresa naviera",
-      "Revocación, renuncia, extinción de la sociedad o muerte de la persona autorizada",
-      "Cambio de capitán del buque"
-    ],
-    "correcta": 2,
-    "explicacion": "La autorización puede terminar por diversas causas previstas expresamente en la legislación.",
-    "fundamento": "Reglamento de la Ley de Navegación y Comercio Marítimos, Artículo 111."
-  },
-  {
-    "id": 47,
-    "tema": "Operación Portuaria",
-    "pregunta": "47. ¿Con qué autoridades interactúa el Agente Naviero para dar cumplimiento al Código PBIP (ISPS Code)?",
-    "opciones": [
-      "Capitanía de Puerto, CUMAR y autoridades de protección marítima y portuaria",
-      "Únicamente Aduana",
-      "Sólo Migración",
-      "Sólo ASIPONA"
-    ],
-    "correcta": 0,
-    "explicacion": "La protección marítima y portuaria requiere coordinación entre diversas autoridades y actores del puerto.",
-    "fundamento": "Código PBIP e integración del CUMAR."
-  },
-  {
-    "id": 48,
-    "tema": "Operación Portuaria",
-    "pregunta": "Ley de Puertos y Ley de Navegación y Comercio Marítimos. --- 48. ¿Qué autoridades intervienen normalmente en servicios relacionados con descarga de lastres, abastecimiento de combustibles y aceites?",
-    "opciones": [
-      "Capitanía de Puerto y autoridades portuarias competentes",
-      "Únicamente Aduana",
-      "Sólo INM",
-      "Sólo SENASICA"
-    ],
-    "correcta": 0,
-    "explicacion": "Estas actividades tienen implicaciones operativas, ambientales y de seguridad marítima, por lo que requieren supervisión de las autoridades competentes.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos."
-  },
-  {
-    "id": 49,
-    "tema": "Operación Portuaria",
-    "pregunta": "Ley Federal del Mar. --- 49. ¿Qué autoridades participan en los despachos de buques en navegación de altura?",
-    "opciones": [
-      "Capitanía de Puerto, INM, Aduana y Sanidad Internacional",
-      "Únicamente Capitanía de Puerto",
-      "Sólo Aduana",
-      "Capitanía de Puerto y ASIPONA únicamente"
-    ],
-    "correcta": 0,
-    "explicacion": "La navegación de altura involucra el control migratorio, sanitario, marítimo y aduanero.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos."
-  },
-  {
-    "id": 50,
-    "tema": "Operación Portuaria",
-    "pregunta": "Procedimientos de Libre Plática y Despacho. --- 50. ¿Qué autoridades participan normalmente en los despachos de buques en navegación de cabotaje?",
-    "opciones": [
-      "Capitanía de Puerto y autoridades portuarias competentes",
-      "INM, Aduana y Sanidad Internacional siempre",
-      "Únicamente Aduana",
-      "Sólo INM"
-    ],
-    "correcta": 0,
-    "explicacion": "Al tratarse de navegación entre puertos nacionales, la intervención de autoridades migratorias y aduaneras puede no ser necesaria en todos los casos.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos."
-  },
-  {
-    "id": 51,
-    "tema": "Agente Naviero",
-    "pregunta": "Reglamento de la Ley de Navegación y Comercio Marítimos. 51. ¿En qué condiciones puede revocarse la autorización para actuar como Agente Naviero?",
-    "opciones": [
-      "Cuando cambie el nombre del buque representado",
-      "Cuando el agente incumpla las obligaciones establecidas por la legislación aplicable",
-      "Cuando cambie el puerto de operación",
-      "Cuando el naviero cambie de bandera"
-    ],
-    "correcta": 1,
-    "explicacion": "La autorización puede ser revocada cuando el agente incumpla las condiciones bajo las cuales fue otorgada o infrinja las disposiciones legales aplicables.",
-    "fundamento": "Reglamento de la Ley de Navegación y Comercio Marítimos, Artículo 113."
-  },
-  {
-    "id": 52,
-    "tema": "Operación Portuaria",
-    "pregunta": "52. ¿Con qué autoridades interactúa el Agente Naviero para cumplir las Reglas de Operación del Puerto?",
-    "opciones": [
-      "Capitanía de Puerto y Administración del Puerto (ASIPONA)",
-      "Únicamente Aduana",
-      "Sólo Migración",
-      "Sólo Sanidad Internacional"
-    ],
-    "correcta": 0,
-    "explicacion": "La operación diaria de los buques dentro del puerto requiere coordinación permanente con la Capitanía de Puerto y la Administración del Sistema Portuario Nacional.",
-    "fundamento": "Ley de Puertos."
-  },
-  {
-    "id": 53,
-    "tema": "Autoridad Marítima / Capitanía",
-    "pregunta": "Reglas de Operación del Puerto correspondientes. --- 53. Si se presume que una tripulación ha sido abandonada o corre peligro su integridad física, ¿qué autoridad coordina las acciones correspondientes?",
-    "opciones": [
-      "Aduana",
-      "Instituto Nacional de Migración",
-      "Capitanía de Puerto",
-      "SENASICA"
-    ],
-    "correcta": 2,
-    "explicacion": "La Capitanía de Puerto es la autoridad encargada de coordinar las acciones para proteger a la gente de mar cuando existe riesgo para su integridad o abandono de la tripulación.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos, disposiciones relativas a protección de la gente de mar."
-  },
-  {
-    "id": 54,
-    "tema": "Mercancías Peligrosas",
-    "pregunta": "54. ¿Cuál es una de las principales responsabilidades del Agente Naviero respecto a mercancías peligrosas o radioactivas?",
-    "opciones": [
-      "Emitir certificados nucleares",
-      "Presentar la declaración y documentación correspondiente ante las autoridades competentes",
-      "Autorizar su descarga",
-      "Realizar inspecciones radiológicas"
-    ],
-    "correcta": 1,
-    "explicacion": "El agente naviero debe presentar la información y documentación requerida para el manejo, tránsito o descarga de mercancías peligrosas.",
-    "fundamento": "Reglamento de la Ley de Navegación y Comercio Marítimos, Artículo 453."
-  },
-  {
-    "id": 55,
-    "tema": "Medio Ambiente Marítimo",
-    "pregunta": "Código IMDG. --- 55. En caso de vertimiento de contaminantes dentro del puerto, ¿con qué autoridades debe interactuar el Agente Naviero?",
-    "opciones": [
-      "Capitanía de Puerto, SEMAR y demás autoridades ambientales competentes",
-      "Sólo Aduana",
-      "Sólo Migración",
-      "Únicamente ASIPONA"
-    ],
-    "correcta": 0,
-    "explicacion": "Los incidentes de contaminación marina requieren atención inmediata y coordinación con las autoridades marítimas y ambientales.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos."
-  },
-  {
-    "id": 56,
-    "tema": "Agente Naviero",
-    "pregunta": "Ley Federal del Mar, Artículo 6, fracción V. --- 56. ¿Qué es un Agente Naviero Protector?",
-    "opciones": [
-      "El agente que administra una terminal portuaria",
-      "El representante contratado para proteger los intereses del naviero o fletador durante la escala del buque",
-      "El oficial de protección del buque",
-      "El representante de la Aduana ante el buque"
-    ],
-    "correcta": 1,
-    "explicacion": "El Agente Naviero Protector supervisa y protege los intereses de su representado durante la estancia del buque en puerto y puede coordinarse con el agente consignatario.",
-    "fundamento": "Ley de Navegación y Comercio Marítimos, Artículo 22, fracción III."
+    "explicacion": "Sanidad Internacional participa en controles sanitarios aplicables a embarcaciones y tripulación."
   }
 ]

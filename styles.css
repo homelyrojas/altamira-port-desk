@@ -30,6 +30,8 @@ h1{margin:0;font-size:2rem}
 .badge{display:inline-block;background:var(--black);color:var(--yellow);border-radius:999px;padding:5px 9px;font-size:.75rem;font-weight:900;margin-bottom:7px}
 .details{margin-top:10px;background:var(--white);border:1px solid var(--gray);border-radius:14px;padding:12px}
 .details p{margin:7px 0}
+.legal-box{margin-top:12px;background:var(--yellow);border:2px solid var(--black);border-radius:14px;padding:12px;color:var(--black)}
+.legal-box p{margin:7px 0 0;line-height:1.45}
 .option{display:block;width:100%;border:1.5px solid var(--gray);background:var(--white);border-radius:14px;padding:13px;margin:10px 0;text-align:left;font-weight:800;color:var(--black)}
 .option.correct{border-color:var(--black);background:var(--yellow)}
 .option.wrong{border-color:var(--black);background:var(--gray);color:var(--white)}
