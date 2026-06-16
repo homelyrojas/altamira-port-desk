@@ -17,19 +17,11 @@ function normalize(text) {
 
 function isAltaMSC(item) {
   const alta = String(item.alta_msc || "").toUpperCase();
-
   return alta.startsWith("MX");
 }
 
 function getMxCode(item) {
   return item.alta_msc || "";
-}
-
-  if (String(alta).toUpperCase() === "X") {
-    return "X";
-  }
-
-  return "";
 }
 
 function formatProvider(item) {
