@@ -16,16 +16,14 @@ function normalize(text) {
 }
 
 function isAltaMSC(item) {
-  const alta = normalize(item.alta_msc || "");
-  return alta === "x" || alta.startsWith("mxa") || alta.startsWith("mx");
+  const alta = String(item.alta_msc || "").toUpperCase();
+
+  return alta.startsWith("MX");
 }
 
 function getMxCode(item) {
-  const alta = item.alta_msc || "";
-
-  if (String(alta).toUpperCase().startsWith("MX")) {
-    return alta;
-  }
+  return item.alta_msc || "";
+}
 
   if (String(alta).toUpperCase() === "X") {
     return "X";
