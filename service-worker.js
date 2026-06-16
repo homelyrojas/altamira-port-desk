@@ -19,6 +19,11 @@ const ASSETS = [
 
   "./icons/icon-192.svg",
   "./icons/icon-512.svg"
+
+  "./prestadores.html",
+  "./prestadores.css",
+  "./prestadores.js",
+  "./prestadores.json",
 ];
 
 self.addEventListener("install", event => {
