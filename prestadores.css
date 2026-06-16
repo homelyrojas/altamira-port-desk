@@ -112,3 +112,23 @@ pre {
   h1 { font-size: 40px; }
   .hero button { margin-top: 16px; }
 }
+select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid #d8cdb8;
+  font-size: 18px;
+  margin: 8px 0 16px;
+  background: #fff;
+}
+
+.badge-ok {
+  color: #008000;
+  font-weight: 800;
+}
+
+.badge-neutral {
+  color: #8b827a;
+  font-weight: 700;
+}
