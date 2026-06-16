@@ -79,4 +79,29 @@ pre {
   min-height: 260px;
   font-size: 16px;
   line-height: 1.5;
+}.matches-box {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.result-card {
+  width: 100%;
+  text-align: left;
+  background: #fbfaf7;
+  color: #000;
+  border: 1px solid #d8cdb8;
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.result-card strong {
+  display: block;
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+.result-card small {
+  color: #8b827a;
+  font-size: 14px;
 }
