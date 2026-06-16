@@ -1,0 +1,802 @@
+[
+  {
+    "id": "ronal-logistics-and-services-s-de-r-l-de-c-v",
+    "servicio": "Amarre de Cabos",
+    "alta_msc": "X",
+    "denominacion": "Ronalú Logistics and Services, S. de R.L. de C.V.",
+    "direccion": "Calle Libertad No. 306 poniente, Colonia Obrera CP.89490, Cd. Madero",
+    "telefono": "833*311*7486 / 833*311*7485",
+    "contacto": "Nallely Castillo (secretaria) / Nadia Segura Sandoval",
+    "email": "ronalu.logistics@outlook.com"
+  },
+  {
+    "id": "cecyl-denisse-hidalgo-p-rez",
+    "servicio": "Amarre de Cabos",
+    "alta_msc": "X",
+    "denominacion": "Cecyl Denisse Hidalgo Pérez",
+    "direccion": "Calle Camargo N° 701 Col. Tamaulipas, Tampico, Tamaulipas. C.P. 89060",
+    "telefono": "833*568*7160 ofic. / 833*259*9006",
+    "contacto": "Cecyl Hidalgo / Oscar Ruelas",
+    "email": "orion_altamira@prodigy.net.mx / mail@orionlinesmen.com"
+  },
+  {
+    "id": "comercializadora-y-servicios-m-ltiples-vismar-s-a-de-c-v",
+    "servicio": "Avituallamiento",
+    "alta_msc": "MXA22804",
+    "denominacion": "Comercializadora y Servicios Múltiples Vismar, S.A. de C.V.",
+    "direccion": "Calle 15, núm. 215, Colonia Monteverde, Cd. Madero, Tamaulipas, C.P. 89420",
+    "telefono": "833*215*5718",
+    "contacto": "Mario Villalobos Sánchez / Angela Martinez Mar",
+    "email": "sales@vismar.mx"
+  },
+  {
+    "id": "triton-maritime-de-m-xico-s-a-de-c-v",
+    "servicio": "Avituallamiento",
+    "alta_msc": "X",
+    "denominacion": "Triton Maritime de México, S.A. de C.V.",
+    "direccion": "Calle 7 No. 315-1, Col. Jardin 20 de Noviembre Ciudad Madero, Tamaulipas, Mexico. C.P. 89440",
+    "telefono": "833 399 1977 / 833 568 7198 / 833*210*5278",
+    "contacto": "Jose Manuel Luna Paniagua",
+    "email": "agovea@tritonmaritime.mx / jmluna@tritonmaritime.mx / lgs@tritonmaritime.mx / triton.admin@tritonmaritime.mx"
+  },
+  {
+    "id": "quality-ship-suppliers-s-a-de-c-v",
+    "servicio": "Avituallamiento",
+    "alta_msc": "MXA06206",
+    "denominacion": "Quality Ship Suppliers, S.A. de C.V.",
+    "direccion": "Calle jose maría morelos #264 col. Centro, lazaro cardenas michoacan de ocampo c.p. 60950",
+    "telefono": "753*148*3328 / 753*537*5376 / 753*537*5376 / 753*148*0529",
+    "contacto": "Pedro Ortiz - administrativo / Itzel - contabilidad / David Giovani Gomez",
+    "email": "facturacion@qualityshipsuppliers.com / contabilidad@qualityshipsuppliers.com / jyescasg@qualityshipsuppliers.com"
+  },
+  {
+    "id": "g-saza-s-a-de-c-v",
+    "servicio": "Avituallamiento",
+    "alta_msc": "X",
+    "denominacion": "G. Saza, S.A. de C.V.",
+    "direccion": "Calle B N° 512 Col. Enrique Cardenas Glz C.P. 89309 Tampico, tamps.",
+    "telefono": "833*226*1594 / 833*226*1348",
+    "contacto": "Lisbeth Nereida Cruz Chávez",
+    "email": "sales@gsaza.com.mx / operaciones@gsaza.com.mx / contabilidad@gsaza.com.mx"
+  },
+  {
+    "id": "proveedora-de-barcos-avimar-s-a-de-c-v",
+    "servicio": "Avituallamiento",
+    "alta_msc": "MXA17582",
+    "denominacion": "Proveedora de Barcos Avimar, S.A. de C.V.",
+    "direccion": "Blvd. Miguel Ángel de Quevedo #220 Col. Centro, Coatzacoalcos, Veracruz. C.P. 96400",
+    "telefono": "921*254*0495 / 921*117*4533 / 921*212*3937 / 833*214*1757",
+    "contacto": "Lic. Lucia Linares (tamp) / Itzel Montejo (coatza) / Lic. Rosario Marquez",
+    "email": "avimartampico1@avimarshipchandlers.com / administration@avimarshipchandlers.com / accounting4@avimarshipchandlers.com"
+  },
+  {
+    "id": "avitualladora-y-de-servicios-generales-abyseg-s-a-de-c-v",
+    "servicio": "Avituallamiento",
+    "alta_msc": "X",
+    "denominacion": "Avitualladora y de Servicios Generales Abyseg, S.A. de C.V.",
+    "direccion": "Calle 15, #125, Colonia Los Pinos, Cd. Madero Tamaulipas. C.P. 89513",
+    "telefono": "833*153*5593 / 833*143*6767",
+    "contacto": "Humberto Muriño Loredo / Blanca Rosa Palomo Villanueva",
+    "email": "ferreteralosprimos@hotmail.com"
+  },
+  {
+    "id": "servicios-m-ltiples-del-sureste-s-a-de-c-v",
+    "servicio": "Avituallamiento",
+    "alta_msc": "MX793507",
+    "denominacion": "Servicios Múltiples del Sureste, S.A. de C.V.",
+    "direccion": "Calle 13 #1619 Col. Pocitos y Rivera, C.P. 91729, Veracruz, Veracruz",
+    "telefono": "229*938*7567",
+    "contacto": "Mariano González / Vicente Loyo",
+    "email": "calidad@smsmexico.com / operaciones@smsmexico.com"
+  },
+  {
+    "id": "iossif-dutsinis-mokaiki-delta",
+    "servicio": "Avituallamiento",
+    "alta_msc": "X",
+    "denominacion": "Iossif Dutsinis Mokaiki (Delta)",
+    "direccion": "Andador 'H' N° 12 Col. Lomas del Chairel Tampico, Tamaulipas. C.P. 89360",
+    "telefono": "833*228*3101",
+    "contacto": "Fernando Perez Zapata (compras) / Barbara Perez (correo)",
+    "email": "delta@gmsdelta.com / gmsdelta@prodigy.net.mx / invoices@gmsdelta.com"
+  },
+  {
+    "id": "avitualladora-sava-de-m-xico-s-a-de-c-v",
+    "servicio": "Avituallamiento",
+    "alta_msc": "X",
+    "denominacion": "Avitualladora SAVA de México S.A. de C.V.",
+    "direccion": "Gustavo Castro No. 202, Colonia Delfino Resendiz, Cd. Madero, Tamaulipas C.P. 89556",
+    "telefono": "833*108*6151",
+    "contacto": "Nelayk Dominguez",
+    "email": "admin@avitualladorasava.mx"
+  },
+  {
+    "id": "abastecimientos-y-construcciones-lacross-s-a-s",
+    "servicio": "Avituallamiento",
+    "alta_msc": "X",
+    "denominacion": "Abastecimientos y Construcciones Lacross, S.A.S.",
+    "direccion": "Calle Alberto Flores No. 503, Col. Manuel R. Díaz, Cd. Madero, Tamaulipas, C.P. 89514",
+    "telefono": "oficina 1: 833*568*2082 / oficina 2: 833*568*2085",
+    "contacto": "Anagaby Hernández",
+    "email": "operaciones@lacross.com.mx / admon@lacross.com.mx / sales@lacross.com.mx"
+  },
+  {
+    "id": "nomar-mex-chandlers-s-de-r-l-de-c-v",
+    "servicio": "Avituallamiento",
+    "alta_msc": "X",
+    "denominacion": "Nomar-Mex Chandlers, S de R.L. de C.V.",
+    "direccion": "Avenida Periferico sur, No. 4293, colonia: jardines en la montaña, ciudad de méxico, estado de tlalpan, C.P. 14210",
+    "telefono": "938*164*0848 / Oficina: 938*112*0211 Ext. 1005",
+    "contacto": "David Rene Garcia Lopez / Jose Artemio Lavin Garcia / Victor Armando Martinez Elvira",
+    "email": "david@nomarmex.com / jartemio@nomarmex.com / mreyes@nomarmex.com"
+  },
+  {
+    "id": "compa-a-internacional-de-fumigaciones-s-a-de-c-v-fumit",
+    "servicio": "Fumigación",
+    "alta_msc": "X",
+    "denominacion": "Compañía Internacional de Fumigaciones, S.A. de C.V. (FUMIT)",
+    "direccion": "Golfo de California Norte km 0. 480 Col. Puerto Industrial, Altamira, Tamaulipas. C.P. 89603",
+    "telefono": "833*260*2660 (recep) / 833*210*8005 / 833*260*9031",
+    "contacto": "René Vargas / Alejandra Enríquez",
+    "email": "rene.vargas@hinojosa.com.mx / margarita.perez@hinojosa.com.mx / Alejandra.Enriquez@hinojosa.com.mx"
+  },
+  {
+    "id": "fumigaciones-fitosanitarias-mexicanas-s-a-de-c-v-fumexa",
+    "servicio": "Fumigación",
+    "alta_msc": "X",
+    "denominacion": "Fumigaciones Fitosanitarias Mexicanas, S.A. de C.V. (FUMEXA)",
+    "direccion": "Calle Cuauhtemoc, núm. 2725, Col. Martín A. Martínez, Altamira, Tamaulipas. C.P. 89602",
+    "telefono": "833*359*3190 / 833*512*2440",
+    "contacto": "Anagaby Hernández",
+    "email": "fumexsa@hotmail.com"
+  },
+  {
+    "id": "compa-a-mexicana-de-fumigaciones-del-golfo-s-a-de-c-v-comfumig",
+    "servicio": "Fumigación",
+    "alta_msc": "X",
+    "denominacion": "Compañía Mexicana de Fumigaciones del Golfo, S.A. de C.V. (COMFUMIG)",
+    "direccion": "Calle Magnolia No. 224-B, Col. Fundadores, Altamira, Tamaulipas. C.P. 89603.",
+    "telefono": "833*264*8839",
+    "contacto": "José Luis Valdéz Zamora",
+    "email": "fumigacioneslzc@hotmail.com / administrativo@comfumig.com.mx"
+  },
+  {
+    "id": "uniservicios-altam-s-a-de-c-v",
+    "servicio": "Fumigación",
+    "alta_msc": "X",
+    "denominacion": "Uniservicios Altam, S.A. de C.V.",
+    "direccion": "Isauro Alfaro N° 108 Nte. Piso 1, Desp. B, Zona Centro, Tampico, Tam. C.P. 89000",
+    "telefono": "833*212*6680 / 833*343*1178",
+    "contacto": "José Luis Álvarez",
+    "email": "operaciones_unialtam@telmexmail.com / unialtam@prodigy.net.mx / joseluis.alvarez@corinalta.com"
+  },
+  {
+    "id": "gulf-diving-s-a-de-c-v",
+    "servicio": "Buceo",
+    "alta_msc": "MXA17136",
+    "denominacion": "Gulf Diving, S.A. de C.V.",
+    "direccion": "Calle Río Usumacinta No. 407 Colonia Ampliación Loma Alta C.P. 89606 Altamira, Tamaulipas",
+    "telefono": "833*311*2803 / 833*224*9360",
+    "contacto": "Ing. Aline García",
+    "email": "agarcia@gulfdiving.com.mx"
+  },
+  {
+    "id": "techdiving-marine-services-s-a-de-c-v",
+    "servicio": "Buceo",
+    "alta_msc": "MXA10758",
+    "denominacion": "Techdiving Marine Services, S.A. de C.V.",
+    "direccion": "Calle Constituyentes N° 2750, Colonia Veracruz Centro, C.P. 91700. Veracruz, Ver.",
+    "telefono": "229*929*9781 / 229*154*3345",
+    "contacto": "Irineo Castillo Martinez / Evelyn Glz Silva - fact.",
+    "email": "ops@techdiving.com.mx / support@techdiving.com.mx"
+  },
+  {
+    "id": "veracruz-adventures-s-a-de-c-v",
+    "servicio": "Buceo",
+    "alta_msc": "X",
+    "denominacion": "Veracruz Adventures, S.A. de C.V.",
+    "direccion": "Av. Pino Suárez No. 3191, Colonia Veracruz Centro; Veracruz, Ver. C.P. 91700",
+    "telefono": "229*932*0216 / 229*213*7530",
+    "contacto": "Francisco Pino",
+    "email": "technosub@ver.megared.net.mx / noemi.adventures2021@outlook.com"
+  },
+  {
+    "id": "cabo-diving-services-s-a-de-c-v",
+    "servicio": "Buceo",
+    "alta_msc": "MXA16911",
+    "denominacion": "Cabo Diving Services, S.A. de C.V.",
+    "direccion": "Delfino Valenzuela N° 404, Fracc. Reforma, Veracruz, Ver. C.P. 91919",
+    "telefono": "229*938*3961 / 229*938*3832",
+    "contacto": "Margarita Rivera",
+    "email": "administration@cdsgroup.com.mx"
+  },
+  {
+    "id": "camin-cargo-control-de-m-xico-coatzacoalcos-s-a-de-c-v",
+    "servicio": "Inspección a Buques",
+    "alta_msc": "X",
+    "denominacion": "Camin Cargo Control de México Coatzacoalcos, S.A. de C.V.",
+    "direccion": "Carretera Coatza-Vhsa Km. 4.0 Col. Centro, Coatzacoalcos, Ver., CP. 96400",
+    "telefono": "921*211*1510",
+    "contacto": "Victor Martínez",
+    "email": "victor.martinezhernandez@camincargo.com / opsmexico@camincargo.com"
+  },
+  {
+    "id": "sgs-de-m-xico-s-a-de-c-v",
+    "servicio": "Inspección a Buques",
+    "alta_msc": "X",
+    "denominacion": "SGS de México, S.A. de C.V.",
+    "direccion": "Calle Almeja No. 481 Col. Fraccionamiento los Arrecifes C.D. Altamira Tamaulipas C.P. 89603",
+    "telefono": "833*260*0074 / 834*101*8389",
+    "contacto": "Ana Rosa Méndez",
+    "email": "ana.mendez@sgs.com / antonio.villeda@sgs.com"
+  },
+  {
+    "id": "servicios-m-ltiples-del-sureste-s-a-de-c-v",
+    "servicio": "Inspección a Buques",
+    "alta_msc": "MX793507",
+    "denominacion": "Servicios Múltiples del Sureste, S.A. de C.V.",
+    "direccion": "Calle 13 #1619 Col. Pocitos y Rivera, C.P. 91729, Veracruz, Veracruz",
+    "telefono": "229*938*7567",
+    "contacto": "Mariano González / Vicente Loyo",
+    "email": "calidad@smsmexico.com / operaciones@smsmexico.com"
+  },
+  {
+    "id": "victor-manuel-gaxiola-rodr-guez",
+    "servicio": "Inspección a Buques",
+    "alta_msc": "X",
+    "denominacion": "Victor Manuel Gaxiola Rodríguez",
+    "direccion": "Coahuila No. 103 Col. Unidad Nacional, Cd. Madero Tam. CP. 89410",
+    "telefono": "833*215*1265",
+    "contacto": "Victor Manuel Gaxiola",
+    "email": "msurveys@prodigy.net.mx"
+  },
+  {
+    "id": "ingenier-a-y-mantenimientos-industriales-s-a-de-c-v",
+    "servicio": "Inspección a Buques",
+    "alta_msc": "X",
+    "denominacion": "Ingeniería y Mantenimientos Industriales, S.A. de C.V.",
+    "direccion": "Calle Felipe Ángeles, núm. 816, Colonia Tampico-Altamira, Tampico, Tamaulipas, C.P. 89609",
+    "telefono": "833*125*1102",
+    "contacto": "Sonia Ayala",
+    "email": "operaciones@imitsa.com.mx / administracion@imitsa.com.mx"
+  },
+  {
+    "id": "viking-life-saving-equipment-s-a-de-c-v",
+    "servicio": "Inspección a Buques",
+    "alta_msc": "X",
+    "denominacion": "Viking Life-Saving Equipment, S.A. de C.V.",
+    "direccion": "Carretera carmen puerto real s/n km 10+100 colonia. Buena vista c.p. 24157 cd del carmen, campeche méxico",
+    "telefono": "938*172*2024",
+    "contacto": "Erika López / Pedro Sánchez",
+    "email": "erlo@viking-life.com / ps@viking-life.com"
+  },
+  {
+    "id": "certificaciones-internacionales-de-embarques-s-a-de-c-v",
+    "servicio": "Inspección a la Carga",
+    "alta_msc": "X",
+    "denominacion": "Certificaciones Internacionales de Embarques, S.A. de C.V.",
+    "direccion": "Av. Miramar, #1001, Ejido Flores Magon, C.P. 81697 Altamira, Tamps.",
+    "telefono": "(55) 5528*4098 / (55) 5424*3369 / (55) 5528*4098",
+    "contacto": "Monserrat Estrada",
+    "email": "admon@ciesainspecciones.com"
+  },
+  {
+    "id": "cis-inspecciones-s-a-de-c-v",
+    "servicio": "Inspección a la Carga",
+    "alta_msc": "X",
+    "denominacion": "CIS Inspecciones, S.A. de C.V.",
+    "direccion": "Calle Playa Roqueta, núm. 623, Colonia Playa Linda, C.P. 91810, Veracruz, Veracruz",
+    "telefono": "(229) 178*0459",
+    "contacto": "Carolina Moxica",
+    "email": "carolina.moxica@cisinspecciones.com"
+  },
+  {
+    "id": "control-automotive-risk-consulting-s-a-de-c-v",
+    "servicio": "Inspección a la Carga",
+    "alta_msc": "X",
+    "denominacion": "Control Automotive Risk Consulting, S.A. de C.V.",
+    "direccion": "Mariano Escobedo No. 483-1, Colonia Ricardo Flores Magón, Veracruz, Veracruz. CP.91900",
+    "telefono": "(229) 931*5850 / (229) 931*2742",
+    "contacto": "Enrique Castro Zamacona",
+    "email": "enrique.castro@carconsulting.com / irism@barrancaasesorescorporativos.com / oscarb@barrancaasesorescorporativos.com"
+  },
+  {
+    "id": "control-cargo-internacional-s-a-de-c-v",
+    "servicio": "Inspección a la Carga",
+    "alta_msc": "X",
+    "denominacion": "Control Cargo Internacional, S.A. de C.V.",
+    "direccion": "Colon 201 Norte N° 201 Zona Centro, Tampico, Tamaulipas. C.P. 89000",
+    "telefono": "833 212*1443 / 833 212*1462",
+    "contacto": "Abigail Cruz",
+    "email": "abastecimientostam@controlcargo.com.mx"
+  },
+  {
+    "id": "dux-marine-and-industrial-s-a-de-c-v",
+    "servicio": "Inspección a la Carga",
+    "alta_msc": "X",
+    "denominacion": "Dux Marine and Industrial, S.A. de C.V.",
+    "direccion": "Calle Veracruz, núm. 205 Altos, Colonia Guadalupe, C.P. 89120, Tampico, Tamaulipas",
+    "telefono": "833 217*9531 / 833 217*9564 / 833 217*4355",
+    "contacto": "Carlos Prom",
+    "email": "carlos.prom@duxmi.mx"
+  },
+  {
+    "id": "dusan-corovic-jurisic",
+    "servicio": "Inspección a la Carga",
+    "alta_msc": "X",
+    "denominacion": "Dusan Corovic Jurisic",
+    "direccion": "Calle 2 de abril No. 1482, Col. Reforma, Veracruz, Veracruz CP. 91919",
+    "telefono": "(229) 931*4744",
+    "contacto": "Dusan Corovic / Adriana Cruz / Beatriz Vega / Diego López",
+    "email": "dusan.corovic@gulfportsservices.com / adriana.cruz@gulfportsservices.com / beatriz.vega@gulfportsservices.com / diego.lopez@gulfportsservices.com"
+  },
+  {
+    "id": "inspectorate-de-m-xico-s-a-de-c-v",
+    "servicio": "Inspección a la Carga",
+    "alta_msc": "X",
+    "denominacion": "Inspectorate de México, S.A. de C.V.",
+    "direccion": "Avenida del Puente No. 145-A, Col. Las Américas, Coatzacoalcos, Veracruz, CP. 96480",
+    "telefono": "Oficina: 921*211*1581 / 921*211*1570 / 833*349*7350",
+    "contacto": "Ilse Villegas / Juan Valentin Gutiérrez Medina",
+    "email": "andrea-gabriela.tostado@bureauveritas.com / ilse-ruth.villegas@bureauveritas.com / Juan.Valentin@bureauveritas.com / sergio.david@bureauveritas.com"
+  },
+  {
+    "id": "intertek-testing-services-de-m-xico-s-a-de-c-v",
+    "servicio": "Inspección a la Carga",
+    "alta_msc": "X",
+    "denominacion": "Intertek Testing Services de México, S.A. de C.V.",
+    "direccion": "Carretera Tampico-Mante Km 14.5 Col. Laguna de la Puerta CP. 89603 Altamira, Tams.",
+    "telefono": "833*458*0190 / 833*260*4200 al 09",
+    "contacto": "Martha Sanchez García",
+    "email": "martha.sanchez@intertek.com"
+  },
+  {
+    "id": "oil-test-internacional-m-xico-s-a-de-c-v",
+    "servicio": "Inspección a la Carga",
+    "alta_msc": "X",
+    "denominacion": "Oil Test Internacional México, S.A. de C.V.",
+    "direccion": "Calle Guanajuato No. 65-201 col. Roma Norte, Delegación Cuautemoc CD. México C.P. 06700",
+    "telefono": "(55) 5207*7830 / 833*364*2013",
+    "contacto": "Bárbara Cruz (cdmx) / Jose Abel Rios Figeroa (gte grab) / Nayit Diep Salvador (tampico) / opr",
+    "email": "lcruz@otilatam.com / nmedrano@otilatam.com / jrios@otilatam.com / ndiep@otilatam.com / bcruz@otilatam.com"
+  },
+  {
+    "id": "marine-cargo-inspection-and-supervision-s-c",
+    "servicio": "Inspección a la Carga",
+    "alta_msc": "MXA22593",
+    "denominacion": "Marine Cargo Inspection and Supervision, S.C.",
+    "direccion": "Segunda Ave. N° 211 dpto #1 Col. Villahermosa, Tampica, Tamps CP. 89319",
+    "telefono": "833*226*2970",
+    "contacto": "Juan Alemán Hernandez / Clara Zepeda / Sarahi Alvarado (gerente operativo)",
+    "email": "j.aleman@mcis.mx / admin@mcis.mx / s.alvarado@mcis.mx"
+  },
+  {
+    "id": "stimsa-corporativo-s-a-de-c-v",
+    "servicio": "Inspección a la Carga",
+    "alta_msc": "X",
+    "denominacion": "Stimsa Corporativo, S.A. de C.V.",
+    "direccion": "Calle 17 #111 Col. Ignacio Zaragoza Cd. Madero, Tamaulipas C.P. 89510",
+    "telefono": "833*214*8327 / 833*214*1969",
+    "contacto": "Juan Dueñes Castro",
+    "email": "jduenesc@stimsa.com.mx"
+  },
+  {
+    "id": "grupo-pilotos-s-a-de-c-v",
+    "servicio": "Lanchaje",
+    "alta_msc": "MXA11417",
+    "denominacion": "Grupo Pilotos, S.A. de C.V.",
+    "direccion": "Ave. Rio Tamesi, Km. 0 700, interior 313, Colonia Puerto Industrial de Altamira, C.P. 89603, Altamira, Tamaulipas",
+    "telefono": "833*260*9314",
+    "contacto": "Abigail Alcocer Garza",
+    "email": "grupopilotos@gmail.com"
+  },
+  {
+    "id": "servicios-mar-timos-y-portuarios-s-a-de-c-v",
+    "servicio": "Lanchaje",
+    "alta_msc": "MXA17922",
+    "denominacion": "Servicios Marítimos y Portuarios, S.A. de C.V.",
+    "direccion": "Calle Tamaulipas, N° 512 Pte., Zona Centro, Tampico, Tam. C.P. 89000",
+    "telefono": "833*140*7346 / 833*212*0200",
+    "contacto": "Leticia T. Medellín / Apoderado Legal.- Raúl Gomez Sarabia",
+    "email": "lmedelin@semapor.com / administracion@semapor.com"
+  },
+  {
+    "id": "contenedores-del-golfo-s-a-de-c-v",
+    "servicio": "Limpieza y Reparación de Contenedores",
+    "alta_msc": "MX788627",
+    "denominacion": "Contenedores del Golfo, S.A. de C.V.",
+    "direccion": "Calle Bahía Adair, Lote 12, manzana 2, Parque de la Pequeña y Mediana Industria, Altamira, Tamaulipas. C.P. 89608",
+    "telefono": "833*260*0040 ext. 103",
+    "contacto": "Denice Couret / Pedro Velázquez / Aylin Hdz",
+    "email": "cuentas@contenedoresdelgolfo.com / pvelazquez@contenedoresdelgolfo.com / a.hernandez@contenedoresdelgolfo.com"
+  },
+  {
+    "id": "grupo-sltc-s-a-de-c-v",
+    "servicio": "Limpieza y Reparación de Contenedores",
+    "alta_msc": "MXA19778",
+    "denominacion": "Grupo SLTC, S.A. de C.V.",
+    "direccion": "Boulevard Petrocel Km. 1.5, frente a las instalaciones del Tecnológico de Monterrey, Altamira, Tamaulipas, C.P. 89603",
+    "telefono": "55*4366*1381 / 55*1991*1064",
+    "contacto": "Fernando Benavides / Karla Rodríguez / Martin Mendez",
+    "email": "fernando_fuentes@grupo-sltc.com / legal_gsltc@grupo-sltc.com / martin_mendez@grupo-sltc.com"
+  },
+  {
+    "id": "amports-de-m-xico-s-a-de-c-v",
+    "servicio": "Maniobras",
+    "alta_msc": "X",
+    "denominacion": "Amports de México, S.A. de C.V.",
+    "direccion": "Vialidad Mar Caribe N° 210 Int. B, Puerto Industrial, Altamira, Tamaulipas. CP 89603",
+    "telefono": "833*260*1147",
+    "contacto": "Sergio Vega",
+    "email": "svega@amportsmexico.com"
+  },
+  {
+    "id": "altaport-s-a-de-c-v",
+    "servicio": "Maniobras",
+    "alta_msc": "MXA17284",
+    "denominacion": "Altaport, S.A. de C.V.",
+    "direccion": "Boulevard de los Ríos Km. 4+060, N° 4020, Colonia Zona Puerto Industrial, Altamira, Tamaulipas. C.P. 89601",
+    "telefono": "833*229*0980 ext. 4902 / ext. 4116",
+    "contacto": "Elena Jiménez / Righel Rodriguez",
+    "email": "emjimenez@atpaltamira.com.mx / rbrodriguez@atpaltamira.com.mx"
+  },
+  {
+    "id": "servicios-carrier-interpuertos-s-de-r-l-de-c-v",
+    "servicio": "Maniobras",
+    "alta_msc": "X",
+    "denominacion": "Servicios Carrier Interpuertos S. de R.L. de C.V.",
+    "direccion": "Mar Rojo 603 Colonia Puerto Industrial, Altamira Tamaulipas CP. 89603",
+    "telefono": "833*130*4294",
+    "contacto": "Mario Castillo / Jonatan Rocha / Gpe. Hernandez / Javier Casados / Brenda Torres",
+    "email": "mcasstillo@grupocice.com / jrocha@grupocice.com / eacomercial@grupocice.com / j.casados@scarrier.com.mx / b.torres@scarrier.com.mx / informacion@alpasa.com.mx"
+  },
+  {
+    "id": "almacenamiento-y-log-stica-portuaria-de-altamira-s-a-de-c-v",
+    "servicio": "Maniobras",
+    "alta_msc": "MX227729",
+    "denominacion": "Almacenamiento y Logística Portuaria de Altamira, S.A. de C.V.",
+    "direccion": "Mar Rojo No.601 Colonia Puerto Industrial, Altamira, Tamaulipas. C.P. 89603",
+    "telefono": "833 478 14 00 al 28 EXT. 122 Comercial",
+    "contacto": "Jorge Cantú / Patricia Nino",
+    "email": "ejecutivo.sac@alpasa.com.mx / ocia.sac@alpasa.com.mx"
+  },
+  {
+    "id": "cooper-t-smith-de-m-xico-s-a-de-c-v",
+    "servicio": "Maniobras",
+    "alta_msc": "X",
+    "denominacion": "Cooper/ T. Smith de México, S.A. de C.V.",
+    "direccion": "Puerto Industrial de Altamira, Mar Negro km 0.380, Altamira, Tamaulipas, C.P. 89603",
+    "telefono": "Cel: 833*441*7115 / Cel: 833*266*3815",
+    "contacto": "Graciela Azuara / Afra Elvira Martínez Delgado",
+    "email": "graciela.azuara@coopertsmith.com / afra.martinez@coopertsmith.com"
+  },
+  {
+    "id": "desechos-basuras-y-servicios-s-a-de-c-v",
+    "servicio": "Recolección de Basura",
+    "alta_msc": "X",
+    "denominacion": "Desechos, Basuras y Servicios, S.A. de C.V.",
+    "direccion": "Corregidora N° 318 Col. Fidel Velazquez CD. Madero CP. 89520",
+    "telefono": "833*126*6097",
+    "contacto": "Nancy Castro",
+    "email": "contacto@dbssolucinesambientales.com / hse@dbssolucinesambientales.com"
+  },
+  {
+    "id": "ismael-vargas-alvarez",
+    "servicio": "Recolección de Basura",
+    "alta_msc": "X",
+    "denominacion": "ISMAEL VARGAS ALVAREZ",
+    "direccion": "Calle 16 de septiembre, No. 508 A, colonia: los laureles. Altamira, Tamaulipas. C.P. 89602",
+    "telefono": "833*264*1004",
+    "contacto": "ISMAEL VARGAS / ERNESTINA GARCES",
+    "email": "ernestina.garces@recicladosvargasiv.com / biologobonilla@recicladosvargasiv.com / zoila.bonilla@recicladosvargasiv.com"
+  },
+  {
+    "id": "iossif-dutsinis-mokaiki-delta",
+    "servicio": "Recolección de Basura",
+    "alta_msc": "X",
+    "denominacion": "Iossif Dutsinis Mokaiki (Delta)",
+    "direccion": "Andador 'H' N° 12 Col. Lomas del Chairel Tampico, Tamaulipas. C.P. 89360",
+    "telefono": "833*228*3101",
+    "contacto": "Fernando Perez Zapata (compras) / Barbara Perez (correo)",
+    "email": "delta@gmsdelta.com / gmsdelta@prodigy.net.mx"
+  },
+  {
+    "id": "jorge-esteban-aguirre-res-ndiz-eco-servicios",
+    "servicio": "Recolección de Basura",
+    "alta_msc": "MXA22017",
+    "denominacion": "Jorge Esteban Aguirre Reséndiz (Eco Servicios)",
+    "direccion": "Calle Laguna Machona, exterior manzana 1, interior lote 12, Parque de la Pequeña y Mediana Industria, Altamira, Tamaulipas, C.P. 89603",
+    "telefono": "833*293*7693",
+    "contacto": "Jorge Aguirre / Ana Perez",
+    "email": "ecoservicios_delpuerto@hotmail.com;aux_ecoservicios@hotmail.com;ecoservicios_2@hotmail.com"
+  },
+  {
+    "id": "comercial-y-servicios-rv-del-potos-s-a-de-c-v",
+    "servicio": "Recolección de Basura",
+    "alta_msc": "MXA11650",
+    "denominacion": "Comercial y Servicios RV del Potosí, S.A. de C.V.",
+    "direccion": "Francisco I. Madero N° 818, Colonia Magdaleno Aguilar, Altamira, Tamaulipas. C.P. 89603",
+    "telefono": "833*322*7742 / 833*260*9444",
+    "contacto": "Gustavo Jacobo Vargas Alvarez / Rep. Legal / Idalia pacheco Oficina",
+    "email": "facturacion@recicladosvargas.com / gjvargas@recicladosvargas.com / aux_direccion@recicladosvargas.com"
+  },
+  {
+    "id": "maritime-procurement-services-s-a-p-i-de-c-v",
+    "servicio": "Recolección de Basura",
+    "alta_msc": "MXA15896",
+    "denominacion": "Maritime Procurement Services, S.A.P.I. de C.V.",
+    "direccion": "Calle Castor Blanco #207, Edificio C, Departamento #8 Fraccionamiento los castores CP. 89515 Ciudad Madero, Tamaulipas.",
+    "telefono": "(55) 5262*9360 Ext. 107 / 131",
+    "contacto": "Barani Lira / Gerente Comercial",
+    "email": "gte.altamira@maritimeps.com / blira@maritimeps.com"
+  },
+  {
+    "id": "desechos-basuras-y-servicios-s-a-de-c-v",
+    "servicio": "Recolección de Residuos Peligrosos",
+    "alta_msc": "X",
+    "denominacion": "Desechos, Basuras y Servicios, S.A. de C.V.",
+    "direccion": "Felipe Carrillo Puerto No. 210-N sur. Colonia Ampliación Unidad Nacional. Ciudad Madero, Tamaulipas. CP.89510",
+    "telefono": "833*126*6097",
+    "contacto": "Nancy Castro",
+    "email": "contacto@dbssolucinesambientales.com / hse@dbssolucinesambientales.com"
+  },
+  {
+    "id": "servicios-anticontaminaci-n-lacavex-s-a-de-c-v",
+    "servicio": "Recolección de Residuos Peligrosos",
+    "alta_msc": "X",
+    "denominacion": "Servicios Anticontaminación Lacavex, S.A. de C.V.",
+    "direccion": "Calle 23 N° 103 Pte. Col. Fidel Velázquez Cd. Madero, Tam. C.P.89520.",
+    "telefono": "833*211*0504",
+    "contacto": "Eduardo Lacavex / Jorge Lacavex",
+    "email": "elacavex@prodigy.net.mx"
+  },
+  {
+    "id": "jorge-esteban-aguirre-res-ndiz-eco-servicios",
+    "servicio": "Recolección de Residuos Peligrosos",
+    "alta_msc": "MXA22017",
+    "denominacion": "Jorge Esteban Aguirre Reséndiz (Eco Servicios)",
+    "direccion": "Calle Laguna Machona, exterior manzana 1, interior lote 12, Parque de la Pequeña y Mediana Industria, Altamira, Tamaulipas, C.P. 89603",
+    "telefono": "833*293*7693",
+    "contacto": "Jorge Aguirre / Ana Perez",
+    "email": "ecoservicios_delpuerto@hotmail.com / aux_ecoservicios@hotmail.com"
+  },
+  {
+    "id": "maritime-procurement-services-s-a-p-i-de-c-v",
+    "servicio": "Recolección de Residuos Peligrosos",
+    "alta_msc": "MXA15896",
+    "denominacion": "Maritime Procurement Services, S.A.P.I. de C.V.",
+    "direccion": "Calle Castor Blanco #207, Edificio C, Departamento #8 Fraccionamiento los castores CP. 89515 Ciudad Madero, Tamaulipas.",
+    "telefono": "55 5262*9360 Ext. 107 / 131",
+    "contacto": "Barani Lira / Gerente Comercial",
+    "email": "gte.altamira@maritimeps.com"
+  },
+  {
+    "id": "compa-a-mar-tima-mexicana-s-a-de-c-v",
+    "servicio": "Remolque",
+    "alta_msc": "MXA03116",
+    "denominacion": "Compañía Marítima Mexicana, S.A. de C.V.",
+    "direccion": "Av. Melchor Ocampo No. 193 Torre A, piso 16-C, Col. Verónica Anzures, México, Distrito Federal, CP. 11300 / Golfo de Mexico No. 8050, puerto industrial de Altamira, CP 89603, Altamira, Tamaulipas.",
+    "telefono": "Tel. (55)52609108 al 10 / 2124447",
+    "contacto": "Juan Carlos Chávez Breceda",
+    "email": "jchavez@cmaritimamexicana.com.mx"
+  },
+  {
+    "id": "saam-towage-m-xico-s-a-de-c-v",
+    "servicio": "Remolque",
+    "alta_msc": "MXA17300",
+    "denominacion": "Saam Towage México, S.A. de C.V.",
+    "direccion": "Bldv. Del Mar N° 468-34, Fracc. Costa de Oro, Boca del Rio, Ver. C.P. 94299. / Interior del Recinto Fiscal Portuario s/n Col. Puerto de Altamira C.P. 89600 Altamira, Tamaulipas",
+    "telefono": "833*260*1093 / 833*260*1094",
+    "contacto": "Miguel Huerta Perez",
+    "email": "mhuertap@saamtowage.com / rzaletav@saamtowage.com"
+  },
+  {
+    "id": "especialistas-en-ferrocarriles-del-noreste-s-a-de-c-v",
+    "servicio": "Reparación de Carros de Ferrocarril",
+    "alta_msc": "X",
+    "denominacion": "Especialistas en Ferrocarriles del Noreste, S.A. de C.V.",
+    "direccion": "sendero encantado, n. 6212-A colonia: cortijo del rio, monterrey nuevo león, c.p. 64890",
+    "telefono": "81 1878*5273",
+    "contacto": "DG. Marco Aurelio Avila / Mariana Quistan",
+    "email": "mariana.quistian@efensa.com.mx / marco.avila@efensa.com.mx"
+  },
+  {
+    "id": "mm-mex-s-a-de-c-v",
+    "servicio": "Reparación de Carros de Ferrocarril",
+    "alta_msc": "X",
+    "denominacion": "MM-MEX, S.A. de C.V.",
+    "direccion": "Pino Suarez No. 102, Col. Santa Clara, Toluca, Estado de México, CP. 50090",
+    "telefono": "(722) 207*8350 xt. 103",
+    "contacto": "Rosario Campuzano",
+    "email": "rosario.campuzano@mmmex.com / ezequiel.samaniego@mmmex.com"
+  },
+  {
+    "id": "electromex-mantenimiento-industrial-y-marino-s-a-de-c-v",
+    "servicio": "Reparación a Flote",
+    "alta_msc": "X",
+    "denominacion": "Electromex Mantenimiento Industrial y Marino, S.A. de C.V.",
+    "direccion": "Emilio Carranza N° 1203 Zona Centro, Tampico, Tam. C.P. 89000",
+    "telefono": "833*212*6442 / 833*212*6351",
+    "contacto": "Adrián Salas / CP. Santos morales perez",
+    "email": "salas@prodigy.net.mx / salasfernandez.contabilidad@gmail.com"
+  },
+  {
+    "id": "construcciones-mysi-s-a-de-c-v",
+    "servicio": "Reparación a Flote",
+    "alta_msc": "X",
+    "denominacion": "Construcciones MYSI, S.A. de C.V.",
+    "direccion": "Calle Andador Felipe Carrillo Puerto No. 727 Col. Ganadera Altamira, Tamaulipas, C.P. 89605.",
+    "telefono": "833*226*5099",
+    "contacto": "Ruth Contreras",
+    "email": "ruth.contreras_mysi@outlook.com"
+  },
+  {
+    "id": "francisco-javier-delgado-del-angel-delso",
+    "servicio": "Reparación a Flote",
+    "alta_msc": "X",
+    "denominacion": "Francisco Javier Delgado Del Angel (Delso)",
+    "direccion": "Calle Límite Norte no. 403, Colonia Luis Echeverría Álvarez, Tampico, Tamaulipas. C.P. 89366",
+    "telefono": "833*125*1193 / 833*453*8274",
+    "contacto": "Fco. Javier delgado / Milton gustavo Delgado Sosa",
+    "email": "delsotam@gmail.com / mdelgado@delsotam.com"
+  },
+  {
+    "id": "masi-marino-s-a-de-c-v",
+    "servicio": "Reparación a Flote",
+    "alta_msc": "X",
+    "denominacion": "Masi Marino, S.A. de C.V.",
+    "direccion": "Calle 3 No. 203 Col. Monte Alto C.P. 89608",
+    "telefono": "833 399*2121",
+    "contacto": "Liliana Guzmán",
+    "email": "maassi07@gmail.com"
+  },
+  {
+    "id": "grupo-csi-sermedic-sc",
+    "servicio": "Servicios Médicos",
+    "alta_msc": "MXA17870",
+    "denominacion": "Grupo CSI Sermedic Sc",
+    "direccion": "Salvador Díaz Mirón N° 203 Desp. 402, Zona Centro, Tampico, Tamaulipas.",
+    "telefono": "833*190*0028 / 833*245*0434",
+    "contacto": "Yesica Cruz Pérez",
+    "email": "admon.sermedic@outlook.com"
+  },
+  {
+    "id": "dr-edgar-garces-quam-d",
+    "servicio": "Servicios Médicos",
+    "alta_msc": "X",
+    "denominacion": "Dr. Edgar Garces (QUAMÉD)",
+    "direccion": "Avenida Hidalgo 5004 Col. Sierra Morena CP. 89210, Tampico, Tamaulipas.",
+    "telefono": "833*188*8814 / 833*204*4547",
+    "contacto": "Dr. Edgar Alfredo Garcés Mtz",
+    "email": "edgar.garces@quamed.com.mx"
+  },
+  {
+    "id": "ramona-vidal-olivares",
+    "servicio": "Suministro de Agua Potable",
+    "alta_msc": "MXA16835",
+    "denominacion": "Ramona Vidal Olivares",
+    "direccion": "Matamoros No. 505 Col. Fidel Velazquez Cd. Madero, Tam. CP. 89520",
+    "telefono": "833*256*6471",
+    "contacto": "Jaime Leal",
+    "email": "ms_noreste@hotmail.com"
+  },
+  {
+    "id": "asb-supplies-s-a-de-c-v",
+    "servicio": "Suministro de Agua Potable",
+    "alta_msc": "X",
+    "denominacion": "ASB Supplies, S.A. de C.V.",
+    "direccion": "Calle España #506, Edificio 1, Depto. 5, Colonia Benito Juarez, C.P. 89580, Cd. Madero, Tamaulipas",
+    "telefono": "833*438*8644",
+    "contacto": "Ana Hernandez / Oscar Ernesto Jimenez",
+    "email": "ventas@suministrosasb.com / ventas2@suministrosasb.com"
+  },
+  {
+    "id": "transportes-especializados-altamirano-s-a-de-c-v",
+    "servicio": "Suministro de Agua Potable",
+    "alta_msc": "X",
+    "denominacion": "Transportes Especializados Altamirano, S.A. de C.V.",
+    "direccion": "Calle Benito juarez #402 Col. Venustiano carranza. Altamira Tamps CP. 89603",
+    "telefono": "833*264*0031 / 833*162*1550",
+    "contacto": "Diana Karina Glz Ferretis / María Altamirano",
+    "email": "tea@grupoaltamirano.com.mx / maltamirano@grupoaltamirano.com.mx"
+  },
+  {
+    "id": "marinoil-servicios-mar-timos-s-a-de-c-v",
+    "servicio": "Suministro de Combustibles y Lubricantes",
+    "alta_msc": "X",
+    "denominacion": "Marinoil Servicios Marítimos, S.A. de C.V.",
+    "direccion": "Divisoria N° 210 E Col. Ampliación Niños héroes, Tampico, Tamaulipas. C.P. 89359",
+    "telefono": "833*261*1880 / 833*262*1881",
+    "contacto": "Leticia De Los Reyes / Paola Calderon",
+    "email": "contabilidad@marinoil.com.mx / gestion.institucional@marinoil.com.mx"
+  },
+  {
+    "id": "distribuidora-de-diesel-r-o-p-nuco-s-a-de-c-v",
+    "servicio": "Suministro de Combustibles y Lubricantes",
+    "alta_msc": "MXA16991",
+    "denominacion": "Distribuidora de Diesel Río Pánuco, S.A. de C.V",
+    "direccion": "Carretera El Chocolate, s/n, Col. Las Blancas, Altamira Tamaulipas, C.P. 89602",
+    "telefono": "833*219*2298 / 833*300*2004 At'n. Cliente",
+    "contacto": "Ernesto Zavaleta / Carolina González",
+    "email": "ernesto.zavaletaorta@distribuidariopanuco.com / carolina.gonzalezdominguez@grupogarel.com / mabel.castillohernandez@grupogarel.com"
+  },
+  {
+    "id": "combustibles-y-refinados-burgos-s-a-de-c-v",
+    "servicio": "Suministro de Combustibles y Lubricantes",
+    "alta_msc": "X",
+    "denominacion": "Combustibles y Refinados Burgos, S.A. de C.V.",
+    "direccion": "Calle San Pedro Garza García, Colonia Valle del Campestre, Avenida Roble 660, Estado de Nuevo León, C.P. 66265",
+    "telefono": "812*567*8504",
+    "contacto": "Carlos Alberto Rodriguez",
+    "email": "c.rodriguez@cyrburgos.com.mx"
+  },
+  {
+    "id": "servicios-marinos-del-sureste-s-a-de-c-v",
+    "servicio": "Suministro de Combustibles y Lubricantes",
+    "alta_msc": "X",
+    "denominacion": "Servicios Marinos del Sureste, S.A. de C.V.",
+    "direccion": "Presidente Masaryk N° 61, 901-B, Colonia Polanco V Sección, Deleg. Miguel Hidalgo, Cd. De México. C.P. 11560",
+    "telefono": "938*104*7611 / 938*142*8138",
+    "contacto": "Araceli Silva",
+    "email": "araceli.silva@enermar.com.mx / elden.fonseca@enermar.com.mx"
+  },
+  {
+    "id": "navalmex-combustibles-s-a-de-c-v",
+    "servicio": "Suministro de Combustibles y Lubricantes",
+    "alta_msc": "X",
+    "denominacion": "Navalmex Combustibles, S.A. de C.V.",
+    "direccion": "20 de noviembre N° 306 Int. 9 zona Centro, Tampico, Tamaulipas. C.P. 89000.",
+    "telefono": "(55) 5254*0410",
+    "contacto": "Omar Mondragon / Yolanda Mondragon",
+    "email": "omarm@naval-mexicana.com.mx / ymondragon@naval-mexicana.com.mx"
+  },
+  {
+    "id": "tecnolog-as-para-la-recuperaci-n-de-los-recursos-ambientales-s-a-de-c-v-marterra",
+    "servicio": "Renta e instalación de barreras de contención",
+    "alta_msc": "X",
+    "denominacion": "Tecnologías para la Recuperación de los Recursos Ambientales, S.A. de C.V. (Marterra)",
+    "direccion": "Tercera Avenida número 704, Colonia Isleta Pérez, Tampico, Tamps. C.P. 89090",
+    "telefono": "833*122*7742 / 833*128*9406",
+    "contacto": "Francisco Javier López Lerma",
+    "email": "contacto@marterra.mx / emergenciasderrames@gmail.com / francisco.llerma@marterra.mx"
+  },
+  {
+    "id": "sb-marine-services-s-de-r-l-de-c-v",
+    "servicio": "Renta e instalación de barreras de contención",
+    "alta_msc": "X",
+    "denominacion": "SB Marine Services S. de R.L. de C.V.",
+    "direccion": "Calle Pino 105-F Colonia Carretera Tampico Mante Mango del Bosque, Tampico, Tamaulipas CP. 89318",
+    "telefono": "(938) 171*4738 / (833) 155*4408",
+    "contacto": "Edgardo Gonzalez / Felix Bautista Cruz",
+    "email": "edgardo.gonzalez@sbms.com.mx / operaciones.tampico@sbms.com.mx"
+  },
+  {
+    "id": "safety-offshore-of-m-xico-s-a-de-c-v",
+    "servicio": "Renta e instalación de barreras de contención",
+    "alta_msc": "X",
+    "denominacion": "Safety Offshore of México S.A. de C.V.",
+    "direccion": "Carretera Tampico Mante 408 Colonia México, Tampico, Tamaulipas CP. 89348",
+    "telefono": "833*227*0022 xt. 110 / 833*228*0036 xt. 110",
+    "contacto": "Jesus Gonzalez / Miguel Andrade",
+    "email": "jesus.gonzalez@safety-offshore.com / miguel.andrade@safety-offshore.com / manejo.cuentas@safety-offshore.com"
+  },
+  {
+    "id": "delta-incineraciones-industriales-s-a-de-c-v",
+    "servicio": "Renta e instalación de barreras de contención",
+    "alta_msc": "X",
+    "denominacion": "Delta Incineraciones Industriales, S.A. de C.V.",
+    "direccion": "Prolongacion Bahia Aldair Lote 2. Colonia Parque de la pequeña y mediana industria Altamira, Tamps CP. 89603",
+    "telefono": "833*267*0058 / 833*119*0883",
+    "contacto": "Fernando Alberto Pontones Rangel",
+    "email": "fpontones@deltaincineracion.com / mberman@deltaincineracion.com"
+  },
+  {
+    "id": "oil-spill-control-solutions-s-a-de-c-v",
+    "servicio": "Renta e instalación de barreras de contención",
+    "alta_msc": "X",
+    "denominacion": "Oil Spill Control Solutions, S.A. de C.V.",
+    "direccion": "Carretera a la Barra Km 6.5 Ejido la Calzada, Tuxpan Ver.",
+    "telefono": "783*111*0841 / 783*837*1059",
+    "contacto": "Mauricio Esquitín González",
+    "email": "administracion@osscontrol.mx / operaciones@osscontrol.mx"
+  }
+]

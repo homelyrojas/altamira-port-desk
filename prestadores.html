@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Prestadores de Servicios</title>
+  <link rel="stylesheet" href="prestadores.css">
+</head>
+<body>
+  <header class="hero">
+    <div>
+      <p class="eyebrow">BOARDING AGENT TOOLS v0.6.2</p>
+      <h1>Prestadores de Servicios</h1>
+      <p>Consulta prestadores autorizados por ASIPONA Altamira. Busca por servicio, empresa, contacto, teléfono, correo o alta MSC.</p>
+    </div>
+    <button onclick="window.location.replace('index.html?v=' + Date.now())">← Volver</button>
+  </header>
+
+  <main>
+    <section class="panel">
+      <h2>1. Consultar prestador</h2>
+      <input id="searchInput" type="text" placeholder="Ej. Amarre, Avituallamiento, Ronalú, MXA22804">
+      <div id="matchesBox" class="matches-box"></div>
+      <button onclick="searchProviders()">Buscar</button>
+      <button class="secondary" onclick="clearSearch()">Limpiar</button>
+    </section>
+
+    <section class="panel">
+      <div class="title-row">
+        <h2>2. Información completa</h2>
+        <button onclick="copyResult()">Copiar información</button>
+      </div>
+      <pre id="resultBox">Aquí aparecerá la información del prestador de servicios...</pre>
+    </section>
+  </main>
+
+  <script src="prestadores.js"></script>
+</body>
+</html>
