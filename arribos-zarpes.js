@@ -20,7 +20,7 @@ const REPORT_FIELDS = [
   { header: 'F.INICIO OPERACIONES', occurrence: 1, label: 'F.INICIO OPERACIONES' },
   { header: 'F.TERMINO DE OPERACIONES', occurrence: 1, label: 'F.TERMINO DE OPERACIONES' },
   { header: 'F. PILOTO ABORDO AL ZARPE', occurrence: 1, label: 'F. PILOTO ABORDO AL ZARPE' },
-  { header: 'F.LIBRE DE CABOS', occurrence: 1, label: 'F.LIBRE DE CABOS' },
+  { header: 'F.LIBRE DE CABOS', occurrence: 1, label: 'F.LIBRE DE CABOS [DESATRAQUE]' },
   { header: 'F.CRUCE ESCOLLERAS', occurrence: 1, label: 'F.CRUCE ESCOLLERAS' },
   { header: 'F. DESEMBARQUE DE PILOTO', occurrence: 1, label: 'F. DESEMBARQUE DE PILOTO' },
 ];
