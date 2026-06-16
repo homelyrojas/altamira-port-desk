@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Directorio Operativo</title>
+  <link rel="stylesheet" href="directorio.css">
+</head>
+<body>
+  <header class="hero">
+    <div>
+      <p class="eyebrow">BOARDING AGENT TOOLS v0.6.1</p>
+      <h1>Directorio Operativo</h1>
+      <p>Busca por dependencia, categoría, encargado, cargo, teléfono, correo o notas.</p>
+    </div>
+    <button onclick="window.location.replace('index.html?v=' + Date.now())">← Volver</button>
+  </header>
+
+  <main>
+    <section class="panel">
+      <h2>1. Consultar contacto</h2>
+      <input id="searchInput" type="text" placeholder="Ej. Aduana, Pilotos, Capitanía, SENASICA">
+      <button onclick="searchDirectory()">Buscar</button>
+      <button class="secondary" onclick="clearSearch()">Limpiar</button>
+    </section>
+
+    <section class="panel">
+      <div class="title-row">
+        <h2>2. Resultado</h2>
+        <button onclick="copyResult()">Copiar información</button>
+      </div>
+      <pre id="resultBox">Aquí aparecerá la información del directorio...</pre>
+    </section>
+  </main>
+
+  <script src="directorio.js"></script>
+</body>
+</html>
