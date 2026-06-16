@@ -1,4 +1,4 @@
-const CACHE_NAME = "altamira-port-desk-v060";
+const CACHE_NAME = "altamira-port-desk-v061";
 
 const ASSETS = [
   "./",
@@ -8,9 +8,15 @@ const ASSETS = [
   "./manifest.json",
   "./directory.json",
   "./questions.json",
+
   "./arribos-zarpes.html",
   "./arribos-zarpes.css",
   "./arribos-zarpes.js",
+
+  "./directorio.html",
+  "./directorio.css",
+  "./directorio.js",
+
   "./icons/icon-192.svg",
   "./icons/icon-512.svg"
 ];
