@@ -17,13 +17,20 @@
   </header>
 
   <main>
-    <section class="panel">
-      <h2>1. Consultar prestador</h2>
-      <input id="searchInput" type="text" placeholder="Ej. Amarre, Avituallamiento, Ronalú, MXA22804">
-      <div id="matchesBox" class="matches-box"></div>
-      <button onclick="searchProviders()">Buscar</button>
-      <button class="secondary" onclick="clearSearch()">Limpiar</button>
-    </section>
+   <section class="panel">
+  <h2>1. Consultar prestador</h2>
+
+  <label for="serviceFilter"><strong>Filtrar por servicio</strong></label>
+  <select id="serviceFilter">
+    <option value="">Todos los servicios</option>
+  </select>
+
+  <input id="searchInput" type="text" placeholder="Ej. Amarre, Avituallamiento, Ronalú, MXA22804">
+  <div id="matchesBox" class="matches-box"></div>
+
+  <button onclick="searchProviders()">Buscar</button>
+  <button class="secondary" onclick="clearSearch()">Limpiar</button>
+</section>
 
     <section class="panel">
       <div class="title-row">
@@ -33,7 +40,7 @@
       <pre id="resultBox">Aquí aparecerá la información del prestador de servicios...</pre>
     </section>
   </main>
-
+ 
   <script src="prestadores.js"></script>
 </body>
 </html>
