@@ -17,12 +17,21 @@ function normalize(text) {
 
 function isAltaMSC(item) {
   const alta = normalize(item.alta_msc || "");
-  const mx = normalize(item.mx_code || item.codigo_mx || "");
-  return alta === "x" || mx.startsWith("mxa") || mx.startsWith("mx");
+  return alta === "x" || alta.startsWith("mxa") || alta.startsWith("mx");
 }
 
 function getMxCode(item) {
-  return item.mx_code || item.codigo_mx || item.alta_msc || "";
+  const alta = item.alta_msc || "";
+
+  if (String(alta).toUpperCase().startsWith("MX")) {
+    return alta;
+  }
+
+  if (String(alta).toUpperCase() === "X") {
+    return "X";
+  }
+
+  return "";
 }
 
 function formatProvider(item) {
