@@ -1,6 +1,6 @@
 /*
-  BOARDING AGENT TOOLS - Registros v0.8.3.2
-  localStorage + Exportación/Importación JSON + Tipos de pregunta + Relacionar columnas + Preguntas abiertas + Catálogo de temas + Opción múltiple flexible
+  BOARDING AGENT TOOLS - Registros v0.8.4.2
+  localStorage + Exportación/Importación JSON + Tipos de pregunta + Relacionar columnas + Preguntas abiertas + Catálogo de temas + Opción múltiple flexible + Exportación inteligente
 
   Tipos soportados en esta versión:
   - multiple: Opción múltiple A/B/C/D
@@ -492,15 +492,22 @@ embarcación"></textarea>
       <div class="tab-panel" id="tab-json">
         <div class="json-actions">
           <button type="button" class="primary-btn" id="exportarJsonBtn">Exportar JSON</button>
+          <button type="button" class="secondary-btn" id="copiarJsonBtn">📋 Copiar JSON</button>
+          <button type="button" class="secondary-btn" id="generarQuestionsJsonBtn">📦 Generar questions.json completo</button>
           <label class="file-btn">
             Importar JSON
             <input id="importarJsonInput" type="file" accept=".json,application/json">
           </label>
         </div>
-        <textarea id="jsonPreview" rows="14" readonly placeholder="Aquí aparecerá el JSON exportable"></textarea>
-        <p class="registros-note">
-          Consejo operativo: exporta este JSON y pégalo en GitHub cuando quieras incorporar oficialmente tus nuevas preguntas.
-        </p>
+
+        <div class="export-mode-box">
+          <strong>📄 Archivo destino: questions.json</strong>
+          <p>Exporta este JSON y pégalo en GitHub reemplazando <strong>questions.json</strong>.</p>
+          <p class="registros-note">Recomendación: conserva una copia de respaldo antes de reemplazarlo.</p>
+          <p id="jsonCopyStatus" class="copy-status" aria-live="polite"></p>
+        </div>
+
+        <textarea id="jsonPreview" rows="16" readonly placeholder="Aquí aparecerá el JSON exportable"></textarea>
       </div>
 
       <div class="tab-panel" id="tab-repaso">
@@ -522,6 +529,8 @@ embarcación"></textarea>
     $("#filtroTipo", view).addEventListener("change", renderBanco);
     $("#buscarPregunta", view).addEventListener("input", renderBanco);
     $("#exportarJsonBtn", view).addEventListener("click", exportJson);
+    $("#copiarJsonBtn", view).addEventListener("click", copyJsonPreview);
+    $("#generarQuestionsJsonBtn", view).addEventListener("click", generateFullQuestionsJson);
     $("#importarJsonInput", view).addEventListener("change", importJson);
 
     $all(".tab-btn", view).forEach(btn => {
@@ -548,7 +557,10 @@ embarcación"></textarea>
     $all(".tab-panel", view).forEach(panel => panel.classList.toggle("active", panel.id === "tab-" + tabName));
 
     if (tabName === "banco") renderBanco();
-    if (tabName === "json") renderJsonPreview();
+    if (tabName === "json") {
+      setCopyStatus("");
+      renderJsonPreview();
+    }
     if (tabName === "repaso") renderRepaso();
   }
 
@@ -934,27 +946,114 @@ embarcación"></textarea>
     `;
   }
 
-  function renderJsonPreview() {
+  function getOfficialQuestionsForExport() {
+    if (Array.isArray(window.questionsData)) {
+      return window.questionsData;
+    }
+
+    return [];
+  }
+
+  function cleanQuestionForOfficialBank(question, indexOffset = 0) {
+    const cleaned = { ...question };
+
+    delete cleaned.origen;
+    delete cleaned.creado_en;
+    delete cleaned.actualizado_en;
+
+    if (String(cleaned.id || "").startsWith("local-") || String(cleaned.id || "").startsWith("import-")) {
+      cleaned.id = indexOffset;
+    }
+
+    return cleaned;
+  }
+
+  function buildFullQuestionsJson() {
+    const officialQuestions = getOfficialQuestionsForExport();
+    const localQuestions = loadLocalQuestions();
+
+    const nextIdBase = officialQuestions.reduce((max, q) => {
+      const id = Number(q.id);
+      return Number.isFinite(id) ? Math.max(max, id) : max;
+    }, 0);
+
+    const cleanedLocalQuestions = localQuestions.map((q, index) => {
+      return cleanQuestionForOfficialBank(q, nextIdBase + index + 1);
+    });
+
+    return [
+      ...officialQuestions,
+      ...cleanedLocalQuestions
+    ];
+  }
+
+  function renderJsonPreview(mode = "local") {
     const preview = $("#jsonPreview");
     if (!preview) return;
+
+    if (mode === "full") {
+      preview.value = JSON.stringify(buildFullQuestionsJson(), null, 2);
+      setCopyStatus("questions.json completo generado. Puedes copiarlo y reemplazar el archivo en GitHub.");
+      return;
+    }
+
     preview.value = JSON.stringify(loadLocalQuestions(), null, 2);
   }
 
+  function setCopyStatus(message) {
+    const status = $("#jsonCopyStatus");
+    if (!status) return;
+
+    status.textContent = message || "";
+  }
+
+  async function copyJsonPreview() {
+    const preview = $("#jsonPreview");
+    if (!preview) return;
+
+    const text = preview.value || "";
+
+    if (!text.trim()) {
+      setCopyStatus("No hay JSON para copiar.");
+      return;
+    }
+
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        preview.focus();
+        preview.select();
+        document.execCommand("copy");
+        window.getSelection()?.removeAllRanges();
+      }
+
+      setCopyStatus("✅ JSON copiado al portapapeles.");
+    } catch (error) {
+      console.error("No se pudo copiar JSON", error);
+      setCopyStatus("No se pudo copiar automáticamente. Selecciona el texto y copia manualmente.");
+    }
+  }
+
+  function generateFullQuestionsJson() {
+    renderJsonPreview("full");
+  }
+
   function exportJson() {
-    const data = JSON.stringify(loadLocalQuestions(), null, 2);
+    const data = $("#jsonPreview")?.value || JSON.stringify(buildFullQuestionsJson(), null, 2);
     const blob = new Blob([data], { type: "application/json;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
 
     const stamp = new Date().toISOString().slice(0, 10);
     a.href = url;
-    a.download = `preguntas-locales-${stamp}.json`;
+    a.download = `questions-${stamp}.json`;
     document.body.appendChild(a);
     a.click();
     a.remove();
     URL.revokeObjectURL(url);
 
-    renderJsonPreview();
+    setCopyStatus("Archivo JSON exportado. Si lo vas a subir a GitHub, renómbralo como questions.json.");
   }
 
   function importJson(event) {

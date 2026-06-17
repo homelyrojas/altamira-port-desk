@@ -1,4 +1,4 @@
-/* BOARDING AGENT TOOLS - Registros v0.8.3.2 */
+/* BOARDING AGENT TOOLS - Registros v0.8.4.2 */
 
 .bat-hidden {
   display: none !important;
@@ -362,4 +362,25 @@ textarea#registroPalabrasClave {
   font-size: 0.82rem;
   font-weight: 600;
   line-height: 1.35;
+}
+
+
+.export-mode-box {
+  border: 1px solid #e5e5e5;
+  border-radius: 18px;
+  padding: 14px 16px;
+  background: #fafafa;
+  display: grid;
+  gap: 6px;
+}
+
+.export-mode-box p {
+  margin: 0;
+  line-height: 1.45;
+}
+
+.copy-status {
+  min-height: 1.2em;
+  font-weight: 800;
+  color: #0a6b2b;
 }
