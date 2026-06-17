@@ -10,6 +10,19 @@ async function loadData(){
     const [dirRes, qRes] = await Promise.all([fetch("./directory.json"), fetch("./questions.json")]);
     directoryData = await dirRes.json();
     questionsData = await qRes.json();
+
+    // Exponer banco oficial para módulos externos como Registros.
+    window.questionsData = questionsData;
+
+    // Guardar catálogo de temas oficiales para evitar typos en captura.
+    const officialTopics = [...new Set(
+      questionsData
+        .map(q => q.tema)
+        .filter(Boolean)
+    )].sort((a, b) => a.localeCompare(b));
+
+    localStorage.setItem("bat_temas_oficiales_v1", JSON.stringify(officialTopics));
+
     failedQuestions = JSON.parse(localStorage.getItem("failedQuestions") || "[]");
   }catch(error){
     console.error("Error cargando datos", error);

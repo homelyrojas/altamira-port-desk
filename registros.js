@@ -1,6 +1,6 @@
 /*
-  BOARDING AGENT TOOLS - Registros v0.8.1
-  localStorage + Exportación/Importación JSON + Tipos de pregunta + Relacionar columnas + Preguntas abiertas + Catálogo de temas
+  BOARDING AGENT TOOLS - Registros v0.8.2.2
+  localStorage + Exportación/Importación JSON + Tipos de pregunta + Relacionar columnas + Preguntas abiertas + Catálogo de temas FIX
 
   Tipos soportados en esta versión:
   - multiple: Opción múltiple A/B/C/D
@@ -91,10 +91,31 @@
       }
     }
 
+    /*
+      Fuente 1: banco oficial expuesto desde app.js.
+      Nota: app.js usa let questionsData, así que registros.js no puede leerlo
+      como window.questionsData a menos que app.js lo exponga.
+    */
     if (Array.isArray(window.questionsData)) {
       window.questionsData.forEach(q => addTopic(q.tema));
     }
 
+    /*
+      Fuente 2: copia oficial de respaldo guardada por app.js.
+      Este es el camino más estable para GitHub Pages + PWA.
+    */
+    try {
+      const officialTopics = JSON.parse(localStorage.getItem("bat_temas_oficiales_v1") || "[]");
+      if (Array.isArray(officialTopics)) {
+        officialTopics.forEach(addTopic);
+      }
+    } catch (error) {
+      console.warn("No se pudieron leer temas oficiales desde localStorage", error);
+    }
+
+    /*
+      Fuente 3: banco personal local.
+    */
     loadLocalQuestions().forEach(q => addTopic(q.tema));
 
     return Array.from(byNormalized.values()).sort((a, b) => a.localeCompare(b));
