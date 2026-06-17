@@ -142,11 +142,16 @@ function normalizeQuestion(q){
     };
   }
 
+  const opciones = Array.isArray(q.opciones) ? q.opciones.filter(op => String(op || "").trim()) : [];
+  let correcta = Number(q.correcta || 0);
+
+  if(correcta < 0 || correcta >= opciones.length) correcta = 0;
+
   return {
     ...q,
     tipo: "multiple",
-    opciones: Array.isArray(q.opciones) ? q.opciones : [],
-    correcta: Number(q.correcta || 0)
+    opciones,
+    correcta
   };
 }
 

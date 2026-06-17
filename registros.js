@@ -1,6 +1,6 @@
 /*
-  BOARDING AGENT TOOLS - Registros v0.8.2.2
-  localStorage + Exportación/Importación JSON + Tipos de pregunta + Relacionar columnas + Preguntas abiertas + Catálogo de temas FIX
+  BOARDING AGENT TOOLS - Registros v0.8.3.2
+  localStorage + Exportación/Importación JSON + Tipos de pregunta + Relacionar columnas + Preguntas abiertas + Catálogo de temas + Opción múltiple flexible
 
   Tipos soportados en esta versión:
   - multiple: Opción múltiple A/B/C/D
@@ -630,15 +630,28 @@ embarcación"></textarea>
       };
     }
 
+    const rawOptions = [
+      safeText($("#opcionA").value),
+      safeText($("#opcionB").value),
+      safeText($("#opcionC").value),
+      safeText($("#opcionD").value)
+    ];
+
+    const selectedOriginalIndex = Number($("#registroCorrectaMultiple").value);
+    const originalToFilteredIndex = {};
+    const opciones = [];
+
+    rawOptions.forEach((option, originalIndex) => {
+      if (option) {
+        originalToFilteredIndex[originalIndex] = opciones.length;
+        opciones.push(option);
+      }
+    });
+
     return {
       ...base,
-      opciones: [
-        safeText($("#opcionA").value),
-        safeText($("#opcionB").value),
-        safeText($("#opcionC").value),
-        safeText($("#opcionD").value)
-      ],
-      correcta: Number($("#registroCorrectaMultiple").value)
+      opciones,
+      correcta: originalToFilteredIndex[selectedOriginalIndex] ?? -1
     };
   }
 
@@ -648,8 +661,12 @@ embarcación"></textarea>
     }
 
     if (question.tipo === "multiple") {
-      if (!Array.isArray(question.opciones) || question.opciones.length !== 4 || question.opciones.some(o => !o)) {
-        return "En opción múltiple debes capturar las cuatro opciones.";
+      if (!Array.isArray(question.opciones) || question.opciones.length < 2 || question.opciones.length > 4 || question.opciones.some(o => !o)) {
+        return "En opción múltiple debes capturar mínimo 2 y máximo 4 opciones.";
+      }
+
+      if (Number(question.correcta) < 0 || Number(question.correcta) >= question.opciones.length) {
+        return "Selecciona como respuesta correcta una opción que sí esté capturada.";
       }
     }
 
@@ -1058,14 +1075,17 @@ embarcación"></textarea>
       };
     }
 
-    const opciones = Array.isArray(q.opciones) ? q.opciones.slice(0, 4).map(safeText) : [];
-    if (opciones.length !== 4 || opciones.some(o => !o)) return null;
+    const opciones = Array.isArray(q.opciones) ? q.opciones.slice(0, 4).map(safeText).filter(Boolean) : [];
+    if (opciones.length < 2 || opciones.length > 4) return null;
+
+    const correcta = Number(q.correcta ?? 0);
+    if (correcta < 0 || correcta >= opciones.length) return null;
 
     return {
       ...base,
       tipo: "multiple",
       opciones,
-      correcta: Number(q.correcta ?? 0)
+      correcta
     };
   }
 
