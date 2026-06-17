@@ -1,4 +1,4 @@
-/* BOARDING AGENT TOOLS - Registros v0.6 */
+/* BOARDING AGENT TOOLS - Registros v0.7 */
 
 .bat-hidden {
   display: none !important;
@@ -280,5 +280,66 @@
 
   .question-id {
     margin-left: 0;
+  }
+}
+
+
+/* Relacionar columnas - v0.7 */
+.relation-preview {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.relation-preview-row {
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) auto minmax(120px, 1fr);
+  gap: 10px;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: #fff;
+  border: 1px solid #e5e5e5;
+}
+
+.relation-quiz {
+  display: grid;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.relation-row {
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) minmax(180px, 1fr);
+  gap: 12px;
+  align-items: center;
+  font-weight: 800;
+}
+
+.relation-row select {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #d9d9d9;
+  border-radius: 14px;
+  padding: 12px 14px;
+  font: inherit;
+  background: #fff;
+  color: #111;
+}
+
+.relation-row select.ok {
+  border-color: #0a6b2b;
+  background: #e8f6ec;
+}
+
+.relation-row select.bad {
+  border-color: #7a1f1f;
+  background: #faeaea;
+}
+
+@media (max-width: 720px) {
+  .relation-preview-row,
+  .relation-row {
+    grid-template-columns: 1fr;
   }
 }

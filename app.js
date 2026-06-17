@@ -93,6 +93,26 @@ function normalizeQuestion(q){
     };
   }
 
+  if(tipo === "relacionar"){
+    const izquierda = Array.isArray(q.izquierda) ? q.izquierda : [];
+    const derecha = Array.isArray(q.derecha) ? q.derecha : [];
+    const respuestas = q.respuestas && typeof q.respuestas === "object"
+      ? q.respuestas
+      : izquierda.reduce((acc, item, index) => {
+          acc[item] = derecha[index] || "";
+          return acc;
+        }, {});
+
+    return {
+      ...q,
+      tipo: "relacionar",
+      izquierda,
+      derecha,
+      respuestas,
+      opciones: derecha
+    };
+  }
+
   return {
     ...q,
     tipo: "multiple",
@@ -207,6 +227,11 @@ function renderQuestion(){
     return;
   }
 
+  if(q.tipo === "relacionar"){
+    renderRelationQuestion(q, percent);
+    return;
+  }
+
   renderOptionQuestion(q, percent);
 }
 
@@ -251,6 +276,29 @@ function renderConceptQuestion(q, percent){
   `);
 }
 
+function renderRelationQuestion(q, percent){
+  const izquierda = q.izquierda || [];
+  const derecha = shuffle(q.derecha || []);
+
+  setContent(`
+    ${renderQuestionHeader(q, percent)}
+    <div class="relation-quiz">
+      ${izquierda.map(item => `
+        <label class="relation-row">
+          <span>${escapeHtml(item)}</span>
+          <select data-relation-left="${escapeHtml(item)}">
+            <option value="">Selecciona...</option>
+            ${derecha.map(op => `<option value="${escapeHtml(op)}">${escapeHtml(op)}</option>`).join("")}
+          </select>
+        </label>
+      `).join("")}
+    </div>
+    <div class="toolbar">
+      <button class="action" onclick="answerRelationQuestion()">Validar relaciones</button>
+    </div>
+  `);
+}
+
 function answerConceptQuestion(){
   const select = document.getElementById("conceptAnswer");
 
@@ -260,6 +308,38 @@ function answerConceptQuestion(){
   }
 
   answerQuestion(Number(select.value));
+}
+
+function answerRelationQuestion(){
+  const q = normalizeQuestion(currentExam[currentIndex]);
+  const selects = Array.from(document.querySelectorAll("[data-relation-left]"));
+  const userAnswers = {};
+  let completas = true;
+
+  selects.forEach(select => {
+    if(!select.value) completas = false;
+    userAnswers[select.dataset.relationLeft] = select.value;
+  });
+
+  if(!completas){
+    alert("Relaciona todos los elementos antes de validar.");
+    return;
+  }
+
+  const respuestas = q.respuestas || {};
+  const izquierda = q.izquierda || [];
+  const total = izquierda.length;
+  const correctCount = izquierda.filter(item => normalizeText(userAnswers[item]) === normalizeText(respuestas[item])).length;
+  const correct = correctCount === total;
+
+  answers.push({ questionId:q.id, selected:userAnswers, correct, tema:q.tema, tipo:q.tipo });
+
+  if(!correct){
+    saveFailedQuestion(q.id, q.tema);
+  }
+
+  const percent = Math.round(((currentIndex + 1) / currentExam.length) * 100);
+  renderRelationFeedback(q, userAnswers, correct, correctCount, total, percent);
 }
 
 function answerQuestion(selected){
@@ -313,6 +393,38 @@ function renderConceptFeedback(q, selected, correct, percent){
   `;
 
   renderFeedbackBase(q, correct, percent, conceptResult);
+}
+
+function renderRelationFeedback(q, userAnswers, correct, correctCount, total, percent){
+  const respuestas = q.respuestas || {};
+  const izquierda = q.izquierda || [];
+
+  const relationResult = `
+    <div class="details">
+      <strong>Relaciones correctas:</strong>
+      <p>${correctCount} de ${total}</p>
+      <div class="relation-preview">
+        ${izquierda.map(item => {
+          const userAnswer = userAnswers[item] || "";
+          const correctAnswer = respuestas[item] || "";
+          const ok = normalizeText(userAnswer) === normalizeText(correctAnswer);
+
+          return `
+            <div class="relation-preview-row ${ok ? "relation-ok" : "relation-bad"}">
+              <strong>${escapeHtml(item)}</strong>
+              <span>→</span>
+              <span>
+                ${escapeHtml(userAnswer)}
+                ${ok ? "" : `<br><small>Correcto: ${escapeHtml(correctAnswer)}</small>`}
+              </span>
+            </div>
+          `;
+        }).join("")}
+      </div>
+    </div>
+  `;
+
+  renderFeedbackBase(q, correct, percent, relationResult);
 }
 
 function renderFeedbackBase(q, correct, percent, answerHtml){

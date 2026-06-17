@@ -1,19 +1,19 @@
 /*
-  BOARDING AGENT TOOLS - Registros v0.6
-  localStorage + Exportación/Importación JSON + Tipos de pregunta
+  BOARDING AGENT TOOLS - Registros v0.7
+  localStorage + Exportación/Importación JSON + Tipos de pregunta + Relacionar columnas
 
   Tipos soportados en esta versión:
   - multiple: Opción múltiple A/B/C/D
   - vf: Verdadero / Falso
   - concepto: Elegir concepto desde lista desplegable
+  - relacionar: Relacionar columnas
 
   Tipos reservados para siguientes versiones:
-  - relacionar
   - abierta
 
   Instalación:
   1) Reemplaza tu archivo registros.js actual por este.
-  2) Reemplaza registros.css por la versión v0.6.
+  2) Reemplaza registros.css por la versión v0.7.
   3) Conserva en app.js el botón:
      <button class="pill" onclick="RegistrosPreguntas.open()">Registros</button>
 */
@@ -118,6 +118,26 @@
         correcta: typeof question.correcta === "number"
           ? question.correcta
           : conceptos.findIndex(c => normalize(c) === normalize(question.correcta))
+      };
+    }
+
+    if (tipo === "relacionar") {
+      const izquierda = Array.isArray(question.izquierda) ? question.izquierda : [];
+      const derecha = Array.isArray(question.derecha) ? question.derecha : [];
+      const respuestas = question.respuestas && typeof question.respuestas === "object"
+        ? question.respuestas
+        : izquierda.reduce((acc, item, index) => {
+            acc[item] = derecha[index] || "";
+            return acc;
+          }, {});
+
+      return {
+        ...question,
+        tipo,
+        izquierda,
+        derecha,
+        respuestas,
+        opciones: derecha
       };
     }
 
@@ -242,7 +262,7 @@
               <option value="multiple">Opción múltiple</option>
               <option value="vf">Verdadero / Falso</option>
               <option value="concepto">Elegir concepto</option>
-              <option value="relacionar" disabled>Relacionar columnas — próxima versión</option>
+              <option value="relacionar">Relacionar columnas</option>
               <option value="abierta" disabled>Pregunta abierta — próxima versión</option>
             </select>
           </label>
@@ -302,6 +322,30 @@ Bill of Lading"></textarea>
             </label>
           </div>
 
+          <div id="relacionarFields" class="tipo-fields bat-hidden">
+            <p class="registros-note">
+              Captura ambas columnas en el mismo orden. La línea 1 de la columna izquierda se relaciona con la línea 1 de la columna derecha, y así sucesivamente.
+            </p>
+
+            <div class="opciones-grid">
+              <label>
+                Columna izquierda
+                <textarea id="registroRelacionarIzquierda" rows="5" placeholder="Ejemplo:
+Capitanía de Puerto
+INM
+SENASICA"></textarea>
+              </label>
+
+              <label>
+                Columna derecha
+                <textarea id="registroRelacionarDerecha" rows="5" placeholder="Ejemplo:
+Despacho de embarcaciones
+Control migratorio
+Sanidad agropecuaria"></textarea>
+              </label>
+            </div>
+          </div>
+
           <label>
             Explicación
             <textarea id="registroExplicacion" rows="3" placeholder="Explica por qué esa es la respuesta correcta"></textarea>
@@ -334,6 +378,7 @@ Bill of Lading"></textarea>
               <option value="multiple">Opción múltiple</option>
               <option value="vf">Verdadero / Falso</option>
               <option value="concepto">Elegir concepto</option>
+              <option value="relacionar">Relacionar columnas</option>
             </select>
           </label>
           <input id="buscarPregunta" type="search" placeholder="Buscar texto dentro de preguntas">
@@ -389,6 +434,7 @@ Bill of Lading"></textarea>
     $("#multipleFields")?.classList.toggle("bat-hidden", tipo !== "multiple");
     $("#vfFields")?.classList.toggle("bat-hidden", tipo !== "vf");
     $("#conceptoFields")?.classList.toggle("bat-hidden", tipo !== "concepto");
+    $("#relacionarFields")?.classList.toggle("bat-hidden", tipo !== "relacionar");
   }
 
   function activateTab(tabName) {
@@ -441,6 +487,30 @@ Bill of Lading"></textarea>
       };
     }
 
+    if (tipo === "relacionar") {
+      const izquierda = safeText($("#registroRelacionarIzquierda").value)
+        .split("\n")
+        .map(safeText)
+        .filter(Boolean);
+
+      const derecha = safeText($("#registroRelacionarDerecha").value)
+        .split("\n")
+        .map(safeText)
+        .filter(Boolean);
+
+      const respuestas = izquierda.reduce((acc, item, index) => {
+        acc[item] = derecha[index] || "";
+        return acc;
+      }, {});
+
+      return {
+        ...base,
+        izquierda,
+        derecha,
+        respuestas
+      };
+    }
+
     return {
       ...base,
       opciones: [
@@ -479,6 +549,20 @@ Bill of Lading"></textarea>
       const existe = question.conceptos.some(c => normalize(c) === normalize(correctaTexto));
       if (!correctaTexto || !existe) {
         return "El concepto correcto debe coincidir con uno de los conceptos disponibles.";
+      }
+    }
+
+    if (question.tipo === "relacionar") {
+      if (!Array.isArray(question.izquierda) || !Array.isArray(question.derecha)) {
+        return "En relacionar columnas debes capturar ambas columnas.";
+      }
+
+      if (question.izquierda.length < 2 || question.derecha.length < 2) {
+        return "En relacionar columnas debes capturar al menos dos elementos por columna.";
+      }
+
+      if (question.izquierda.length !== question.derecha.length) {
+        return "Ambas columnas deben tener la misma cantidad de líneas.";
       }
     }
 
@@ -545,6 +629,9 @@ Bill of Lading"></textarea>
       const conceptos = normalized.conceptos || normalized.opciones || [];
       $("#registroConceptos").value = conceptos.join("\n");
       $("#registroConceptoCorrecto").value = conceptos[normalized.correcta] || normalized.correcta_texto || "";
+    } else if (normalized.tipo === "relacionar") {
+      $("#registroRelacionarIzquierda").value = (normalized.izquierda || []).join("\n");
+      $("#registroRelacionarDerecha").value = (normalized.derecha || []).join("\n");
     } else {
       $("#opcionA").value = normalized.opciones?.[0] || "";
       $("#opcionB").value = normalized.opciones?.[1] || "";
@@ -653,6 +740,22 @@ Bill of Lading"></textarea>
             </li>
           `).join("")}
         </ol>
+      `;
+    }
+
+    if (q.tipo === "relacionar") {
+      const izquierda = q.izquierda || [];
+      const respuestas = q.respuestas || {};
+      return `
+        <div class="relation-preview">
+          ${izquierda.map(item => `
+            <div class="relation-preview-row">
+              <strong>${escapeHtml(item)}</strong>
+              <span>→</span>
+              <span>${escapeHtml(respuestas[item] || "")}</span>
+            </div>
+          `).join("")}
+        </div>
       `;
     }
 
@@ -773,6 +876,27 @@ Bill of Lading"></textarea>
       };
     }
 
+    if (tipo === "relacionar") {
+      const izquierda = Array.isArray(q.izquierda) ? q.izquierda.map(safeText).filter(Boolean) : [];
+      const derecha = Array.isArray(q.derecha) ? q.derecha.map(safeText).filter(Boolean) : [];
+
+      if (izquierda.length < 2 || derecha.length < 2 || izquierda.length !== derecha.length) return null;
+
+      const respuestas = q.respuestas && typeof q.respuestas === "object"
+        ? q.respuestas
+        : izquierda.reduce((acc, item, i) => {
+            acc[item] = derecha[i] || "";
+            return acc;
+          }, {});
+
+      return {
+        ...base,
+        izquierda,
+        derecha,
+        respuestas
+      };
+    }
+
     const opciones = Array.isArray(q.opciones) ? q.opciones.slice(0, 4).map(safeText) : [];
     if (opciones.length !== 4 || opciones.some(o => !o)) return null;
 
@@ -839,6 +963,8 @@ Bill of Lading"></textarea>
 
       if (q.tipo === "concepto") {
         renderConceptQuestion(q);
+      } else if (q.tipo === "relacionar") {
+        renderRelacionarQuestion(q);
       } else {
         renderOptionQuestion(q);
       }
@@ -872,6 +998,52 @@ Bill of Lading"></textarea>
       });
     }
 
+    function renderRelacionarQuestion(q) {
+      const izquierda = q.izquierda || [];
+      const derecha = shuffle(q.derecha || []);
+      quiz.innerHTML = `
+        <div class="question-card">
+          <div class="question-card-header">
+            <span class="badge">${escapeHtml(q.tema)}</span>
+            <span class="badge badge-soft">${escapeHtml(questionTypeLabel(q.tipo))}</span>
+            <span>${index + 1} / ${questions.length}</span>
+          </div>
+          <h3>${escapeHtml(q.pregunta)}</h3>
+          <div class="relation-quiz">
+            ${izquierda.map((item, i) => `
+              <label class="relation-row">
+                <span>${escapeHtml(item)}</span>
+                <select data-relation-left="${escapeHtml(item)}">
+                  <option value="">Selecciona...</option>
+                  ${derecha.map(op => `<option value="${escapeHtml(op)}">${escapeHtml(op)}</option>`).join("")}
+                </select>
+              </label>
+            `).join("")}
+          </div>
+          <button type="button" class="primary-btn" id="validarRelacionarBtn">Validar</button>
+          <div id="localFeedback"></div>
+        </div>
+      `;
+
+      $("#validarRelacionarBtn").addEventListener("click", () => {
+        const selects = $all("[data-relation-left]", quiz);
+        const respuestasUsuario = {};
+        let completas = true;
+
+        selects.forEach(select => {
+          if (!select.value) completas = false;
+          respuestasUsuario[select.dataset.relationLeft] = select.value;
+        });
+
+        if (!completas) {
+          alert("Relaciona todos los elementos antes de validar.");
+          return;
+        }
+
+        checkRelacionarAnswer(q, respuestasUsuario);
+      });
+    }
+
     function renderConceptQuestion(q) {
       const conceptos = q.conceptos || q.opciones || [];
       quiz.innerHTML = `
@@ -901,6 +1073,49 @@ Bill of Lading"></textarea>
           return;
         }
         checkAnswer(q, Number(selected));
+      });
+    }
+
+    function checkRelacionarAnswer(q, respuestasUsuario) {
+      const respuestas = q.respuestas || {};
+      const izquierda = q.izquierda || [];
+      const total = izquierda.length;
+      const correctas = izquierda.filter(item => normalize(respuestasUsuario[item]) === normalize(respuestas[item])).length;
+      const isCorrect = correctas === total;
+
+      if (isCorrect) score++;
+
+      $all("[data-relation-left]", quiz).forEach(select => {
+        const left = select.dataset.relationLeft;
+        select.disabled = true;
+        select.classList.add(normalize(select.value) === normalize(respuestas[left]) ? "ok" : "bad");
+      });
+
+      const feedback = $("#localFeedback");
+      feedback.innerHTML = `
+        <div class="feedback-box">
+          <p><strong>${isCorrect ? "Correcto" : "Incorrecto"}</strong></p>
+          <p>Relaciones correctas: <strong>${correctas}</strong> de <strong>${total}</strong>.</p>
+          ${!isCorrect ? `
+            <div class="relation-preview">
+              ${izquierda.map(item => `
+                <div class="relation-preview-row">
+                  <strong>${escapeHtml(item)}</strong>
+                  <span>→</span>
+                  <span>${escapeHtml(respuestas[item] || "")}</span>
+                </div>
+              `).join("")}
+            </div>
+          ` : ""}
+          ${q.explicacion ? `<p>${escapeHtml(q.explicacion)}</p>` : ""}
+          ${q.fundamento ? `<p><strong>Fundamento:</strong> ${escapeHtml(q.fundamento)}</p>` : ""}
+          <button type="button" class="primary-btn" id="siguienteLocalBtn">Siguiente</button>
+        </div>
+      `;
+
+      $("#siguienteLocalBtn").addEventListener("click", () => {
+        index++;
+        renderQuestion();
       });
     }
 
