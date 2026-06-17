@@ -597,8 +597,7 @@ embarcación"></textarea>
 
     if (tipo === "abierta") {
       const palabrasClave = safeText($("#registroPalabrasClave").value)
-        .split("
-")
+        .split("\n")
         .map(safeText)
         .filter(Boolean);
 
@@ -748,8 +747,7 @@ embarcación"></textarea>
       $("#registroRelacionarDerecha").value = (normalized.derecha || []).join("\n");
     } else if (normalized.tipo === "abierta") {
       $("#registroRespuestaEsperada").value = normalized.respuesta_esperada || "";
-      $("#registroPalabrasClave").value = (normalized.palabras_clave || []).join("
-");
+      $("#registroPalabrasClave").value = (normalized.palabras_clave || []).join("\n");
       $("#registroMinimoCoincidencia").value = String(normalized.minimo_coincidencia || 60);
     } else {
       $("#opcionA").value = normalized.opciones?.[0] || "";
