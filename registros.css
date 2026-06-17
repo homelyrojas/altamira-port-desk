@@ -1,4 +1,4 @@
-/* BOARDING AGENT TOOLS - Registros v0.8 */
+/* BOARDING AGENT TOOLS - Registros v0.8.1 */
 
 .bat-hidden {
   display: none !important;
@@ -354,4 +354,12 @@ textarea#registroPalabrasClave {
 
 .open-answer-score {
   font-weight: 900;
+}
+
+
+.field-help {
+  color: #666;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.35;
 }

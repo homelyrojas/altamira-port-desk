@@ -1,6 +1,6 @@
 /*
-  BOARDING AGENT TOOLS - Registros v0.8
-  localStorage + Exportación/Importación JSON + Tipos de pregunta + Relacionar columnas + Preguntas abiertas
+  BOARDING AGENT TOOLS - Registros v0.8.1
+  localStorage + Exportación/Importación JSON + Tipos de pregunta + Relacionar columnas + Preguntas abiertas + Catálogo de temas
 
   Tipos soportados en esta versión:
   - multiple: Opción múltiple A/B/C/D
@@ -79,8 +79,47 @@
   }
 
   function getAllTopics() {
-    const topics = new Set(loadLocalQuestions().map(q => q.tema).filter(Boolean));
-    return Array.from(topics).sort((a, b) => a.localeCompare(b));
+    const byNormalized = new Map();
+
+    function addTopic(topic) {
+      const clean = safeText(topic);
+      if (!clean) return;
+
+      const key = normalize(clean);
+      if (!byNormalized.has(key)) {
+        byNormalized.set(key, clean);
+      }
+    }
+
+    if (Array.isArray(window.questionsData)) {
+      window.questionsData.forEach(q => addTopic(q.tema));
+    }
+
+    loadLocalQuestions().forEach(q => addTopic(q.tema));
+
+    return Array.from(byNormalized.values()).sort((a, b) => a.localeCompare(b));
+  }
+
+  function renderRegistroTemaOptions(selectedValue = "") {
+    const select = $("#registroTema");
+    if (!select) return;
+
+    const topics = getAllTopics();
+    const selected = safeText(selectedValue || select.value);
+    const selectedExists = topics.some(topic => normalize(topic) === normalize(selected));
+
+    let html = `<option value="">Selecciona un tema...</option>`;
+
+    if (selected && !selectedExists) {
+      html += `<option value="${escapeHtml(selected)}" selected>${escapeHtml(selected)} — tema actual</option>`;
+    }
+
+    html += topics.map(topic => {
+      const isSelected = normalize(topic) === normalize(selected) ? "selected" : "";
+      return `<option value="${escapeHtml(topic)}" ${isSelected}>${escapeHtml(topic)}</option>`;
+    }).join("");
+
+    select.innerHTML = html;
   }
 
   function questionTypeLabel(tipo) {
@@ -283,7 +322,10 @@
 
           <label>
             Tema
-            <input id="registroTema" type="text" placeholder="Ej. Capitanía, Aduana, INM, Operación Portuaria" required>
+            <select id="registroTema" required>
+              <option value="">Selecciona un tema...</option>
+            </select>
+            <small class="field-help">Catálogo tomado del banco oficial y del banco personal para evitar duplicados por typo.</small>
           </label>
 
           <label>
@@ -465,6 +507,7 @@ embarcación"></textarea>
       btn.addEventListener("click", () => activateTab(btn.dataset.tab));
     });
 
+    renderRegistroTemaOptions();
     updateTipoFields();
   }
 
@@ -554,7 +597,8 @@ embarcación"></textarea>
 
     if (tipo === "abierta") {
       const palabrasClave = safeText($("#registroPalabrasClave").value)
-        .split("\n")
+        .split("
+")
         .map(safeText)
         .filter(Boolean);
 
@@ -674,6 +718,7 @@ embarcación"></textarea>
     const saveBtn = $("#guardarPreguntaBtn");
     if (saveBtn) saveBtn.textContent = "Guardar pregunta";
 
+    renderRegistroTemaOptions();
     updateTipoFields();
   }
 
@@ -685,7 +730,7 @@ embarcación"></textarea>
 
     editingId = id;
     $("#registroTipo").value = normalized.tipo || "multiple";
-    $("#registroTema").value = normalized.tema || "";
+    renderRegistroTemaOptions(normalized.tema || "");
     $("#registroPregunta").value = normalized.pregunta || "";
     $("#registroExplicacion").value = normalized.explicacion || "";
     $("#registroFundamento").value = normalized.fundamento || "";
@@ -703,7 +748,8 @@ embarcación"></textarea>
       $("#registroRelacionarDerecha").value = (normalized.derecha || []).join("\n");
     } else if (normalized.tipo === "abierta") {
       $("#registroRespuestaEsperada").value = normalized.respuesta_esperada || "";
-      $("#registroPalabrasClave").value = (normalized.palabras_clave || []).join("\n");
+      $("#registroPalabrasClave").value = (normalized.palabras_clave || []).join("
+");
       $("#registroMinimoCoincidencia").value = String(normalized.minimo_coincidencia || 60);
     } else {
       $("#opcionA").value = normalized.opciones?.[0] || "";
@@ -729,6 +775,7 @@ embarcación"></textarea>
   }
 
   function renderRegistros() {
+    renderRegistroTemaOptions();
     renderTopicFilter();
     renderBanco();
     renderJsonPreview();
