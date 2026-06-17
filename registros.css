@@ -1,4 +1,4 @@
-/* BOARDING AGENT TOOLS - Registros v0.8.4.2 */
+/* BOARDING AGENT TOOLS - Registros v0.8.5.2 */
 
 .bat-hidden {
   display: none !important;
@@ -383,4 +383,45 @@ textarea#registroPalabrasClave {
   min-height: 1.2em;
   font-weight: 800;
   color: #0a6b2b;
+}
+
+
+.search-manager {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.search-manager label {
+  display: grid;
+  gap: 7px;
+  font-weight: 800;
+}
+
+.search-manager input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #d9d9d9;
+  border-radius: 14px;
+  padding: 12px 14px;
+  font: inherit;
+  background: #fff;
+  color: #111;
+}
+
+.search-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.search-results mark {
+  background: #EED484;
+  color: #000;
+  border-radius: 5px;
+  padding: 0 3px;
+}
+
+.search-result-card {
+  border-left: 5px solid #EED484;
 }

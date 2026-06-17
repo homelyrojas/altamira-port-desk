@@ -1,6 +1,6 @@
 /*
-  BOARDING AGENT TOOLS - Registros v0.8.4.2
-  localStorage + Exportación/Importación JSON + Tipos de pregunta + Relacionar columnas + Preguntas abiertas + Catálogo de temas + Opción múltiple flexible + Exportación inteligente
+  BOARDING AGENT TOOLS - Registros v0.8.5.2
+  localStorage + Exportación/Importación JSON + Tipos de pregunta + Relacionar columnas + Preguntas abiertas + Catálogo de temas + Opción múltiple flexible + Exportación inteligente + Búsqueda
 
   Tipos soportados en esta versión:
   - multiple: Opción múltiple A/B/C/D
@@ -322,6 +322,7 @@
       <div class="registros-tabs">
         <button type="button" class="tab-btn active" data-tab="registrar">Registrar pregunta</button>
         <button type="button" class="tab-btn" data-tab="banco">Banco personal</button>
+        <button type="button" class="tab-btn" data-tab="busqueda">Búsqueda</button>
         <button type="button" class="tab-btn" data-tab="json">Exportar / Importar JSON</button>
         <button type="button" class="tab-btn" data-tab="repaso">Repasar nuevas</button>
       </div>
@@ -489,6 +490,23 @@ embarcación"></textarea>
         <div id="bancoPersonal"></div>
       </div>
 
+      <div class="tab-panel" id="tab-busqueda">
+        <div class="search-manager">
+          <label>
+            Buscar pregunta
+            <input id="busquedaPreguntaInput" type="search" placeholder="Escribe una palabra, frase, tema, fundamento o respuesta...">
+          </label>
+          <div class="search-actions">
+            <button type="button" class="primary-btn" id="buscarPreguntaBtn">Buscar</button>
+            <button type="button" class="secondary-btn" id="limpiarBusquedaBtn">Limpiar búsqueda</button>
+          </div>
+          <p class="registros-note">
+            Busca dentro del banco personal para localizar preguntas capturadas y corregir sintaxis, respuesta, palabras clave o fundamento.
+          </p>
+        </div>
+        <div id="busquedaResultados" class="search-results"></div>
+      </div>
+
       <div class="tab-panel" id="tab-json">
         <div class="json-actions">
           <button type="button" class="primary-btn" id="exportarJsonBtn">Exportar JSON</button>
@@ -528,6 +546,9 @@ embarcación"></textarea>
     });
     $("#filtroTipo", view).addEventListener("change", renderBanco);
     $("#buscarPregunta", view).addEventListener("input", renderBanco);
+    $("#buscarPreguntaBtn", view).addEventListener("click", renderBusqueda);
+    $("#limpiarBusquedaBtn", view).addEventListener("click", clearBusqueda);
+    $("#busquedaPreguntaInput", view).addEventListener("input", renderBusqueda);
     $("#exportarJsonBtn", view).addEventListener("click", exportJson);
     $("#copiarJsonBtn", view).addEventListener("click", copyJsonPreview);
     $("#generarQuestionsJsonBtn", view).addEventListener("click", generateFullQuestionsJson);
@@ -557,6 +578,7 @@ embarcación"></textarea>
     $all(".tab-panel", view).forEach(panel => panel.classList.toggle("active", panel.id === "tab-" + tabName));
 
     if (tabName === "banco") renderBanco();
+    if (tabName === "busqueda") renderBusqueda();
     if (tabName === "json") {
       setCopyStatus("");
       renderJsonPreview();
@@ -826,6 +848,7 @@ embarcación"></textarea>
     renderRegistroTemaOptions();
     renderTopicFilter();
     renderBanco();
+    renderBusqueda();
     renderJsonPreview();
     renderRepaso();
   }
@@ -944,6 +967,134 @@ embarcación"></textarea>
         `).join("")}
       </ol>
     `;
+  }
+
+
+  function clearBusqueda() {
+    const input = $("#busquedaPreguntaInput");
+    const results = $("#busquedaResultados");
+
+    if (input) input.value = "";
+    if (results) {
+      results.innerHTML = `<div class="empty-state">Escribe una palabra o frase para buscar en tu banco personal.</div>`;
+    }
+  }
+
+  function getQuestionSearchText(q) {
+    const parts = [
+      q.id,
+      q.tipo,
+      questionTypeLabel(q.tipo),
+      q.tema,
+      q.pregunta,
+      q.explicacion,
+      q.fundamento,
+      q.respuesta_esperada,
+      q.respuestaEsperada,
+      q.palabras_clave,
+      q.palabrasClave,
+      q.correcta_texto
+    ];
+
+    if (Array.isArray(q.opciones)) parts.push(...q.opciones);
+    if (Array.isArray(q.conceptos)) parts.push(...q.conceptos);
+    if (Array.isArray(q.palabrasClave)) parts.push(...q.palabrasClave);
+    if (Array.isArray(q.palabras_clave)) parts.push(...q.palabras_clave);
+
+    if (Array.isArray(q.pares)) {
+      q.pares.forEach(pair => parts.push(pair.izquierda, pair.derecha));
+    }
+
+    if (Array.isArray(q.relaciones)) {
+      q.relaciones.forEach(pair => parts.push(pair.izquierda, pair.derecha));
+    }
+
+    return normalize(parts.filter(Boolean).join(" "));
+  }
+
+  function renderBusqueda() {
+    const container = $("#busquedaResultados");
+    const input = $("#busquedaPreguntaInput");
+
+    if (!container || !input) return;
+
+    const term = normalize(input.value);
+
+    if (!term) {
+      container.innerHTML = `<div class="empty-state">Escribe una palabra o frase para buscar en tu banco personal.</div>`;
+      return;
+    }
+
+    const questions = loadLocalQuestions()
+      .map(normalizeQuestionForExam)
+      .filter(q => getQuestionSearchText(q).includes(term));
+
+    if (!questions.length) {
+      container.innerHTML = `<div class="empty-state">No encontramos coincidencias en el banco personal.</div>`;
+      return;
+    }
+
+    container.innerHTML = `
+      <p class="registros-note"><strong>${questions.length}</strong> resultado(s) encontrado(s).</p>
+      ${questions.map(q => `
+        <article class="question-card search-result-card">
+          <div class="question-card-header">
+            <span class="badge">${escapeHtml(q.tema || "Sin tema")}</span>
+            <span class="badge badge-soft">${escapeHtml(questionTypeLabel(q.tipo))}</span>
+            <span class="question-id">${escapeHtml(q.id)}</span>
+          </div>
+          <h3>${highlightSearchTerm(q.pregunta, input.value)}</h3>
+          ${renderSearchMiniPreview(q)}
+          <div class="card-actions">
+            <button type="button" class="primary-btn" data-search-edit="${escapeHtml(q.id)}">Editar pregunta</button>
+            <button type="button" class="danger-btn" data-search-delete="${escapeHtml(q.id)}">Eliminar</button>
+          </div>
+        </article>
+      `).join("")}
+    `;
+
+    $all("[data-search-edit]", container).forEach(btn => {
+      btn.addEventListener("click", () => editQuestion(btn.dataset.searchEdit));
+    });
+
+    $all("[data-search-delete]", container).forEach(btn => {
+      btn.addEventListener("click", () => deleteQuestion(btn.dataset.searchDelete));
+    });
+  }
+
+  function highlightSearchTerm(text, term) {
+    const cleanText = escapeHtml(text || "");
+    const rawTerm = safeText(term);
+
+    if (!rawTerm) return cleanText;
+
+    const escapedTerm = rawTerm.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+    try {
+      return cleanText.replace(new RegExp(`(${escapedTerm})`, "gi"), "<mark>$1</mark>");
+    } catch (error) {
+      return cleanText;
+    }
+  }
+
+  function renderSearchMiniPreview(q) {
+    const details = [];
+
+    if (q.tipo === "abierta") {
+      details.push(`<p><strong>Respuesta esperada:</strong> ${escapeHtml(q.respuesta_esperada || q.respuestaEsperada || "Sin respuesta esperada registrada.")}</p>`);
+      details.push(`<p><strong>Palabras clave:</strong> ${escapeHtml(Array.isArray(q.palabrasClave) ? q.palabrasClave.join(" | ") : q.palabras_clave || q.palabrasClave || "Sin palabras clave registradas.")}</p>`);
+    } else if (q.tipo === "relacionar") {
+      details.push(`<p><strong>Relacionar columnas:</strong> ${(q.pares || q.relaciones || []).length} par(es) capturado(s).</p>`);
+    } else {
+      const correctText = (q.opciones || q.conceptos || [])[Number(q.correcta)] || "";
+      details.push(`<p><strong>Respuesta correcta:</strong> ${escapeHtml(correctText)}</p>`);
+    }
+
+    if (q.fundamento) {
+      details.push(`<p><strong>Fundamento:</strong> ${escapeHtml(q.fundamento)}</p>`);
+    }
+
+    return details.join("");
   }
 
   function getOfficialQuestionsForExport() {
