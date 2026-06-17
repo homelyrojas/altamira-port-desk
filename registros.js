@@ -1,19 +1,17 @@
 /*
-  BOARDING AGENT TOOLS - Registros v0.7
-  localStorage + Exportación/Importación JSON + Tipos de pregunta + Relacionar columnas
+  BOARDING AGENT TOOLS - Registros v0.8
+  localStorage + Exportación/Importación JSON + Tipos de pregunta + Relacionar columnas + Preguntas abiertas
 
   Tipos soportados en esta versión:
   - multiple: Opción múltiple A/B/C/D
   - vf: Verdadero / Falso
   - concepto: Elegir concepto desde lista desplegable
   - relacionar: Relacionar columnas
-
-  Tipos reservados para siguientes versiones:
-  - abierta
+  - abierta: Pregunta abierta con evaluación por palabras clave
 
   Instalación:
   1) Reemplaza tu archivo registros.js actual por este.
-  2) Reemplaza registros.css por la versión v0.7.
+  2) Reemplaza registros.css por la versión v0.8.
   3) Conserva en app.js el botón:
      <button class="pill" onclick="RegistrosPreguntas.open()">Registros</button>
 */
@@ -141,6 +139,22 @@
       };
     }
 
+    if (tipo === "abierta") {
+      const palabrasClave = Array.isArray(question.palabras_clave)
+        ? question.palabras_clave
+        : Array.isArray(question.palabrasClave)
+          ? question.palabrasClave
+          : [];
+
+      return {
+        ...question,
+        tipo,
+        respuesta_esperada: question.respuesta_esperada || question.respuestaEsperada || "",
+        palabras_clave: palabrasClave,
+        minimo_coincidencia: Number(question.minimo_coincidencia || question.minimoCoincidencia || 60)
+      };
+    }
+
     return {
       ...question,
       tipo: "multiple",
@@ -263,7 +277,7 @@
               <option value="vf">Verdadero / Falso</option>
               <option value="concepto">Elegir concepto</option>
               <option value="relacionar">Relacionar columnas</option>
-              <option value="abierta" disabled>Pregunta abierta — próxima versión</option>
+              <option value="abierta">Pregunta abierta</option>
             </select>
           </label>
 
@@ -346,6 +360,31 @@ Sanidad agropecuaria"></textarea>
             </div>
           </div>
 
+          <div id="abiertaFields" class="tipo-fields bat-hidden">
+            <p class="registros-note">
+              La evaluación será local y aproximada: compara palabras clave contra la respuesta del usuario y calcula un porcentaje de coincidencia.
+            </p>
+
+            <label>
+              Respuesta esperada
+              <textarea id="registroRespuestaEsperada" rows="4" placeholder="Escribe la respuesta modelo o respuesta esperada"></textarea>
+            </label>
+
+            <label>
+              Palabras clave
+              <textarea id="registroPalabrasClave" rows="4" placeholder="Escribe una palabra o frase clave por línea. Ejemplo:
+autorización
+Capitanía de Puerto
+zarpar
+embarcación"></textarea>
+            </label>
+
+            <label>
+              Coincidencia mínima para aprobar (%)
+              <input id="registroMinimoCoincidencia" type="number" min="1" max="100" value="60">
+            </label>
+          </div>
+
           <label>
             Explicación
             <textarea id="registroExplicacion" rows="3" placeholder="Explica por qué esa es la respuesta correcta"></textarea>
@@ -379,6 +418,7 @@ Sanidad agropecuaria"></textarea>
               <option value="vf">Verdadero / Falso</option>
               <option value="concepto">Elegir concepto</option>
               <option value="relacionar">Relacionar columnas</option>
+              <option value="abierta">Pregunta abierta</option>
             </select>
           </label>
           <input id="buscarPregunta" type="search" placeholder="Buscar texto dentro de preguntas">
@@ -435,6 +475,7 @@ Sanidad agropecuaria"></textarea>
     $("#vfFields")?.classList.toggle("bat-hidden", tipo !== "vf");
     $("#conceptoFields")?.classList.toggle("bat-hidden", tipo !== "concepto");
     $("#relacionarFields")?.classList.toggle("bat-hidden", tipo !== "relacionar");
+    $("#abiertaFields")?.classList.toggle("bat-hidden", tipo !== "abierta");
   }
 
   function activateTab(tabName) {
@@ -511,6 +552,20 @@ Sanidad agropecuaria"></textarea>
       };
     }
 
+    if (tipo === "abierta") {
+      const palabrasClave = safeText($("#registroPalabrasClave").value)
+        .split("\n")
+        .map(safeText)
+        .filter(Boolean);
+
+      return {
+        ...base,
+        respuesta_esperada: safeText($("#registroRespuestaEsperada").value),
+        palabras_clave: palabrasClave,
+        minimo_coincidencia: Number($("#registroMinimoCoincidencia").value || 60)
+      };
+    }
+
     return {
       ...base,
       opciones: [
@@ -563,6 +618,20 @@ Sanidad agropecuaria"></textarea>
 
       if (question.izquierda.length !== question.derecha.length) {
         return "Ambas columnas deben tener la misma cantidad de líneas.";
+      }
+    }
+
+    if (question.tipo === "abierta") {
+      if (!question.respuesta_esperada) {
+        return "En pregunta abierta debes capturar una respuesta esperada.";
+      }
+
+      if (!Array.isArray(question.palabras_clave) || question.palabras_clave.length < 2) {
+        return "En pregunta abierta debes capturar al menos dos palabras clave.";
+      }
+
+      if (Number(question.minimo_coincidencia) < 1 || Number(question.minimo_coincidencia) > 100) {
+        return "La coincidencia mínima debe estar entre 1 y 100.";
       }
     }
 
@@ -632,6 +701,10 @@ Sanidad agropecuaria"></textarea>
     } else if (normalized.tipo === "relacionar") {
       $("#registroRelacionarIzquierda").value = (normalized.izquierda || []).join("\n");
       $("#registroRelacionarDerecha").value = (normalized.derecha || []).join("\n");
+    } else if (normalized.tipo === "abierta") {
+      $("#registroRespuestaEsperada").value = normalized.respuesta_esperada || "";
+      $("#registroPalabrasClave").value = (normalized.palabras_clave || []).join("\n");
+      $("#registroMinimoCoincidencia").value = String(normalized.minimo_coincidencia || 60);
     } else {
       $("#opcionA").value = normalized.opciones?.[0] || "";
       $("#opcionB").value = normalized.opciones?.[1] || "";
@@ -756,6 +829,14 @@ Sanidad agropecuaria"></textarea>
             </div>
           `).join("")}
         </div>
+      `;
+    }
+
+    if (q.tipo === "abierta") {
+      return `
+        <p><strong>Respuesta esperada:</strong> ${escapeHtml(q.respuesta_esperada || "")}</p>
+        <p><strong>Coincidencia mínima:</strong> ${escapeHtml(q.minimo_coincidencia || 60)}%</p>
+        <p><strong>Palabras clave:</strong> ${(q.palabras_clave || []).map(escapeHtml).join(", ")}</p>
       `;
     }
 
@@ -897,6 +978,20 @@ Sanidad agropecuaria"></textarea>
       };
     }
 
+    if (tipo === "abierta") {
+      const palabrasClave = Array.isArray(q.palabras_clave) ? q.palabras_clave.map(safeText).filter(Boolean) :
+        Array.isArray(q.palabrasClave) ? q.palabrasClave.map(safeText).filter(Boolean) : [];
+
+      if (!safeText(q.respuesta_esperada || q.respuestaEsperada) || palabrasClave.length < 2) return null;
+
+      return {
+        ...base,
+        respuesta_esperada: safeText(q.respuesta_esperada || q.respuestaEsperada),
+        palabras_clave: palabrasClave,
+        minimo_coincidencia: Number(q.minimo_coincidencia || q.minimoCoincidencia || 60)
+      };
+    }
+
     const opciones = Array.isArray(q.opciones) ? q.opciones.slice(0, 4).map(safeText) : [];
     if (opciones.length !== 4 || opciones.some(o => !o)) return null;
 
@@ -965,6 +1060,8 @@ Sanidad agropecuaria"></textarea>
         renderConceptQuestion(q);
       } else if (q.tipo === "relacionar") {
         renderRelacionarQuestion(q);
+      } else if (q.tipo === "abierta") {
+        renderAbiertaQuestion(q);
       } else {
         renderOptionQuestion(q);
       }
@@ -1044,6 +1141,34 @@ Sanidad agropecuaria"></textarea>
       });
     }
 
+    function renderAbiertaQuestion(q) {
+      quiz.innerHTML = `
+        <div class="question-card">
+          <div class="question-card-header">
+            <span class="badge">${escapeHtml(q.tema)}</span>
+            <span class="badge badge-soft">${escapeHtml(questionTypeLabel(q.tipo))}</span>
+            <span>${index + 1} / ${questions.length}</span>
+          </div>
+          <h3>${escapeHtml(q.pregunta)}</h3>
+          <label class="concept-select-label">
+            Escribe tu respuesta
+            <textarea id="respuestaAbiertaLocal" rows="5" placeholder="Redacta tu respuesta con tus propias palabras"></textarea>
+          </label>
+          <button type="button" class="primary-btn" id="validarAbiertaBtn">Validar respuesta</button>
+          <div id="localFeedback"></div>
+        </div>
+      `;
+
+      $("#validarAbiertaBtn").addEventListener("click", () => {
+        const respuesta = safeText($("#respuestaAbiertaLocal").value);
+        if (!respuesta) {
+          alert("Escribe una respuesta antes de validar.");
+          return;
+        }
+        checkAbiertaAnswer(q, respuesta);
+      });
+    }
+
     function renderConceptQuestion(q) {
       const conceptos = q.conceptos || q.opciones || [];
       quiz.innerHTML = `
@@ -1073,6 +1198,50 @@ Sanidad agropecuaria"></textarea>
           return;
         }
         checkAnswer(q, Number(selected));
+      });
+    }
+
+    function evaluateOpenAnswer(q, userText) {
+      const keywords = q.palabras_clave || [];
+      const normalizedAnswer = normalize(userText);
+      const hits = keywords.filter(keyword => normalizedAnswer.includes(normalize(keyword)));
+      const total = keywords.length || 1;
+      const percent = Math.round((hits.length / total) * 100);
+      const minimum = Number(q.minimo_coincidencia || 60);
+
+      return {
+        percent,
+        minimum,
+        hits,
+        missing: keywords.filter(keyword => !hits.includes(keyword)),
+        passed: percent >= minimum
+      };
+    }
+
+    function checkAbiertaAnswer(q, userText) {
+      const result = evaluateOpenAnswer(q, userText);
+      if (result.passed) score++;
+
+      const textarea = $("#respuestaAbiertaLocal");
+      if (textarea) textarea.disabled = true;
+
+      const feedback = $("#localFeedback");
+      feedback.innerHTML = `
+        <div class="feedback-box">
+          <p><strong>${result.passed ? "Probablemente correcto" : "Revisar respuesta"}</strong></p>
+          <p>Coincidencia de palabras clave: <strong>${result.percent}%</strong> / mínimo requerido: <strong>${result.minimum}%</strong>.</p>
+          <p><strong>Palabras encontradas:</strong> ${result.hits.length ? result.hits.map(escapeHtml).join(", ") : "Ninguna"}</p>
+          ${result.missing.length ? `<p><strong>Palabras pendientes:</strong> ${result.missing.map(escapeHtml).join(", ")}</p>` : ""}
+          <p><strong>Respuesta esperada:</strong><br>${escapeHtml(q.respuesta_esperada || "")}</p>
+          ${q.explicacion ? `<p>${escapeHtml(q.explicacion)}</p>` : ""}
+          ${q.fundamento ? `<p><strong>Fundamento:</strong> ${escapeHtml(q.fundamento)}</p>` : ""}
+          <button type="button" class="primary-btn" id="siguienteLocalBtn">Siguiente</button>
+        </div>
+      `;
+
+      $("#siguienteLocalBtn").addEventListener("click", () => {
+        index++;
+        renderQuestion();
       });
     }
 

@@ -1,4 +1,4 @@
-/* BOARDING AGENT TOOLS - Registros v0.7 */
+/* BOARDING AGENT TOOLS - Registros v0.8 */
 
 .bat-hidden {
   display: none !important;
@@ -342,4 +342,16 @@
   .relation-row {
     grid-template-columns: 1fr;
   }
+}
+
+
+/* v0.8 Preguntas abiertas */
+textarea#respuestaAbiertaLocal,
+textarea#registroRespuestaEsperada,
+textarea#registroPalabrasClave {
+  min-height: 110px;
+}
+
+.open-answer-score {
+  font-weight: 900;
 }

@@ -113,6 +113,22 @@ function normalizeQuestion(q){
     };
   }
 
+  if(tipo === "abierta"){
+    const palabrasClave = Array.isArray(q.palabras_clave)
+      ? q.palabras_clave
+      : Array.isArray(q.palabrasClave)
+        ? q.palabrasClave
+        : [];
+
+    return {
+      ...q,
+      tipo: "abierta",
+      respuesta_esperada: q.respuesta_esperada || q.respuestaEsperada || "",
+      palabras_clave: palabrasClave,
+      minimo_coincidencia: Number(q.minimo_coincidencia || q.minimoCoincidencia || 60)
+    };
+  }
+
   return {
     ...q,
     tipo: "multiple",
@@ -232,6 +248,11 @@ function renderQuestion(){
     return;
   }
 
+  if(q.tipo === "abierta"){
+    renderOpenQuestion(q, percent);
+    return;
+  }
+
   renderOptionQuestion(q, percent);
 }
 
@@ -297,6 +318,59 @@ function renderRelationQuestion(q, percent){
       <button class="action" onclick="answerRelationQuestion()">Validar relaciones</button>
     </div>
   `);
+}
+
+function renderOpenQuestion(q, percent){
+  setContent(`
+    ${renderQuestionHeader(q, percent)}
+    <label class="concept-select-label">
+      Escribe tu respuesta
+      <textarea id="openAnswer" class="search-box" rows="6" placeholder="Redacta tu respuesta con tus propias palabras"></textarea>
+    </label>
+    <div class="toolbar">
+      <button class="action" onclick="answerOpenQuestion()">Validar respuesta</button>
+    </div>
+  `);
+}
+
+function evaluateOpenAnswer(q, userText){
+  const keywords = q.palabras_clave || [];
+  const normalizedAnswer = normalizeText(userText);
+  const hits = keywords.filter(keyword => normalizedAnswer.includes(normalizeText(keyword)));
+  const total = keywords.length || 1;
+  const percent = Math.round((hits.length / total) * 100);
+  const minimum = Number(q.minimo_coincidencia || 60);
+
+  return {
+    percent,
+    minimum,
+    hits,
+    missing: keywords.filter(keyword => !hits.includes(keyword)),
+    passed: percent >= minimum
+  };
+}
+
+function answerOpenQuestion(){
+  const q = normalizeQuestion(currentExam[currentIndex]);
+  const textarea = document.getElementById("openAnswer");
+  const userText = textarea ? textarea.value.trim() : "";
+
+  if(!userText){
+    alert("Escribe una respuesta antes de validar.");
+    return;
+  }
+
+  const evaluation = evaluateOpenAnswer(q, userText);
+  const correct = evaluation.passed;
+
+  answers.push({ questionId:q.id, selected:userText, correct, tema:q.tema, tipo:q.tipo, evaluation });
+
+  if(!correct){
+    saveFailedQuestion(q.id, q.tema);
+  }
+
+  const percent = Math.round(((currentIndex + 1) / currentExam.length) * 100);
+  renderOpenFeedback(q, userText, evaluation, percent);
 }
 
 function answerConceptQuestion(){
@@ -427,9 +501,26 @@ function renderRelationFeedback(q, userAnswers, correct, correctCount, total, pe
   renderFeedbackBase(q, correct, percent, relationResult);
 }
 
-function renderFeedbackBase(q, correct, percent, answerHtml){
+function renderOpenFeedback(q, userText, evaluation, percent){
+  const result = `
+    <div class="details">
+      <strong>Tu respuesta:</strong>
+      <p>${escapeHtml(userText)}</p>
+      <strong>Evaluación:</strong>
+      <p>Coincidencia de palabras clave: <strong>${evaluation.percent}%</strong> / mínimo requerido: <strong>${evaluation.minimum}%</strong>.</p>
+      <p><strong>Palabras encontradas:</strong> ${evaluation.hits.length ? evaluation.hits.map(escapeHtml).join(", ") : "Ninguna"}</p>
+      ${evaluation.missing.length ? `<p><strong>Palabras pendientes:</strong> ${evaluation.missing.map(escapeHtml).join(", ")}</p>` : ""}
+      <strong>Respuesta esperada:</strong>
+      <p>${escapeHtml(q.respuesta_esperada || "")}</p>
+    </div>
+  `;
+
+  renderFeedbackBase(q, evaluation.passed, percent, result, evaluation.passed ? "Probablemente correcto" : "Revisar respuesta");
+}
+
+function renderFeedbackBase(q, correct, percent, answerHtml, titleOverride){
   setContent(`
-    <h2>${correct ? "Correcto" : "Incorrecto"}</h2>
+    <h2>${titleOverride || (correct ? "Correcto" : "Incorrecto")}</h2>
     <span class="badge">${escapeHtml(q.tema)}</span>
     <span class="badge">${escapeHtml(getQuestionTypeLabel(q.tipo))}</span>
     <div class="progress-track"><div class="progress-fill" style="width:${percent}%"></div></div>
