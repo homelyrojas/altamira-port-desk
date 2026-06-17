@@ -77,6 +77,7 @@ function renderExamHome(){
       <button class="pill" onclick="startExam(questionsData.length)">Simulador completo</button>
       <button class="pill" onclick="startFailedReview()">Repasar errores</button>
       <button class="pill" onclick="renderProgress()">Mi progreso</button>
+      <button class="pill" onclick="RegistrosPreguntas.open()">Registros</button>
     </div>
     <div class="progress-card">
       <strong>Último examen:</strong> ${last}<br>
