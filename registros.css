@@ -1,4 +1,4 @@
-/* BOARDING AGENT TOOLS - Registros */
+/* BOARDING AGENT TOOLS - Registros v0.6 */
 
 .bat-hidden {
   display: none !important;
@@ -112,7 +112,8 @@
 }
 
 .registro-form label,
-.banco-toolbar label {
+.banco-toolbar label,
+.concept-select-label {
   display: grid;
   gap: 7px;
   font-weight: 800;
@@ -123,6 +124,7 @@
 .registro-form select,
 .banco-toolbar input,
 .banco-toolbar select,
+.concept-select-label select,
 #jsonPreview {
   width: 100%;
   box-sizing: border-box;
@@ -132,6 +134,11 @@
   font: inherit;
   background: #fff;
   color: #111;
+}
+
+.tipo-fields {
+  display: grid;
+  gap: 14px;
 }
 
 .opciones-grid {
@@ -149,7 +156,7 @@
 }
 
 .banco-toolbar {
-  grid-template-columns: 260px minmax(220px, 1fr);
+  grid-template-columns: 220px 220px minmax(220px, 1fr);
   align-items: end;
   margin-bottom: 18px;
 }
@@ -166,10 +173,11 @@
 
 .question-card-header {
   display: flex;
-  justify-content: space-between;
-  gap: 12px;
+  justify-content: flex-start;
+  gap: 8px;
   align-items: center;
   margin-bottom: 10px;
+  flex-wrap: wrap;
 }
 
 .badge {
@@ -183,7 +191,13 @@
   font-size: 0.8rem;
 }
 
+.badge-soft {
+  background: #ececec;
+  color: #111;
+}
+
 .question-id {
+  margin-left: auto;
   color: #8B827A;
   font-weight: 800;
 }
@@ -262,5 +276,9 @@
 
   .registros-header {
     gap: 12px;
+  }
+
+  .question-id {
+    margin-left: 0;
   }
 }

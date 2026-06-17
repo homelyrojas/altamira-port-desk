@@ -1,15 +1,21 @@
 /*
-  BOARDING AGENT TOOLS - Módulo Registros
-  localStorage + Exportación / Importación JSON
-  Creado para integrarse dentro del módulo Examen.
+  BOARDING AGENT TOOLS - Registros v0.6
+  localStorage + Exportación/Importación JSON + Tipos de pregunta
 
-  Instalación rápida:
-  1) Copiar registros.js y registros.css en la carpeta del proyecto.
-  2) En index.html agregar:
-     <link rel="stylesheet" href="registros.css">
-     <script src="registros.js"></script>
-  3) Opcional: agregar un botón con id="btnRegistros".
-     Si no existe, el script intentará crearlo dentro del módulo de examen.
+  Tipos soportados en esta versión:
+  - multiple: Opción múltiple A/B/C/D
+  - vf: Verdadero / Falso
+  - concepto: Elegir concepto desde lista desplegable
+
+  Tipos reservados para siguientes versiones:
+  - relacionar
+  - abierta
+
+  Instalación:
+  1) Reemplaza tu archivo registros.js actual por este.
+  2) Reemplaza registros.css por la versión v0.6.
+  3) Conserva en app.js el botón:
+     <button class="pill" onclick="RegistrosPreguntas.open()">Registros</button>
 */
 
 (function () {
@@ -30,6 +36,22 @@
 
   function safeText(value) {
     return String(value || "").trim();
+  }
+
+  function normalize(text) {
+    return String(text || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+  }
+
+  function escapeHtml(value) {
+    return String(value || "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
   }
 
   function loadLocalQuestions() {
@@ -58,16 +80,57 @@
     return "local-" + String(next).padStart(3, "0");
   }
 
-  function normalize(text) {
-    return String(text || "")
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "");
-  }
-
   function getAllTopics() {
     const topics = new Set(loadLocalQuestions().map(q => q.tema).filter(Boolean));
     return Array.from(topics).sort((a, b) => a.localeCompare(b));
+  }
+
+  function questionTypeLabel(tipo) {
+    const labels = {
+      multiple: "Opción múltiple",
+      vf: "Verdadero / Falso",
+      concepto: "Elegir concepto",
+      relacionar: "Relacionar columnas",
+      abierta: "Pregunta abierta"
+    };
+    return labels[tipo] || "Opción múltiple";
+  }
+
+  function normalizeQuestionForExam(question) {
+    const tipo = question.tipo || "multiple";
+
+    if (tipo === "vf") {
+      return {
+        ...question,
+        tipo,
+        opciones: ["Verdadero", "Falso"],
+        correcta: Number(question.correcta || 0)
+      };
+    }
+
+    if (tipo === "concepto") {
+      const conceptos = Array.isArray(question.conceptos) ? question.conceptos : question.opciones || [];
+      return {
+        ...question,
+        tipo,
+        conceptos,
+        opciones: conceptos,
+        correcta: typeof question.correcta === "number"
+          ? question.correcta
+          : conceptos.findIndex(c => normalize(c) === normalize(question.correcta))
+      };
+    }
+
+    return {
+      ...question,
+      tipo: "multiple",
+      opciones: Array.isArray(question.opciones) ? question.opciones : [],
+      correcta: Number(question.correcta || 0)
+    };
+  }
+
+  function getQuestionsForExam() {
+    return loadLocalQuestions().map(normalizeQuestionForExam);
   }
 
   function hideMainExamViews() {
@@ -110,15 +173,16 @@
   }
 
   function ensureButton() {
-    if ($("#" + BUTTON_ID)) {
-      $("#" + BUTTON_ID).addEventListener("click", showRegistrosView);
+    const existing = $("#" + BUTTON_ID);
+    if (existing) {
+      existing.addEventListener("click", showRegistrosView);
       return;
     }
 
     const button = document.createElement("button");
     button.id = BUTTON_ID;
     button.type = "button";
-    button.className = "exam-btn";
+    button.className = "pill";
     button.textContent = "Registros";
     button.addEventListener("click", showRegistrosView);
 
@@ -128,6 +192,7 @@
       ".exam-buttons",
       ".exam-actions",
       ".quiz-actions",
+      ".toolbar",
       "#examen",
       "#exam"
     ];
@@ -139,8 +204,6 @@
         return;
       }
     }
-
-    document.body.insertBefore(button, document.body.firstChild);
   }
 
   function ensureView() {
@@ -174,6 +237,17 @@
           <input type="hidden" id="registroEditId">
 
           <label>
+            Tipo de pregunta
+            <select id="registroTipo" required>
+              <option value="multiple">Opción múltiple</option>
+              <option value="vf">Verdadero / Falso</option>
+              <option value="concepto">Elegir concepto</option>
+              <option value="relacionar" disabled>Relacionar columnas — próxima versión</option>
+              <option value="abierta" disabled>Pregunta abierta — próxima versión</option>
+            </select>
+          </label>
+
+          <label>
             Tema
             <input id="registroTema" type="text" placeholder="Ej. Capitanía, Aduana, INM, Operación Portuaria" required>
           </label>
@@ -183,22 +257,50 @@
             <textarea id="registroPregunta" rows="3" placeholder="Escribe la pregunta completa" required></textarea>
           </label>
 
-          <div class="opciones-grid">
-            <label>Opción A <input id="opcionA" type="text" required></label>
-            <label>Opción B <input id="opcionB" type="text" required></label>
-            <label>Opción C <input id="opcionC" type="text" required></label>
-            <label>Opción D <input id="opcionD" type="text" required></label>
+          <div id="multipleFields" class="tipo-fields">
+            <div class="opciones-grid">
+              <label>Opción A <input id="opcionA" type="text"></label>
+              <label>Opción B <input id="opcionB" type="text"></label>
+              <label>Opción C <input id="opcionC" type="text"></label>
+              <label>Opción D <input id="opcionD" type="text"></label>
+            </div>
+
+            <label>
+              Respuesta correcta
+              <select id="registroCorrectaMultiple">
+                <option value="0">A</option>
+                <option value="1">B</option>
+                <option value="2">C</option>
+                <option value="3">D</option>
+              </select>
+            </label>
           </div>
 
-          <label>
-            Respuesta correcta
-            <select id="registroCorrecta" required>
-              <option value="0">A</option>
-              <option value="1">B</option>
-              <option value="2">C</option>
-              <option value="3">D</option>
-            </select>
-          </label>
+          <div id="vfFields" class="tipo-fields bat-hidden">
+            <label>
+              Respuesta correcta
+              <select id="registroCorrectaVF">
+                <option value="0">Verdadero</option>
+                <option value="1">Falso</option>
+              </select>
+            </label>
+          </div>
+
+          <div id="conceptoFields" class="tipo-fields bat-hidden">
+            <label>
+              Conceptos disponibles
+              <textarea id="registroConceptos" rows="4" placeholder="Escribe un concepto por línea. Ejemplo:
+Despacho
+Patente
+Rol de tripulación
+Bill of Lading"></textarea>
+            </label>
+
+            <label>
+              Concepto correcto
+              <input id="registroConceptoCorrecto" type="text" placeholder="Debe coincidir con uno de los conceptos capturados">
+            </label>
+          </div>
 
           <label>
             Explicación
@@ -225,6 +327,15 @@
               <option value="">Todos los temas</option>
             </select>
           </label>
+          <label>
+            Tipo
+            <select id="filtroTipo">
+              <option value="">Todos los tipos</option>
+              <option value="multiple">Opción múltiple</option>
+              <option value="vf">Verdadero / Falso</option>
+              <option value="concepto">Elegir concepto</option>
+            </select>
+          </label>
           <input id="buscarPregunta" type="search" placeholder="Buscar texto dentro de preguntas">
         </div>
         <div id="bancoPersonal"></div>
@@ -249,16 +360,18 @@
       </div>
     `;
 
-    const target = $("#examen") || $("#exam") || $("main") || document.body;
+    const target = $("#content") || $("#examen") || $("#exam") || $("main") || document.body;
     target.appendChild(view);
 
     $("#cerrarRegistrosBtn", view).addEventListener("click", closeRegistrosView);
     $("#registroPreguntaForm", view).addEventListener("submit", handleSubmit);
     $("#limpiarFormularioBtn", view).addEventListener("click", clearForm);
+    $("#registroTipo", view).addEventListener("change", updateTipoFields);
     $("#filtroTema", view).addEventListener("change", e => {
       currentFilter = e.target.value;
       renderBanco();
     });
+    $("#filtroTipo", view).addEventListener("change", renderBanco);
     $("#buscarPregunta", view).addEventListener("input", renderBanco);
     $("#exportarJsonBtn", view).addEventListener("click", exportJson);
     $("#importarJsonInput", view).addEventListener("change", importJson);
@@ -266,6 +379,16 @@
     $all(".tab-btn", view).forEach(btn => {
       btn.addEventListener("click", () => activateTab(btn.dataset.tab));
     });
+
+    updateTipoFields();
+  }
+
+  function updateTipoFields() {
+    const tipo = $("#registroTipo")?.value || "multiple";
+
+    $("#multipleFields")?.classList.toggle("bat-hidden", tipo !== "multiple");
+    $("#vfFields")?.classList.toggle("bat-hidden", tipo !== "vf");
+    $("#conceptoFields")?.classList.toggle("bat-hidden", tipo !== "concepto");
   }
 
   function activateTab(tabName) {
@@ -278,28 +401,98 @@
     if (tabName === "repaso") renderRepaso();
   }
 
-  function handleSubmit(event) {
-    event.preventDefault();
+  function buildQuestionFromForm() {
+    const tipo = $("#registroTipo").value || "multiple";
 
-    const question = {
+    const base = {
       id: editingId || nextLocalId(),
       origen: "localStorage",
+      tipo,
       tema: safeText($("#registroTema").value),
       pregunta: safeText($("#registroPregunta").value),
+      explicacion: safeText($("#registroExplicacion").value),
+      fundamento: safeText($("#registroFundamento").value),
+      creado_en: new Date().toISOString()
+    };
+
+    if (tipo === "vf") {
+      return {
+        ...base,
+        opciones: ["Verdadero", "Falso"],
+        correcta: Number($("#registroCorrectaVF").value)
+      };
+    }
+
+    if (tipo === "concepto") {
+      const conceptos = safeText($("#registroConceptos").value)
+        .split("\n")
+        .map(safeText)
+        .filter(Boolean);
+
+      const correctaTexto = safeText($("#registroConceptoCorrecto").value);
+      const correctaIndex = conceptos.findIndex(c => normalize(c) === normalize(correctaTexto));
+
+      return {
+        ...base,
+        conceptos,
+        opciones: conceptos,
+        correcta: correctaIndex >= 0 ? correctaIndex : 0,
+        correcta_texto: correctaTexto
+      };
+    }
+
+    return {
+      ...base,
       opciones: [
         safeText($("#opcionA").value),
         safeText($("#opcionB").value),
         safeText($("#opcionC").value),
         safeText($("#opcionD").value)
       ],
-      correcta: Number($("#registroCorrecta").value),
-      explicacion: safeText($("#registroExplicacion").value),
-      fundamento: safeText($("#registroFundamento").value),
-      creado_en: new Date().toISOString()
+      correcta: Number($("#registroCorrectaMultiple").value)
     };
+  }
 
-    if (!question.tema || !question.pregunta || question.opciones.some(o => !o)) {
-      alert("Faltan datos obligatorios. Revisa tema, pregunta y las cuatro opciones.");
+  function validateQuestion(question) {
+    if (!question.tema || !question.pregunta) {
+      return "Faltan datos obligatorios: tema y pregunta.";
+    }
+
+    if (question.tipo === "multiple") {
+      if (!Array.isArray(question.opciones) || question.opciones.length !== 4 || question.opciones.some(o => !o)) {
+        return "En opción múltiple debes capturar las cuatro opciones.";
+      }
+    }
+
+    if (question.tipo === "vf") {
+      if (![0, 1].includes(Number(question.correcta))) {
+        return "Selecciona Verdadero o Falso como respuesta correcta.";
+      }
+    }
+
+    if (question.tipo === "concepto") {
+      if (!Array.isArray(question.conceptos) || question.conceptos.length < 2) {
+        return "En elegir concepto debes capturar al menos dos conceptos.";
+      }
+
+      const correctaTexto = safeText(question.correcta_texto);
+      const existe = question.conceptos.some(c => normalize(c) === normalize(correctaTexto));
+      if (!correctaTexto || !existe) {
+        return "El concepto correcto debe coincidir con uno de los conceptos disponibles.";
+      }
+    }
+
+    return "";
+  }
+
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    const question = buildQuestionFromForm();
+    const error = validateQuestion(question);
+
+    if (error) {
+      alert(error);
       return;
     }
 
@@ -324,26 +517,43 @@
     editingId = null;
     const form = $("#registroPreguntaForm");
     if (form) form.reset();
+
     const saveBtn = $("#guardarPreguntaBtn");
     if (saveBtn) saveBtn.textContent = "Guardar pregunta";
+
+    updateTipoFields();
   }
 
   function editQuestion(id) {
     const question = loadLocalQuestions().find(q => q.id === id);
     if (!question) return;
 
-    editingId = id;
-    $("#registroTema").value = question.tema || "";
-    $("#registroPregunta").value = question.pregunta || "";
-    $("#opcionA").value = question.opciones?.[0] || "";
-    $("#opcionB").value = question.opciones?.[1] || "";
-    $("#opcionC").value = question.opciones?.[2] || "";
-    $("#opcionD").value = question.opciones?.[3] || "";
-    $("#registroCorrecta").value = String(question.correcta ?? 0);
-    $("#registroExplicacion").value = question.explicacion || "";
-    $("#registroFundamento").value = question.fundamento || "";
-    $("#guardarPreguntaBtn").textContent = "Actualizar pregunta";
+    const normalized = normalizeQuestionForExam(question);
 
+    editingId = id;
+    $("#registroTipo").value = normalized.tipo || "multiple";
+    $("#registroTema").value = normalized.tema || "";
+    $("#registroPregunta").value = normalized.pregunta || "";
+    $("#registroExplicacion").value = normalized.explicacion || "";
+    $("#registroFundamento").value = normalized.fundamento || "";
+
+    updateTipoFields();
+
+    if (normalized.tipo === "vf") {
+      $("#registroCorrectaVF").value = String(normalized.correcta ?? 0);
+    } else if (normalized.tipo === "concepto") {
+      const conceptos = normalized.conceptos || normalized.opciones || [];
+      $("#registroConceptos").value = conceptos.join("\n");
+      $("#registroConceptoCorrecto").value = conceptos[normalized.correcta] || normalized.correcta_texto || "";
+    } else {
+      $("#opcionA").value = normalized.opciones?.[0] || "";
+      $("#opcionB").value = normalized.opciones?.[1] || "";
+      $("#opcionC").value = normalized.opciones?.[2] || "";
+      $("#opcionD").value = normalized.opciones?.[3] || "";
+      $("#registroCorrectaMultiple").value = String(normalized.correcta ?? 0);
+    }
+
+    $("#guardarPreguntaBtn").textContent = "Actualizar pregunta";
     activateTab("registrar");
   }
 
@@ -383,17 +593,24 @@
     if (!container) return;
 
     const search = normalize($("#buscarPregunta")?.value || "");
-    let questions = loadLocalQuestions();
+    const tipoFilter = $("#filtroTipo")?.value || "";
+
+    let questions = loadLocalQuestions().map(normalizeQuestionForExam);
 
     if (currentFilter) {
       questions = questions.filter(q => q.tema === currentFilter);
+    }
+
+    if (tipoFilter) {
+      questions = questions.filter(q => q.tipo === tipoFilter);
     }
 
     if (search) {
       questions = questions.filter(q =>
         normalize(q.pregunta).includes(search) ||
         normalize(q.tema).includes(search) ||
-        normalize(q.fundamento).includes(search)
+        normalize(q.fundamento).includes(search) ||
+        normalize(questionTypeLabel(q.tipo)).includes(search)
       );
     }
 
@@ -406,16 +623,11 @@
       <article class="question-card">
         <div class="question-card-header">
           <span class="badge">${escapeHtml(q.tema || "Sin tema")}</span>
+          <span class="badge badge-soft">${escapeHtml(questionTypeLabel(q.tipo))}</span>
           <span class="question-id">${escapeHtml(q.id)}</span>
         </div>
         <h3>${escapeHtml(q.pregunta)}</h3>
-        <ol type="A">
-          ${(q.opciones || []).map((op, index) => `
-            <li class="${Number(q.correcta) === index ? "correct-answer" : ""}">
-              ${escapeHtml(op)}
-            </li>
-          `).join("")}
-        </ol>
+        ${renderQuestionPreview(q)}
         ${q.explicacion ? `<p><strong>Explicación:</strong> ${escapeHtml(q.explicacion)}</p>` : ""}
         ${q.fundamento ? `<p><strong>Fundamento:</strong> ${escapeHtml(q.fundamento)}</p>` : ""}
         <div class="card-actions">
@@ -427,6 +639,32 @@
 
     $all("[data-edit]", container).forEach(btn => btn.addEventListener("click", () => editQuestion(btn.dataset.edit)));
     $all("[data-delete]", container).forEach(btn => btn.addEventListener("click", () => deleteQuestion(btn.dataset.delete)));
+  }
+
+  function renderQuestionPreview(q) {
+    if (q.tipo === "concepto") {
+      const conceptos = q.conceptos || q.opciones || [];
+      return `
+        <p><strong>Concepto correcto:</strong> ${escapeHtml(conceptos[q.correcta] || q.correcta_texto || "")}</p>
+        <ol>
+          ${conceptos.map((c, index) => `
+            <li class="${Number(q.correcta) === index ? "correct-answer" : ""}">
+              ${escapeHtml(c)}
+            </li>
+          `).join("")}
+        </ol>
+      `;
+    }
+
+    return `
+      <ol type="A">
+        ${(q.opciones || []).map((op, index) => `
+          <li class="${Number(q.correcta) === index ? "correct-answer" : ""}">
+            ${escapeHtml(op)}
+          </li>
+        `).join("")}
+      </ol>
+    `;
   }
 
   function renderJsonPreview() {
@@ -465,18 +703,9 @@
           return;
         }
 
-        const cleaned = imported.map((q, index) => ({
-          id: q.id ? String(q.id) : "import-" + String(index + 1).padStart(3, "0"),
-          origen: q.origen || "importado",
-          tema: safeText(q.tema),
-          pregunta: safeText(q.pregunta),
-          opciones: Array.isArray(q.opciones) ? q.opciones.slice(0, 4).map(safeText) : [],
-          correcta: Number(q.correcta ?? 0),
-          explicacion: safeText(q.explicacion),
-          fundamento: safeText(q.fundamento),
-          creado_en: q.creado_en || new Date().toISOString(),
-          actualizado_en: new Date().toISOString()
-        })).filter(q => q.tema && q.pregunta && q.opciones.length === 4);
+        const cleaned = imported
+          .map(cleanImportedQuestion)
+          .filter(Boolean);
 
         const existing = loadLocalQuestions();
         const byId = new Map(existing.map(q => [q.id, q]));
@@ -504,6 +733,57 @@
     reader.readAsText(file, "utf-8");
   }
 
+  function cleanImportedQuestion(q, index) {
+    const tipo = q.tipo || "multiple";
+
+    const base = {
+      id: q.id ? String(q.id) : "import-" + String(index + 1).padStart(3, "0"),
+      origen: q.origen || "importado",
+      tipo,
+      tema: safeText(q.tema),
+      pregunta: safeText(q.pregunta),
+      explicacion: safeText(q.explicacion),
+      fundamento: safeText(q.fundamento),
+      creado_en: q.creado_en || new Date().toISOString(),
+      actualizado_en: new Date().toISOString()
+    };
+
+    if (!base.tema || !base.pregunta) return null;
+
+    if (tipo === "vf") {
+      return {
+        ...base,
+        opciones: ["Verdadero", "Falso"],
+        correcta: Number(q.correcta ?? 0)
+      };
+    }
+
+    if (tipo === "concepto") {
+      const conceptos = Array.isArray(q.conceptos) ? q.conceptos.map(safeText).filter(Boolean) :
+        Array.isArray(q.opciones) ? q.opciones.map(safeText).filter(Boolean) : [];
+
+      if (conceptos.length < 2) return null;
+
+      return {
+        ...base,
+        conceptos,
+        opciones: conceptos,
+        correcta: Number(q.correcta ?? 0),
+        correcta_texto: safeText(q.correcta_texto || conceptos[Number(q.correcta ?? 0)])
+      };
+    }
+
+    const opciones = Array.isArray(q.opciones) ? q.opciones.slice(0, 4).map(safeText) : [];
+    if (opciones.length !== 4 || opciones.some(o => !o)) return null;
+
+    return {
+      ...base,
+      tipo: "multiple",
+      opciones,
+      correcta: Number(q.correcta ?? 0)
+    };
+  }
+
   function nextImportId(map) {
     let counter = 1;
     let id = "";
@@ -518,7 +798,7 @@
     const container = $("#repasoNuevas");
     if (!container) return;
 
-    const questions = loadLocalQuestions();
+    const questions = getQuestionsForExam();
     if (!questions.length) {
       container.innerHTML = `<div class="empty-state">Aún no hay preguntas nuevas para repasar.</div>`;
       return;
@@ -537,7 +817,7 @@
   }
 
   function startLocalQuiz() {
-    const questions = shuffle(loadLocalQuestions());
+    const questions = shuffle(getQuestionsForExam());
     let index = 0;
     let score = 0;
 
@@ -557,17 +837,26 @@
         return;
       }
 
+      if (q.tipo === "concepto") {
+        renderConceptQuestion(q);
+      } else {
+        renderOptionQuestion(q);
+      }
+    }
+
+    function renderOptionQuestion(q) {
       quiz.innerHTML = `
         <div class="question-card">
           <div class="question-card-header">
             <span class="badge">${escapeHtml(q.tema)}</span>
+            <span class="badge badge-soft">${escapeHtml(questionTypeLabel(q.tipo))}</span>
             <span>${index + 1} / ${questions.length}</span>
           </div>
           <h3>${escapeHtml(q.pregunta)}</h3>
           <div class="local-options">
             ${q.opciones.map((op, i) => `
               <button type="button" class="option-btn" data-answer="${i}">
-                ${String.fromCharCode(65 + i)}) ${escapeHtml(op)}
+                ${q.tipo === "vf" ? "" : String.fromCharCode(65 + i) + ") "}${escapeHtml(op)}
               </button>
             `).join("")}
           </div>
@@ -578,32 +867,72 @@
       $all("[data-answer]", quiz).forEach(btn => {
         btn.addEventListener("click", () => {
           const selected = Number(btn.dataset.answer);
-          const correct = Number(q.correcta);
-
-          $all("[data-answer]", quiz).forEach(b => b.disabled = true);
-          if (selected === correct) {
-            score++;
-            btn.classList.add("ok");
-          } else {
-            btn.classList.add("bad");
-            const right = $(`[data-answer="${correct}"]`, quiz);
-            if (right) right.classList.add("ok");
-          }
-
-          $("#localFeedback").innerHTML = `
-            <div class="feedback-box">
-              <p><strong>${selected === correct ? "Correcto" : "Incorrecto"}</strong></p>
-              ${q.explicacion ? `<p>${escapeHtml(q.explicacion)}</p>` : ""}
-              ${q.fundamento ? `<p><strong>Fundamento:</strong> ${escapeHtml(q.fundamento)}</p>` : ""}
-              <button type="button" class="primary-btn" id="siguienteLocalBtn">Siguiente</button>
-            </div>
-          `;
-
-          $("#siguienteLocalBtn").addEventListener("click", () => {
-            index++;
-            renderQuestion();
-          });
+          checkAnswer(q, selected);
         });
+      });
+    }
+
+    function renderConceptQuestion(q) {
+      const conceptos = q.conceptos || q.opciones || [];
+      quiz.innerHTML = `
+        <div class="question-card">
+          <div class="question-card-header">
+            <span class="badge">${escapeHtml(q.tema)}</span>
+            <span class="badge badge-soft">${escapeHtml(questionTypeLabel(q.tipo))}</span>
+            <span>${index + 1} / ${questions.length}</span>
+          </div>
+          <h3>${escapeHtml(q.pregunta)}</h3>
+          <label class="concept-select-label">
+            Selecciona el concepto correcto
+            <select id="conceptAnswer">
+              <option value="">Selecciona...</option>
+              ${conceptos.map((concepto, i) => `<option value="${i}">${escapeHtml(concepto)}</option>`).join("")}
+            </select>
+          </label>
+          <button type="button" class="primary-btn" id="validarConceptoBtn">Validar</button>
+          <div id="localFeedback"></div>
+        </div>
+      `;
+
+      $("#validarConceptoBtn").addEventListener("click", () => {
+        const selected = $("#conceptAnswer").value;
+        if (selected === "") {
+          alert("Selecciona un concepto.");
+          return;
+        }
+        checkAnswer(q, Number(selected));
+      });
+    }
+
+    function checkAnswer(q, selected) {
+      const correct = Number(q.correcta);
+      const isCorrect = selected === correct;
+
+      if (isCorrect) score++;
+
+      $all("[data-answer]", quiz).forEach(b => {
+        b.disabled = true;
+        if (Number(b.dataset.answer) === correct) b.classList.add("ok");
+        if (Number(b.dataset.answer) === selected && !isCorrect) b.classList.add("bad");
+      });
+
+      const select = $("#conceptAnswer");
+      if (select) select.disabled = true;
+
+      const feedback = $("#localFeedback");
+      feedback.innerHTML = `
+        <div class="feedback-box">
+          <p><strong>${isCorrect ? "Correcto" : "Incorrecto"}</strong></p>
+          ${!isCorrect ? `<p><strong>Respuesta correcta:</strong> ${escapeHtml((q.opciones || q.conceptos || [])[correct] || "")}</p>` : ""}
+          ${q.explicacion ? `<p>${escapeHtml(q.explicacion)}</p>` : ""}
+          ${q.fundamento ? `<p><strong>Fundamento:</strong> ${escapeHtml(q.fundamento)}</p>` : ""}
+          <button type="button" class="primary-btn" id="siguienteLocalBtn">Siguiente</button>
+        </div>
+      `;
+
+      $("#siguienteLocalBtn").addEventListener("click", () => {
+        index++;
+        renderQuestion();
       });
     }
 
@@ -614,17 +943,10 @@
     return [...array].sort(() => Math.random() - 0.5);
   }
 
-  function escapeHtml(value) {
-    return String(value || "")
-      .replaceAll("&", "&amp;")
-      .replaceAll("<", "&lt;")
-      .replaceAll(">", "&gt;")
-      .replaceAll('"', "&quot;")
-      .replaceAll("'", "&#039;");
-  }
-
   window.RegistrosPreguntas = {
     getQuestions: loadLocalQuestions,
+    getQuestionsForExam,
+    normalizeQuestionForExam,
     saveQuestions: saveLocalQuestions,
     open: showRegistrosView,
     close: closeRegistrosView,
