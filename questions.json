@@ -782,5 +782,75 @@
     "correcta": 1,
     "explicacion": "El Agente Naviero Protector supervisa y protege los intereses de su representado durante la estancia del buque en puerto y puede coordinarse con el agente consignatario.",
     "fundamento": "Ley de Navegación y Comercio Marítimos, Artículo 22, fracción III."
+  },
+  {
+    "id": 57,
+    "tipo": "multiple",
+    "tema": "Comercio Exterior",
+    "pregunta": "Antes de salir una embarcación, su capitán o agente naviero consignatario de buques deberá presentar a las autoridades aduaneras una relación del ______ a que se refiere el artículo 31 de esta Ley, la cual, en caso de contener errores, podrá corregirse antes de zarpar.",
+    "explicacion": "Antes del zarpe, el capitán o el agente naviero consignatario debe presentar a la autoridad aduanera una relación del equipo especial utilizado para facilitar las maniobras de carga y descarga de la embarcación.",
+    "fundamento": "Ley Aduanera, artículo 20, último párrafo. Establece que antes de salir una embarcación, su capitán o agente naviero consignatario general o de buques deberá presentar a las autoridades aduaneras una relación del equipo especial a que se refiere el artículo 31 de la Ley. El artículo 31 señala que dicho equipo especial es el utilizado para facilitar las maniobras de carga y descarga y puede permanecer temporalmente en puerto bajo las condiciones previstas por la Ley.",
+    "opciones": [
+      "Equipo relevante",
+      "Material importante",
+      "Equipo especial"
+    ],
+    "correcta": 2
+  },
+  {
+    "id": 58,
+    "tipo": "multiple",
+    "tema": "Arribo y Despacho",
+    "pregunta": "Las solicitudes de despacho de embarcaciones deberán presentarse ante la Capitanía de Puerto con cuando menos ______ de anticipación al cierre del horario ordinario de labores de la misma, cuando el usuario pretenda que la autorización se le entregue el mismo día.",
+    "explicacion": "Cuando se requiere que la Capitanía de Puerto expida la autorización de despacho el mismo día, la solicitud debe presentarse con al menos dos horas de anticipación al cierre del horario ordinario de labores. Esto permite a la autoridad revisar la documentación y emitir el despacho correspondiente.",
+    "fundamento": "Reglamento de la Ley de Navegación y Comercio Marítimos, artículo 461. Establece expresamente que las solicitudes de despacho de embarcaciones deberán presentarse ante la Capitanía de Puerto con cuando menos dos horas de anticipación al cierre del horario ordinario de labores, cuando el usuario pretenda que la autorización de salida le sea entregada ese mismo día.",
+    "opciones": [
+      "Una hora",
+      "Dos horas",
+      "Tres horas"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": 59,
+    "tipo": "multiple",
+    "tema": "Documentación Marítima",
+    "pregunta": "______ de un contrato no puede exceder ni en valor ni en cuantía a la obligación principal.",
+    "explicacion": "La cláusula penal es una disposición contractual mediante la cual las partes fijan anticipadamente una pena o indemnización para el caso de incumplimiento. Su monto no puede ser superior al valor de la obligación principal que garantiza.",
+    "fundamento": "Código Civil Federal, artículo 1843. Establece que la cláusula penal no puede exceder ni en valor ni en cuantía a la obligación principal. Su finalidad es garantizar el cumplimiento de una obligación, pero sin que la sanción pactada resulte superior a la obligación que asegura.",
+    "opciones": [
+      "El objeto",
+      "La clausula penal",
+      "El consentimiento"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": 60,
+    "tipo": "multiple",
+    "tema": "Arribo y Despacho",
+    "pregunta": "En el caso de que alguna persona extranjera haya fallecido a bordo de una embarcación que arribe al territorio nacional procedente del extranjero y se requiera desembarcar el cadáver, el capitán o el agente naviero consignatario deberá informar a la ______ el nombre completo, fecha de nacimiento, nacionalidad y lugar de residencia de la persona extranjera fallecida, con el fin de notificar el hecho al representante consular que corresponda y, en su caso, al Agente del Ministerio Público competente, si existen elementos para determinar la posibilidad de un hecho delictivo.",
+    "explicacion": "Cuando una persona extranjera fallece a bordo de una embarcación que arriba a México, el capitán o el agente naviero consignatario debe informar a la autoridad migratoria para que ésta realice las notificaciones consulares correspondientes y, cuando proceda, dé vista al Ministerio Público.",
+    "fundamento": "Ley de Migración, artículo 43. Establece que cuando una persona extranjera fallezca a bordo de una embarcación que arribe al territorio nacional y sea necesario desembarcar el cadáver, el capitán o el agente naviero consignatario deberá informar a la autoridad migratoria el nombre, fecha de nacimiento, nacionalidad y lugar de residencia del fallecido, a fin de que se notifique al representante consular correspondiente y, en su caso, al Ministerio Público cuando existan indicios de un posible hecho delictivo.",
+    "opciones": [
+      "Autoridad Marítima",
+      "Autoridad Portuaria",
+      "Autoridad Migratoria"
+    ],
+    "correcta": 2
+  },
+  {
+    "id": 61,
+    "tipo": "multiple",
+    "tema": "Agente Naviero",
+    "pregunta": "Se impondrá una multa de diez mil a cincuenta mil veces el valor de la Unidad de Medida y Actualización cuando:",
+    "explicacion": "La Ley considera una infracción grave que una persona física o moral desempeñe funciones de agente naviero u operador sin contar con la autorización o inscripción correspondiente en el Registro Público Marítimo Nacional, por lo que establece una sanción económica elevada.",
+    "fundamento": "Ley de Navegación y Comercio Marítimos, artículo 328, fracción II. Establece que la Secretaría impondrá una multa de diez mil a cincuenta mil veces el valor de la Unidad de Medida y Actualización a las personas físicas o morales que actúen como agente naviero u operador sin estar autorizados o inscritos en el Registro Público Marítimo Nacional. Las opciones b) y c) no corresponden al supuesto específico sancionado con dicha multa en ese artículo.",
+    "opciones": [
+      "Las personas físicas o morales actúen como agente naviero y uperador, sin estar autorizados o inscritos en el Registro Público Marítimo Nacional y a los agentes navieros, por infringir las disposiciones de esta Ley.",
+      "A los agentes navieros por presentar de forma extemporánea los avisos de arribo y despacho de las embarcaciones consignadas.",
+      "A las empresas navieras por no designar agente naviero general en el puerto de llegada de sus embarcaciones."
+    ],
+    "correcta": 0
   }
 ]
