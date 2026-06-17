@@ -1,0 +1,266 @@
+/* BOARDING AGENT TOOLS - Registros */
+
+.bat-hidden {
+  display: none !important;
+}
+
+.registros-view {
+  max-width: 1100px;
+  margin: 24px auto;
+  padding: 24px;
+  border-radius: 24px;
+  background: #ffffff;
+  color: #111111;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.12);
+}
+
+.registros-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 18px;
+}
+
+.registros-kicker {
+  margin: 0;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #8B827A;
+  font-weight: 700;
+}
+
+.registros-header h2 {
+  margin: 4px 0;
+  font-size: clamp(1.7rem, 4vw, 2.4rem);
+}
+
+.registros-subtitle,
+.registros-note {
+  margin: 0;
+  color: #555;
+  line-height: 1.5;
+}
+
+.registros-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+.tab-btn,
+.primary-btn,
+.secondary-btn,
+.danger-btn,
+.exam-btn,
+.file-btn {
+  border: 0;
+  border-radius: 999px;
+  padding: 11px 16px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.tab-btn:hover,
+.primary-btn:hover,
+.secondary-btn:hover,
+.danger-btn:hover,
+.exam-btn:hover,
+.file-btn:hover,
+.option-btn:hover {
+  transform: translateY(-1px);
+}
+
+.tab-btn {
+  background: #f1f1f1;
+  color: #111;
+}
+
+.tab-btn.active,
+.primary-btn,
+.exam-btn {
+  background: #EED484;
+  color: #000;
+}
+
+.secondary-btn {
+  background: #111;
+  color: #fff;
+}
+
+.danger-btn {
+  background: #7a1f1f;
+  color: #fff;
+}
+
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: block;
+}
+
+.registro-form,
+.banco-toolbar,
+.json-actions {
+  display: grid;
+  gap: 14px;
+}
+
+.registro-form label,
+.banco-toolbar label {
+  display: grid;
+  gap: 7px;
+  font-weight: 800;
+}
+
+.registro-form input,
+.registro-form textarea,
+.registro-form select,
+.banco-toolbar input,
+.banco-toolbar select,
+#jsonPreview {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #d9d9d9;
+  border-radius: 14px;
+  padding: 12px 14px;
+  font: inherit;
+  background: #fff;
+  color: #111;
+}
+
+.opciones-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.form-actions,
+.card-actions,
+.json-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.banco-toolbar {
+  grid-template-columns: 260px minmax(220px, 1fr);
+  align-items: end;
+  margin-bottom: 18px;
+}
+
+.question-card,
+.repaso-card,
+.empty-state {
+  border: 1px solid #e5e5e5;
+  border-radius: 20px;
+  padding: 18px;
+  margin-bottom: 14px;
+  background: #fafafa;
+}
+
+.question-card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 5px 10px;
+  background: #EED484;
+  color: #000;
+  font-weight: 900;
+  font-size: 0.8rem;
+}
+
+.question-id {
+  color: #8B827A;
+  font-weight: 800;
+}
+
+.question-card h3 {
+  margin: 8px 0 12px;
+  line-height: 1.35;
+}
+
+.question-card ol {
+  padding-left: 22px;
+}
+
+.correct-answer {
+  font-weight: 900;
+  color: #0a6b2b;
+}
+
+.file-btn {
+  display: inline-flex;
+  align-items: center;
+  background: #111;
+  color: #fff;
+}
+
+.file-btn input {
+  display: none;
+}
+
+.local-options {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.option-btn {
+  text-align: left;
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 16px;
+  padding: 13px 14px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.option-btn.ok {
+  border-color: #0a6b2b;
+  background: #e8f6ec;
+}
+
+.option-btn.bad {
+  border-color: #7a1f1f;
+  background: #faeaea;
+}
+
+.feedback-box {
+  margin-top: 14px;
+  border-radius: 16px;
+  padding: 14px;
+  background: #f1f1f1;
+}
+
+@media (max-width: 720px) {
+  .registros-view {
+    margin: 14px;
+    padding: 18px;
+    border-radius: 18px;
+  }
+
+  .registros-header,
+  .banco-toolbar,
+  .opciones-grid {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+
+  .registros-header {
+    gap: 12px;
+  }
+}
