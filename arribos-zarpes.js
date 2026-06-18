@@ -181,17 +181,23 @@ function searchRecords() {
 }
 
 function buildReport(record) {
-  const title = `Adjunto información de Arribo / Salida del buque ${record.buque}${record.viaje ? ' ' + record.viaje : ''}`;
+  const title = `Información de Arribo / Salida del buque ${record.buque}${record.viaje ? ' ' + record.viaje : ''}`;
   const lines = [title, ''];
 
   for (const field of REPORT_FIELDS) {
     const value = readCell(record, field.header, field.occurrence);
-    let line = `${value} ${field.label}`.trimStart();
+
+    let line = value
+      ? `${value} ${field.label}`
+      : `PENDIENTE ......... ${field.label}`;
+
     if (field.tramo && record.tramo) {
       line += ` [${record.tramo}]`;
     }
+
     lines.push(line);
   }
+
   return lines.join('\n');
 }
 
