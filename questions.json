@@ -3730,5 +3730,178 @@
       "V, III"
     ],
     "correcta": 1
+  },
+  {
+    "id": 187,
+    "tipo": "vf",
+    "tema": "Agente Naviero",
+    "pregunta": "Las embarcaciones menores de recreo y deportiva no están obligadas a contratar los servicios de un agente naviero consignatario.",
+    "explicacion": "Las embarcaciones menores destinadas al recreo o deporte cuentan con un régimen simplificado respecto de diversos trámites marítimos y no están obligadas a contratar los servicios de un agente naviero consignatario para realizar sus gestiones ante la autoridad marítima.",
+    "fundamento": "Reglamento de la Ley de Navegación y Comercio Marítimos, artículo 444. Establece que los propietarios, navieros o legítimos poseedores de embarcaciones menores de recreo y deportivas podrán realizar directamente los trámites de arribo y despacho ante la Capitanía de Puerto, sin requerir la intervención obligatoria de un agente naviero consignatario.",
+    "opciones": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correcta": 0
+  },
+  {
+    "id": 188,
+    "tipo": "vf",
+    "tema": "Arribo y Despacho",
+    "pregunta": "Según el artículo 48 de la Ley de Navegación y Comercio Marítimos la vigencia de un despacho de buque mercante es de 36 Hrs., a partir de su expedición.",
+    "explicacion": "La Ley no establece una vigencia de 36 horas para el despacho de salida. El artículo 48 señala que los despachos quedarán sin efecto si no se hace uso de ellos dentro de las 48 horas siguientes a su expedición, salvo autorización justificada emitida por la Capitanía de Puerto.",
+    "fundamento": "Ley de Navegación y Comercio Marítimos, artículo 48, fracción III. Establece que los despachos de salida \"quedarán sin efecto si no se hiciese uso de ellos, dentro de las cuarenta y ocho horas siguientes a su expedición, salvo autorización justificada que expresamente emita la capitanía de puerto\".",
+    "opciones": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": 189,
+    "tipo": "vf",
+    "tema": "Arribo y Despacho",
+    "pregunta": "Se considera arribada, la llegada de una embarcación al puerto o a un punto de las costas o riberas, procedente de un puerto o punto distinto, independientemente de que se embarque o desembarque personas o carga, y se clasifica en: Prevista, Imprevista y Forzosa.",
+    "explicacion": "La Ley de Navegación y Comercio Marítimos define la arribada como la llegada de una embarcación a un puerto o punto distinto de aquel del que procede, sin importar que realice o no operaciones de embarque o desembarque. Asimismo, la propia Ley clasifica la arribada en prevista, imprevista y forzosa.",
+    "fundamento": "Ley de Navegación y Comercio Marítimos, artículo 2, fracción XII. Define la arribada como la llegada de una embarcación al puerto o a un punto de las costas o riberas, procedente de un puerto o punto distinto, independientemente de que embarque o desembarque personas o carga. Asimismo, artículo 2, fracciones XIII, XIV y XV, clasifica la arribada en prevista, imprevista y forzosa.",
+    "opciones": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correcta": 0
+  },
+  {
+    "id": 190,
+    "tipo": "vf",
+    "tema": "Autoridad Marítima / Capitanía",
+    "pregunta": "Cada puerto habilitado tendrá una capitanía de puerto, que dependerá de la SEMAR, con una jurisdicción territorial y marítima delimitada.",
+    "explicacion": "La Capitanía de Puerto es la autoridad marítima encargada de ejercer las funciones de control, vigilancia y autoridad marítima en su jurisdicción. Cada puerto habilitado debe contar con una Capitanía de Puerto con una delimitación territorial y marítima específica, dependiente de la Secretaría de Marina como Autoridad Marítima Nacional.",
+    "fundamento": "Ley de Navegación y Comercio Marítimos, artículo 8. Establece que en cada puerto habilitado existirá una Capitanía de Puerto, dependiente de la Secretaría de Marina, con una jurisdicción territorial y marítima determinada para el ejercicio de sus atribuciones como autoridad marítima.",
+    "opciones": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correcta": 0
+  },
+  {
+    "id": 191,
+    "tipo": "vf",
+    "tema": "Ley de Puertos",
+    "pregunta": "El recinto portuario es el lugar donde las autoridades de la aduana se dedican a almacenar, custodiar, cargar o descargar las mercancías del comercio exterior.",
+    "explicacion": "La definición presentada corresponde más a conceptos relacionados con el recinto fiscal o recinto fiscalizado aduanero, no al recinto portuario. El recinto portuario es la zona federal delimitada y determinada por la Secretaría de Marina que comprende las áreas de agua y terrenos destinados al establecimiento y operación de un puerto, incluyendo su infraestructura e instalaciones.",
+    "fundamento": "Ley de Puertos, artículo 2, fracción IV. Define el recinto portuario como la zona federal delimitada y determinada por la Secretaría de Marina que comprende las áreas de agua y terrenos de un puerto, las obras e instalaciones destinadas a la atención de embarcaciones, personas y mercancías. Por su parte, las funciones de almacenamiento, custodia y manejo de mercancías de comercio exterior corresponden al ámbito aduanero regulado por la Ley Aduanera.",
+    "opciones": [
+      "Verdadero",
+      "Falso"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": 192,
+    "tipo": "multiple",
+    "tema": "Arribo y Despacho",
+    "pregunta": "Los despachos quedarán sin efecto si no se hiciere uso de los mismos, dentro de:",
+    "explicacion": "El despacho de salida tiene una vigencia limitada. Si la embarcación no hace uso de él dentro de las cuarenta y ocho horas siguientes a su expedición, el despacho pierde sus efectos y deberá gestionarse nuevamente, salvo autorización justificada de la Capitanía de Puerto.",
+    "fundamento": "Ley de Navegación y Comercio Marítimos, artículo 48, fracción III. Establece que los despachos de salida \"quedarán sin efecto si no se hiciese uso de ellos, dentro de las cuarenta y ocho horas siguientes a su expedición, salvo autorización justificada que expresamente emita la capitanía de puerto\".",
+    "opciones": [
+      "Las 24 horas siguientes a su expedición.",
+      "Las 12 horas siguientes a su expedición.",
+      "Las 48 horas siguientes a su expedición."
+    ],
+    "correcta": 2
+  },
+  {
+    "id": 193,
+    "tipo": "multiple",
+    "tema": "Arribo y Despacho",
+    "pregunta": "¿Cuál de los siguientes enunciados es el correcto?",
+    "explicacion": "El Reglamento de la Ley de Navegación y Comercio Marítimos clasifica los despachos en ordinarios y extraordinarios. Los ordinarios tienen validez para dirigirse a un puerto distinto al que expide el despacho, mientras que los extraordinarios permiten una vigencia determinada para una zona específica de operación o contemplan múltiples entradas y salidas al mismo puerto.",
+    "fundamento": "Reglamento de la Ley de Navegación y Comercio Marítimos, artículo 452. Establece que los despachos podrán ser ordinarios y extraordinarios. Los ordinarios son aquellos cuya autorización de salida tiene validez únicamente para un puerto distinto al que emite el despacho; los extraordinarios son aquellos cuya autorización tiene una vigencia determinada para una zona de operación específica o implica el regreso o múltiples entradas y salidas al puerto que otorgó el despacho.",
+    "opciones": [
+      "Los despachos podrán ser ordinarios y extraordinarios, de acuerdo con lo siguiente: I. Ordinarios, cuando la autorización de salida se otorgue únicamente con validez a un puerto distinto al que emite el despacho, y II. Extraordinarios, cuando la autorización se emita con una vigencia determinada para una zona de operación específica o implique el regreso o múltiples entradas y salidas, al puerto que otorgó el despacho.",
+      "Los despachos podrán ser ordinarios y extraordinarios, de acuerdo con lo siguiente: I. Ordinarios, cuando la autorización se emita con una vigencia determinada para una zona de operación específica o implique el regreso o múltiples entradas y salidas, al puerto que otorgó el despacho. II. Extraordinarios, cuando la autorización de salida se otorgue únicamente con validez a un puerto distinto al que emite el despacho.",
+      "Los despachos podrán ser normales y urgentes, de acuerdo con lo siguiente: I. Normal, cuando la autorización de salida se otorgue únicamente con validez a un puerto distinto al que emite el despacho, y II. Urgentes, cuando la autorización se emita con una vigencia determinada para una zona de operación específica o implique el regreso o múltiples entradas y salidas, al puerto que otorgó el despacho."
+    ],
+    "correcta": 0
+  },
+  {
+    "id": 194,
+    "tipo": "multiple",
+    "tema": "Ley de Puertos",
+    "pregunta": "Es el lugar de la costa o ribera habilitado como tal por el Ejecutivo Federal para la recepción, abrigo y atención de embarcaciones.",
+    "explicacion": "El puerto es el lugar habilitado por el Ejecutivo Federal para la recepción, abrigo y atención de embarcaciones, así como para la transferencia de personas y bienes entre los distintos modos de transporte.",
+    "fundamento": "Ley de Puertos, artículo 2, fracción II. Define al puerto como el lugar de la costa o ribera habilitado como tal por el Ejecutivo Federal para la recepción, abrigo y atención de embarcaciones, compuesto por el recinto portuario, la zona de desarrollo y, en su caso, por accesos y áreas de uso común para la navegación y la transferencia de personas y bienes.",
+    "opciones": [
+      "Administración Portuaria Integral",
+      "Puerto",
+      "Terminal Portuaria"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": 195,
+    "tipo": "multiple",
+    "tema": "Arribo y Despacho",
+    "pregunta": "Cuál de las opciones señala correctamente los requisitos necesarios para obtener el arribo de embarcaciones mayores a puerto en navegación de cabotaje.",
+    "explicacion": "Para el arribo de embarcaciones mayores en navegación de cabotaje, la autoridad marítima requiere principalmente el despacho de salida del puerto de origen, el manifiesto de carga, la declaración de mercancías peligrosas cuando corresponda, la lista de tripulantes y pasajeros y, en ciertos casos, información específica sobre precursores químicos o productos controlados. La opción A corresponde a requisitos vinculados principalmente a navegación de altura y control sanitario internacional, mientras que la opción C está incompleta.",
+    "fundamento": "Reglamento de la Ley de Navegación y Comercio Marítimos, artículo 407. Establece que para obtener el arribo de embarcaciones mayores en navegación de cabotaje deberá presentarse, entre otros documentos, el despacho de salida del puerto de origen, el manifiesto de carga, la declaración de mercancías peligrosas cuando proceda, la lista de tripulantes y pasajeros y, en su caso, la información relativa a precursores químicos, productos químicos esenciales o máquinas conforme a la legislación aplicable.",
+    "opciones": [
+      "Autorización de la libre plática o declaración sanitaria marítima firmada por el capitán de la Embarcación; Lista de Pasajeros, en su caso, que habrán de internarse en el país y de los que volverán a embarcar; Certificados aplicables indicados en la lista revisada de los certificados y documentos que han de llevar las Embarcaciones, según las circulares de la OMI FAL.2/Circ. 87, MEPC/Circ. 426 y MSC/Circ. 1151.",
+      "Despacho de salida del puerto de origen; manifiesto de carga y, en su caso, declaración de mercancías peligrosas; lista de tripulantes y, en su caso, de pasajeros; manifiesto, en caso de carga de precursores químicos, productos químicos esenciales o máquinas, en cuanto al tipo, cantidad, origen y destino, según lo establezca la legislación aplicable.",
+      "Despacho de salida del puerto de origen; manifiesto de carga y, en su caso, declaración de mercancías peligrosas; registro sinóptico continuo."
+    ],
+    "correcta": 1
+  },
+  {
+    "id": 196,
+    "tipo": "multiple",
+    "tema": "Ley de Puertos",
+    "pregunta": "Es el lugar compuesto por el recinto portuario y, en su caso, por la zona de desarrollo, accesos y áreas de uso común para la navegación interna y afectas a su funcionamiento; con servicios, terminales e instalaciones, públicos y particulares, para la transferencia de bienes y transbordo de personas entre los modos de transporte que enlaza.",
+    "explicacion": "La definición corresponde exactamente al concepto de puerto previsto en la Ley de Puertos. Un puerto no se limita al recinto portuario, sino que comprende además las zonas de desarrollo, accesos, áreas de navegación interna, terminales e instalaciones necesarias para la transferencia de mercancías y personas entre distintos modos de transporte.",
+    "fundamento": "Ley de Puertos, artículo 2, fracción II. Define al puerto como el lugar de la costa o ribera habilitado para la recepción, abrigo y atención de embarcaciones, compuesto por el recinto portuario y, en su caso, por la zona de desarrollo, accesos y áreas de uso común para la navegación interna y afectas a su funcionamiento, con servicios, terminales e instalaciones públicas y particulares para la transferencia de bienes y el transbordo de personas entre los modos de transporte que enlaza.",
+    "opciones": [
+      "Recinto Fiscal",
+      "Puerto",
+      "Terminal Portuaria"
+    ],
+    "correcta": 1
+  },
+  {
+    "id": 197,
+    "tipo": "concepto",
+    "tema": "Comercio Exterior",
+    "pregunta": "Los ________________________ son reglas internacionales regidos por la Cámara de Comercio Internacional que determinan el alcance de las cláusulas comerciales incluidas en el contrato de compraventa internacional.",
+    "explicacion": "Los INCOTERMS son reglas internacionales publicadas por la Cámara de Comercio Internacional (ICC) que definen las obligaciones del comprador y del vendedor en una operación de compraventa internacional, incluyendo aspectos como entrega de mercancías, distribución de costos, riesgos y responsabilidades.",
+    "fundamento": "INCOTERMS 2020 de la Cámara de Comercio Internacional (ICC). Los INCOTERMS constituyen reglas internacionales de aceptación voluntaria utilizadas en contratos de compraventa internacional para determinar las obligaciones, costos y riesgos entre comprador y vendedor durante el transporte y entrega de mercancías. No derivan de una ley mexicana específica, sino de las reglas emitidas por la Cámara de",
+    "conceptos": [
+      "I.    Capitanía de Puerto",
+      "II.   Despacho",
+      "III.  Mercancías Peligrosas",
+      "IV.   Logísticos y/o de transporte de personal",
+      "V.    Agente Naviero General",
+      "VI.   Quince días naturales",
+      "VII.  Despacho de Salida",
+      "VIII. 48 horas",
+      "IX.   Agente Naviero Consignatario",
+      "X.    Mandante o comitente",
+      "XI.   Código IMDG",
+      "XII.  INCOTERMS"
+    ],
+    "opciones": [
+      "I.    Capitanía de Puerto",
+      "II.   Despacho",
+      "III.  Mercancías Peligrosas",
+      "IV.   Logísticos y/o de transporte de personal",
+      "V.    Agente Naviero General",
+      "VI.   Quince días naturales",
+      "VII.  Despacho de Salida",
+      "VIII. 48 horas",
+      "IX.   Agente Naviero Consignatario",
+      "X.    Mandante o comitente",
+      "XI.   Código IMDG",
+      "XII.  INCOTERMS"
+    ],
+    "correcta": 11,
+    "correcta_texto": "XII.  INCOTERMS"
   }
 ]
