@@ -378,6 +378,7 @@
               <label>Opción C <input id="opcionC" type="text"></label>
               <label>Opción D <input id="opcionD" type="text"></label>
               <label>Opción E <input id="opcionE" type="text"></label>
+              <label>Opción F <input id="opcionF" type="text"></label>
             </div>
 
             <label>
@@ -388,6 +389,7 @@
                 <option value="2">C</option>
                 <option value="3">D</option>
                 <option value="4">E</option>
+                <option value="5">F</option>
               </select>
             </label>
           </div>
@@ -732,7 +734,8 @@ Capitanía de Puerto
       safeText($("#opcionB").value),
       safeText($("#opcionC").value),
       safeText($("#opcionD").value),
-      safeText($("#opcionE").value)
+      safeText($("#opcionE").value),
+      safeText($("#opcionF").value)
     ];
 
     const selectedOriginalIndex = Number($("#registroCorrectaMultiple").value);
@@ -759,8 +762,8 @@ Capitanía de Puerto
     }
 
     if (question.tipo === "multiple") {
-      if (!Array.isArray(question.opciones) || question.opciones.length < 2 || question.opciones.length > 5 || question.opciones.some(o => !o)) {
-        return "En opción múltiple debes capturar mínimo 2 y máximo 5 opciones.";
+      if (!Array.isArray(question.opciones) || question.opciones.length < 2 || question.opciones.length > 6 || question.opciones.some(o => !o)) {
+        return "En opción múltiple debes capturar mínimo 2 y máximo 6 opciones.";
       }
 
       if (Number(question.correcta) < 0 || Number(question.correcta) >= question.opciones.length) {
@@ -912,6 +915,7 @@ Capitanía de Puerto
       $("#opcionC").value = normalized.opciones?.[2] || "";
       $("#opcionD").value = normalized.opciones?.[3] || "";
       $("#opcionE").value = normalized.opciones?.[4] || "";
+      $("#opcionF").value = normalized.opciones?.[5] || "";
       $("#registroCorrectaMultiple").value = String(normalized.correcta ?? 0);
     }
 
@@ -1435,8 +1439,8 @@ Capitanía de Puerto
       };
     }
 
-    const opciones = Array.isArray(q.opciones) ? q.opciones.slice(0, 5).map(safeText).filter(Boolean) : [];
-    if (opciones.length < 2 || opciones.length > 5) return null;
+    const opciones = Array.isArray(q.opciones) ? q.opciones.slice(0, 6).map(safeText).filter(Boolean) : [];
+    if (opciones.length < 2 || opciones.length > 6) return null;
 
     const correcta = Number(q.correcta ?? 0);
     if (correcta < 0 || correcta >= opciones.length) return null;
