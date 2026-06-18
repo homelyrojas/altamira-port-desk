@@ -1,5 +1,5 @@
 /*
-  BOARDING AGENT TOOLS - Registros v0.8.5.2
+  BOARDING AGENT TOOLS - Registros v0.8.6
   localStorage + Exportación/Importación JSON + Tipos de pregunta + Relacionar columnas + Preguntas abiertas + Catálogo de temas + Opción múltiple flexible + Exportación inteligente + Búsqueda
 
   Tipos soportados en esta versión:
@@ -8,6 +8,7 @@
   - concepto: Elegir concepto desde lista desplegable
   - relacionar: Relacionar columnas
   - abierta: Pregunta abierta con evaluación por palabras clave
+  - completar_fichas: Completar espacios seleccionando fichas en orden
 
   Instalación:
   1) Reemplaza tu archivo registros.js actual por este.
@@ -149,7 +150,8 @@
       vf: "Verdadero / Falso",
       concepto: "Elegir concepto",
       relacionar: "Relacionar columnas",
-      abierta: "Pregunta abierta"
+      abierta: "Pregunta abierta",
+      completar_fichas: "Completar con fichas"
     };
     return labels[tipo] || "Opción múltiple";
   }
@@ -212,6 +214,19 @@
         respuesta_esperada: question.respuesta_esperada || question.respuestaEsperada || "",
         palabras_clave: palabrasClave,
         minimo_coincidencia: Number(question.minimo_coincidencia || question.minimoCoincidencia || 60)
+      };
+    }
+
+    if (tipo === "completar_fichas") {
+      const opciones = Array.isArray(question.opciones) ? question.opciones.map(safeText).filter(Boolean) : [];
+      const correctas = Array.isArray(question.correctas) ? question.correctas.map(safeText).filter(Boolean) : [];
+
+      return {
+        ...question,
+        tipo,
+        opciones,
+        correctas,
+        espacios: Number(question.espacios || correctas.length || 0)
       };
     }
 
@@ -339,6 +354,7 @@
               <option value="concepto">Elegir concepto</option>
               <option value="relacionar">Relacionar columnas</option>
               <option value="abierta">Pregunta abierta</option>
+              <option value="completar_fichas">Completar con fichas</option>
             </select>
           </label>
 
@@ -449,6 +465,30 @@ embarcación"></textarea>
             </label>
           </div>
 
+          <div id="completarFichasFields" class="tipo-fields bat-hidden">
+            <p class="registros-note">
+              Usa marcadores en la pregunta como {1}, {2}, {3}. El alumno seleccionará fichas en orden para completar los espacios.
+            </p>
+
+            <label>
+              Fichas disponibles
+              <textarea id="registroFichasOpciones" rows="6" placeholder="Escribe una ficha por línea. Ejemplo:
+Capitanía de Puerto
+Despacho
+Mercancías Peligrosas
+48 horas
+INCOTERMS"></textarea>
+            </label>
+
+            <label>
+              Respuestas correctas en orden
+              <textarea id="registroFichasCorrectas" rows="4" placeholder="Escribe la respuesta correcta de cada espacio, una por línea. Ejemplo:
+Despacho
+Capitanía de Puerto
+48 horas"></textarea>
+            </label>
+          </div>
+
           <label>
             Explicación
             <textarea id="registroExplicacion" rows="3" placeholder="Explica por qué esa es la respuesta correcta"></textarea>
@@ -483,6 +523,7 @@ embarcación"></textarea>
               <option value="concepto">Elegir concepto</option>
               <option value="relacionar">Relacionar columnas</option>
               <option value="abierta">Pregunta abierta</option>
+              <option value="completar_fichas">Completar con fichas</option>
             </select>
           </label>
           <input id="buscarPregunta" type="search" placeholder="Buscar texto dentro de preguntas">
@@ -570,6 +611,7 @@ embarcación"></textarea>
     $("#conceptoFields")?.classList.toggle("bat-hidden", tipo !== "concepto");
     $("#relacionarFields")?.classList.toggle("bat-hidden", tipo !== "relacionar");
     $("#abiertaFields")?.classList.toggle("bat-hidden", tipo !== "abierta");
+    $("#completarFichasFields")?.classList.toggle("bat-hidden", tipo !== "completar_fichas");
   }
 
   function activateTab(tabName) {
@@ -664,6 +706,25 @@ embarcación"></textarea>
       };
     }
 
+    if (tipo === "completar_fichas") {
+      const opciones = safeText($("#registroFichasOpciones").value)
+        .split("\n")
+        .map(safeText)
+        .filter(Boolean);
+
+      const correctas = safeText($("#registroFichasCorrectas").value)
+        .split("\n")
+        .map(safeText)
+        .filter(Boolean);
+
+      return {
+        ...base,
+        opciones,
+        correctas,
+        espacios: correctas.length
+      };
+    }
+
     const rawOptions = [
       safeText($("#opcionA").value),
       safeText($("#opcionB").value),
@@ -750,6 +811,24 @@ embarcación"></textarea>
       }
     }
 
+    if (question.tipo === "completar_fichas") {
+      if (!Array.isArray(question.opciones) || question.opciones.length < 2) {
+        return "En completar con fichas debes capturar al menos dos fichas disponibles.";
+      }
+
+      if (!Array.isArray(question.correctas) || question.correctas.length < 1) {
+        return "En completar con fichas debes capturar al menos una respuesta correcta.";
+      }
+
+      const faltantes = question.correctas.filter(correcta =>
+        !question.opciones.some(opcion => normalize(opcion) === normalize(correcta))
+      );
+
+      if (faltantes.length) {
+        return "Todas las respuestas correctas deben existir dentro de las fichas disponibles.";
+      }
+    }
+
     return "";
   }
 
@@ -821,6 +900,9 @@ embarcación"></textarea>
       $("#registroRespuestaEsperada").value = normalized.respuesta_esperada || "";
       $("#registroPalabrasClave").value = (normalized.palabras_clave || []).join("\n");
       $("#registroMinimoCoincidencia").value = String(normalized.minimo_coincidencia || 60);
+    } else if (normalized.tipo === "completar_fichas") {
+      $("#registroFichasOpciones").value = (normalized.opciones || []).join("\n");
+      $("#registroFichasCorrectas").value = (normalized.correctas || []).join("\n");
     } else {
       $("#opcionA").value = normalized.opciones?.[0] || "";
       $("#opcionB").value = normalized.opciones?.[1] || "";
@@ -958,6 +1040,13 @@ embarcación"></textarea>
       `;
     }
 
+    if (q.tipo === "completar_fichas") {
+      return `
+        <p><strong>Fichas disponibles:</strong> ${(q.opciones || []).map(escapeHtml).join(" | ")}</p>
+        <p><strong>Orden correcto:</strong> ${(q.correctas || []).map(escapeHtml).join(" → ")}</p>
+      `;
+    }
+
     return `
       <ol type="A">
         ${(q.opciones || []).map((op, index) => `
@@ -998,6 +1087,7 @@ embarcación"></textarea>
 
     if (Array.isArray(q.opciones)) parts.push(...q.opciones);
     if (Array.isArray(q.conceptos)) parts.push(...q.conceptos);
+    if (Array.isArray(q.correctas)) parts.push(...q.correctas);
     if (Array.isArray(q.palabrasClave)) parts.push(...q.palabrasClave);
     if (Array.isArray(q.palabras_clave)) parts.push(...q.palabras_clave);
 
@@ -1083,8 +1173,10 @@ embarcación"></textarea>
     if (q.tipo === "abierta") {
       details.push(`<p><strong>Respuesta esperada:</strong> ${escapeHtml(q.respuesta_esperada || q.respuestaEsperada || "Sin respuesta esperada registrada.")}</p>`);
       details.push(`<p><strong>Palabras clave:</strong> ${escapeHtml(Array.isArray(q.palabrasClave) ? q.palabrasClave.join(" | ") : q.palabras_clave || q.palabrasClave || "Sin palabras clave registradas.")}</p>`);
+    } else if (q.tipo === "completar_fichas") {
+      details.push(`<p><strong>Orden correcto:</strong> ${escapeHtml((q.correctas || []).join(" → "))}</p>`);
     } else if (q.tipo === "relacionar") {
-      details.push(`<p><strong>Relacionar columnas:</strong> ${(q.pares || q.relaciones || []).length} par(es) capturado(s).</p>`);
+      details.push(`<p><strong>Relacionar columnas:</strong> ${(q.pares || q.relaciones || q.izquierda || []).length} elemento(s) capturado(s).</p>`);
     } else {
       const correctText = (q.opciones || q.conceptos || [])[Number(q.correcta)] || "";
       details.push(`<p><strong>Respuesta correcta:</strong> ${escapeHtml(correctText)}</p>`);
@@ -1325,6 +1417,20 @@ embarcación"></textarea>
       };
     }
 
+    if (tipo === "completar_fichas") {
+      const opciones = Array.isArray(q.opciones) ? q.opciones.map(safeText).filter(Boolean) : [];
+      const correctas = Array.isArray(q.correctas) ? q.correctas.map(safeText).filter(Boolean) : [];
+
+      if (opciones.length < 2 || correctas.length < 1) return null;
+
+      return {
+        ...base,
+        opciones,
+        correctas,
+        espacios: Number(q.espacios || correctas.length)
+      };
+    }
+
     const opciones = Array.isArray(q.opciones) ? q.opciones.slice(0, 4).map(safeText).filter(Boolean) : [];
     if (opciones.length < 2 || opciones.length > 4) return null;
 
@@ -1398,6 +1504,8 @@ embarcación"></textarea>
         renderRelacionarQuestion(q);
       } else if (q.tipo === "abierta") {
         renderAbiertaQuestion(q);
+      } else if (q.tipo === "completar_fichas") {
+        renderFichaQuestion(q);
       } else {
         renderOptionQuestion(q);
       }
@@ -1505,6 +1613,82 @@ embarcación"></textarea>
       });
     }
 
+    function renderFichaQuestion(q) {
+      const opciones = q.opciones || [];
+      const espacios = Number(q.espacios || q.correctas?.length || 0);
+      const selected = [];
+
+      function paintSpaces() {
+        for (let i = 0; i < espacios; i++) {
+          const slot = $(`#fichaLocalSpace${i}`, quiz);
+          if (slot) slot.textContent = selected[i] || "__________";
+        }
+      }
+
+      quiz.innerHTML = `
+        <div class="question-card">
+          <div class="question-card-header">
+            <span class="badge">${escapeHtml(q.tema)}</span>
+            <span class="badge badge-soft">${escapeHtml(questionTypeLabel(q.tipo))}</span>
+            <span>${index + 1} / ${questions.length}</span>
+          </div>
+          <h3>${escapeHtml(q.pregunta)}</h3>
+
+          <div class="relation-preview">
+            ${Array.from({ length: espacios }).map((_, i) => `
+              <div class="relation-preview-row">
+                <strong>Espacio ${i + 1}</strong>
+                <span>→</span>
+                <span id="fichaLocalSpace${i}">__________</span>
+              </div>
+            `).join("")}
+          </div>
+
+          <div class="local-options">
+            ${opciones.map(op => `
+              <button type="button" class="option-btn ficha-local-option" data-ficha-value="${escapeHtml(op)}">
+                ${escapeHtml(op)}
+              </button>
+            `).join("")}
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="secondary-btn" id="borrarFichaLocalBtn">↩️ Borrar última ficha</button>
+            <button type="button" class="secondary-btn" id="reiniciarFichaLocalBtn">🔄 Reiniciar</button>
+            <button type="button" class="primary-btn" id="validarFichaLocalBtn">Validar respuesta</button>
+          </div>
+
+          <div id="localFeedback"></div>
+        </div>
+      `;
+
+      $all(".ficha-local-option", quiz).forEach(btn => {
+        btn.addEventListener("click", () => {
+          if (selected.length >= espacios) return;
+          selected.push(btn.dataset.fichaValue);
+          paintSpaces();
+        });
+      });
+
+      $("#borrarFichaLocalBtn", quiz).addEventListener("click", () => {
+        selected.pop();
+        paintSpaces();
+      });
+
+      $("#reiniciarFichaLocalBtn", quiz).addEventListener("click", () => {
+        selected.splice(0, selected.length);
+        paintSpaces();
+      });
+
+      $("#validarFichaLocalBtn", quiz).addEventListener("click", () => {
+        if (selected.length < espacios) {
+          alert("Completa todos los espacios antes de validar.");
+          return;
+        }
+        checkFichaAnswer(q, selected);
+      });
+    }
+
     function renderConceptQuestion(q) {
       const conceptos = q.conceptos || q.opciones || [];
       quiz.innerHTML = `
@@ -1552,6 +1736,35 @@ embarcación"></textarea>
         missing: keywords.filter(keyword => !hits.includes(keyword)),
         passed: percent >= minimum
       };
+    }
+
+    function checkFichaAnswer(q, selected) {
+      const correctas = q.correctas || [];
+      const isCorrect = correctas.length === selected.length &&
+        correctas.every((item, i) => normalize(item) === normalize(selected[i]));
+
+      if (isCorrect) score++;
+
+      $all(".ficha-local-option", quiz).forEach(btn => {
+        btn.disabled = true;
+      });
+
+      const feedback = $("#localFeedback");
+      feedback.innerHTML = `
+        <div class="feedback-box">
+          <p><strong>${isCorrect ? "Correcto" : "Incorrecto"}</strong></p>
+          <p><strong>Tu respuesta:</strong><br>${escapeHtml(selected.join(" → "))}</p>
+          ${!isCorrect ? `<p><strong>Respuesta correcta:</strong><br>${escapeHtml(correctas.join(" → "))}</p>` : ""}
+          ${q.explicacion ? `<p>${escapeHtml(q.explicacion)}</p>` : ""}
+          ${q.fundamento ? `<p><strong>Fundamento:</strong> ${escapeHtml(q.fundamento)}</p>` : ""}
+          <button type="button" class="primary-btn" id="siguienteLocalBtn">Siguiente</button>
+        </div>
+      `;
+
+      $("#siguienteLocalBtn").addEventListener("click", () => {
+        index++;
+        renderQuestion();
+      });
     }
 
     function checkAbiertaAnswer(q, userText) {
