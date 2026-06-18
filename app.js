@@ -126,6 +126,19 @@ function normalizeQuestion(q){
     };
   }
 
+  if(tipo === "completar_fichas"){
+    const opciones = Array.isArray(q.opciones) ? q.opciones.filter(op => String(op || "").trim()) : [];
+    const correctas = Array.isArray(q.correctas) ? q.correctas.filter(op => String(op || "").trim()) : [];
+
+    return {
+      ...q,
+      tipo: "completar_fichas",
+      opciones,
+      correctas,
+      espacios: Number(q.espacios || correctas.length || 0)
+    };
+  }
+
   if(tipo === "abierta"){
     const palabrasClave = Array.isArray(q.palabras_clave)
       ? q.palabras_clave
@@ -180,6 +193,7 @@ function getQuestionTypeLabel(tipo){
     vf: "Verdadero / Falso",
     concepto: "Elegir concepto",
     relacionar: "Relacionar columnas",
+    completar_fichas: "Completar con fichas",
     abierta: "Pregunta abierta"
   };
 
@@ -263,6 +277,11 @@ function renderQuestion(){
 
   if(q.tipo === "relacionar"){
     renderRelationQuestion(q, percent);
+    return;
+  }
+
+  if(q.tipo === "completar_fichas"){
+    renderFichaQuestion(q, percent);
     return;
   }
 
@@ -432,6 +451,135 @@ function answerRelationQuestion(){
 
   const percent = Math.round(((currentIndex + 1) / currentExam.length) * 100);
   renderRelationFeedback(q, userAnswers, correct, correctCount, total, percent);
+}
+
+let fichaAnswers = [];
+
+function renderFichaQuestion(q, percent){
+  fichaAnswers = [];
+  const options = q.opciones || [];
+  const questionText = renderFichaQuestionText(q.pregunta || "", q.espacios || 0);
+
+  setContent(`
+    <div class="question-counter">
+      <h2>Pregunta ${currentIndex + 1} / ${currentExam.length}</h2>
+      <span class="badge">${escapeHtml(q.tema)}</span>
+      <span class="badge">${escapeHtml(getQuestionTypeLabel(q.tipo))}</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" style="width:${percent}%"></div></div>
+    <p><strong>${questionText}</strong></p>
+
+    <div class="details">
+      <strong>Orden seleccionado:</strong>
+      <div id="fichaSpaces" class="relation-preview">
+        ${Array.from({ length: q.espacios }).map((_, i) => `
+          <div class="relation-preview-row">
+            <strong>Espacio ${i + 1}</strong>
+            <span>→</span>
+            <span id="ficha-space-${i}">__________</span>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+
+    <div class="toolbar">
+      ${options.map((op, i) => `
+        <button class="pill" onclick="selectFicha(${i})">${escapeHtml(op)}</button>
+      `).join("")}
+    </div>
+
+    <div class="toolbar">
+      <button class="pill" onclick="undoFicha()">↩️ Borrar última ficha</button>
+      <button class="pill" onclick="resetFichas()">🔄 Reiniciar</button>
+      <button class="action" onclick="answerFichaQuestion()">Validar respuesta</button>
+    </div>
+  `);
+}
+
+function renderFichaQuestionText(text, espacios){
+  let output = escapeHtml(text);
+  for(let i = 1; i <= espacios; i++){
+    const placeholder = new RegExp(`\\{${i}\\}`, "g");
+    output = output.replace(placeholder, `<span class="badge">Espacio ${i}</span>`);
+  }
+  return output;
+}
+
+function selectFicha(optionIndex){
+  const q = normalizeQuestion(currentExam[currentIndex]);
+  const options = q.opciones || [];
+  const value = options[optionIndex];
+
+  if(!value || fichaAnswers.length >= q.espacios) return;
+
+  fichaAnswers.push(value);
+
+  const index = fichaAnswers.length - 1;
+  const slot = document.getElementById(`ficha-space-${index}`);
+  if(slot) slot.textContent = value;
+}
+
+function undoFicha(){
+  if(!fichaAnswers.length) return;
+
+  const index = fichaAnswers.length - 1;
+  fichaAnswers.pop();
+
+  const slot = document.getElementById(`ficha-space-${index}`);
+  if(slot) slot.textContent = "__________";
+}
+
+function resetFichas(){
+  const q = normalizeQuestion(currentExam[currentIndex]);
+  fichaAnswers = [];
+
+  for(let i = 0; i < q.espacios; i++){
+    const slot = document.getElementById(`ficha-space-${i}`);
+    if(slot) slot.textContent = "__________";
+  }
+}
+
+function answerFichaQuestion(){
+  const q = normalizeQuestion(currentExam[currentIndex]);
+
+  if(fichaAnswers.length < q.espacios){
+    alert("Completa todos los espacios antes de validar.");
+    return;
+  }
+
+  const correctas = q.correctas || [];
+  const correct = correctas.length === fichaAnswers.length &&
+    correctas.every((item, index) => normalizeText(item) === normalizeText(fichaAnswers[index]));
+
+  answers.push({
+    questionId: q.id,
+    selected: [...fichaAnswers],
+    correct,
+    tema: q.tema,
+    tipo: q.tipo
+  });
+
+  if(!correct){
+    saveFailedQuestion(q.id, q.tema);
+  }
+
+  const percent = Math.round(((currentIndex + 1) / currentExam.length) * 100);
+  renderFichaFeedback(q, fichaAnswers, correct, percent);
+}
+
+function renderFichaFeedback(q, userAnswers, correct, percent){
+  const correctas = q.correctas || [];
+
+  const result = `
+    <div class="details">
+      <strong>Tu respuesta:</strong>
+      <p>${userAnswers.map(escapeHtml).join(" → ")}</p>
+      <strong>Respuesta correcta:</strong>
+      <p>${correctas.map(escapeHtml).join(" → ")}</p>
+    </div>
+  `;
+
+  renderFeedbackBase(q, correct, percent, result);
 }
 
 function answerQuestion(selected){

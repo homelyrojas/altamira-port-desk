@@ -1,4 +1,4 @@
-const CACHE_NAME = "altamira-port-desk-v062";
+const CACHE_NAME = "altamira-port-desk-v063";
 
 const ASSETS = [
   "./",
@@ -17,13 +17,13 @@ const ASSETS = [
   "./directorio.css",
   "./directorio.js",
 
-  "./icons/icon-192.svg",
-  "./icons/icon-512.svg"
-
   "./prestadores.html",
   "./prestadores.css",
   "./prestadores.js",
   "./prestadores.json",
+
+  "./icons/icon-192.svg",
+  "./icons/icon-512.svg"
 ];
 
 self.addEventListener("install", event => {
