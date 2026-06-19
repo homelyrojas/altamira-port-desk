@@ -22,19 +22,7 @@ Directorio operativo y simulador de estudio para gestión portuaria.<br>
 Creado por Homely Rojas.
 </p>
   </header>
-
   <main class="home-grid">
-  <button class="feature-card" onclick="window.location.href='directorio.html'">
-    <span>📇</span>
-    <strong>Directorio</strong>
-    <small>Autoridades y contactos clave</small>
-  </button>
-
-  <button class="feature-card" onclick="renderExamHome()">
-    <span>🎓</span>
-    <strong>Examen</strong>
-    <small>Simulador de estudio diario</small>
-  </button>
 
   <button class="feature-card" onclick="window.location.href='arribos-zarpes.html'">
     <span>🚢</span>
@@ -42,11 +30,25 @@ Creado por Homely Rojas.
     <small>Consulta de buques y reporte operativo</small>
   </button>
 
-    <button class="feature-card" onclick="window.location.href='prestadores.html'">
-  <span>🏗️</span>
-  <strong>Prestadores de Servicios</strong>
-  <small>Consulta de Prestadores de Servicios Autorizados por ASIPONA</small>
-</button>
+  <button class="feature-card" onclick="window.location.href='prestadores.html'">
+    <span>🏗️</span>
+    <strong>Prestadores de Servicios</strong>
+    <small>Consulta de prestadores autorizados por ASIPONA</small>
+  </button>
+
+  <button class="feature-card" onclick="renderDirectory()">
+    <span>📇</span>
+    <strong>Directorio</strong>
+    <small>Autoridades y contactos clave</small>
+  </button>
+
+  <button class="feature-card" onclick="renderExamHome()">
+    <span>📚</span>
+    <strong>Guía de Estudio</strong>
+    <small>Simulador y banco de preguntas</small>
+  </button>
+</main>
+  
 </main>
 
   <section id="content" class="panel">
@@ -56,9 +58,9 @@ Creado por Homely Rojas.
 
   <nav class="bottom-nav">
   <button onclick="renderHome()">Inicio</button>
-  <button onclick="window.location.href='directorio.html'">Directorio</button>
-  <button onclick="renderExamHome()">Examen</button>
   <button onclick="window.location.href='arribos-zarpes.html'">Arribos y Zarpes</button>
+  <button onclick="renderDirectory()">Directorio</button>
+  <button onclick="renderExamHome()">Guía de Estudio</button>
 </nav>
   
   <script src="app.js"></script>
