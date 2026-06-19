@@ -467,7 +467,7 @@ function renderFichaQuestion(q, percent){
       <span class="badge">${escapeHtml(getQuestionTypeLabel(q.tipo))}</span>
     </div>
     <div class="progress-track"><div class="progress-fill" style="width:${percent}%"></div></div>
-    <p><strong>${questionText}</strong></p>
+    <p class="question-text"><strong>${questionText}</strong></p>
 
     <div class="details">
       <strong>Orden seleccionado:</strong>
