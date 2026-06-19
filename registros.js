@@ -1,5 +1,5 @@
 /*
-  BOARDING AGENT TOOLS - Registros v0.8.6
+  BOARDING AGENT TOOLS - Registros v0.8.7
   localStorage + Exportación/Importación JSON + Tipos de pregunta + Relacionar columnas + Preguntas abiertas + Catálogo de temas + Opción múltiple flexible + Exportación inteligente + Búsqueda
 
   Tipos soportados en esta versión:
@@ -9,6 +9,7 @@
   - relacionar: Relacionar columnas
   - abierta: Pregunta abierta con evaluación por palabras clave
   - completar_fichas: Completar espacios seleccionando fichas en orden
+  - Búsqueda global: banco oficial + banco personal, con overrides locales
 
   Instalación:
   1) Reemplaza tu archivo registros.js actual por este.
@@ -878,13 +879,28 @@ Capitanía de Puerto
     updateTipoFields();
   }
 
+  function findQuestionForEdit(id) {
+    const key = String(id);
+    const localQuestion = loadLocalQuestions().find(q => String(q.id) === key);
+    if (localQuestion) {
+      return { question: localQuestion, source: "local" };
+    }
+
+    const officialQuestion = getOfficialQuestionsForExport().find(q => String(q.id) === key);
+    if (officialQuestion) {
+      return { question: officialQuestion, source: "official" };
+    }
+
+    return null;
+  }
+
   function editQuestion(id) {
-    const question = loadLocalQuestions().find(q => q.id === id);
-    if (!question) return;
+    const found = findQuestionForEdit(id);
+    if (!found) return;
 
-    const normalized = normalizeQuestionForExam(question);
+    const normalized = normalizeQuestionForExam(found.question);
 
-    editingId = id;
+    editingId = String(id);
     $("#registroTipo").value = normalized.tipo || "multiple";
     renderRegistroTemaOptions(normalized.tema || "");
     $("#registroPregunta").value = normalized.pregunta || "";
@@ -919,7 +935,12 @@ Capitanía de Puerto
       $("#registroCorrectaMultiple").value = String(normalized.correcta ?? 0);
     }
 
-    $("#guardarPreguntaBtn").textContent = "Actualizar pregunta";
+    $("#guardarPreguntaBtn").textContent = found.source === "official" ? "Guardar corrección" : "Actualizar pregunta";
+
+    if (found.source === "official") {
+      alert("Esta pregunta pertenece al banco oficial. Al guardar, se creará una corrección local que reemplazará esta pregunta al generar questions.json completo.");
+    }
+
     activateTab("registrar");
   }
 
@@ -1073,7 +1094,7 @@ Capitanía de Puerto
 
     if (input) input.value = "";
     if (results) {
-      results.innerHTML = `<div class="empty-state">Escribe una palabra o frase para buscar en tu banco personal.</div>`;
+      results.innerHTML = `<div class="empty-state">Escribe una palabra o frase para buscar en el banco oficial y el banco personal.</div>`;
     }
   }
 
@@ -1110,6 +1131,38 @@ Capitanía de Puerto
     return normalize(parts.filter(Boolean).join(" "));
   }
 
+  function getGlobalSearchQuestions() {
+    const officialQuestions = getOfficialQuestionsForExport().map(q => ({
+      ...normalizeQuestionForExam(q),
+      _source: "official"
+    }));
+
+    const localQuestions = loadLocalQuestions().map(q => ({
+      ...normalizeQuestionForExam(q),
+      _source: "local"
+    }));
+
+    const localById = new Map(localQuestions.map(q => [String(q.id), q]));
+
+    const mergedOfficial = officialQuestions.map(q => {
+      const override = localById.get(String(q.id));
+      if (override) {
+        return {
+          ...override,
+          _source: "override"
+        };
+      }
+      return q;
+    });
+
+    const localOnly = localQuestions.filter(q => !officialQuestions.some(of => String(of.id) === String(q.id)));
+
+    return [
+      ...mergedOfficial,
+      ...localOnly
+    ];
+  }
+
   function renderBusqueda() {
     const container = $("#busquedaResultados");
     const input = $("#busquedaPreguntaInput");
@@ -1119,36 +1172,46 @@ Capitanía de Puerto
     const term = normalize(input.value);
 
     if (!term) {
-      container.innerHTML = `<div class="empty-state">Escribe una palabra o frase para buscar en tu banco personal.</div>`;
+      container.innerHTML = `<div class="empty-state">Escribe una palabra o frase para buscar en el banco oficial y el banco personal.</div>`;
       return;
     }
 
-    const questions = loadLocalQuestions()
-      .map(normalizeQuestionForExam)
+    const questions = getGlobalSearchQuestions()
       .filter(q => getQuestionSearchText(q).includes(term));
 
     if (!questions.length) {
-      container.innerHTML = `<div class="empty-state">No encontramos coincidencias en el banco personal.</div>`;
+      container.innerHTML = `<div class="empty-state">No encontramos coincidencias en el banco oficial ni en el banco personal.</div>`;
       return;
     }
 
     container.innerHTML = `
       <p class="registros-note"><strong>${questions.length}</strong> resultado(s) encontrado(s).</p>
-      ${questions.map(q => `
-        <article class="question-card search-result-card">
-          <div class="question-card-header">
-            <span class="badge">${escapeHtml(q.tema || "Sin tema")}</span>
-            <span class="badge badge-soft">${escapeHtml(questionTypeLabel(q.tipo))}</span>
-            <span class="question-id">${escapeHtml(q.id)}</span>
-          </div>
-          <h3>${highlightSearchTerm(q.pregunta, input.value)}</h3>
-          ${renderSearchMiniPreview(q)}
-          <div class="card-actions">
-            <button type="button" class="primary-btn" data-search-edit="${escapeHtml(q.id)}">Editar pregunta</button>
-            <button type="button" class="danger-btn" data-search-delete="${escapeHtml(q.id)}">Eliminar</button>
-          </div>
-        </article>
-      `).join("")}
+      ${questions.map(q => {
+        const sourceLabel = q._source === "official"
+          ? "Banco oficial"
+          : q._source === "override"
+            ? "Corrección local"
+            : "Banco personal";
+
+        const canDelete = q._source !== "official";
+
+        return `
+          <article class="question-card search-result-card">
+            <div class="question-card-header">
+              <span class="badge">${escapeHtml(q.tema || "Sin tema")}</span>
+              <span class="badge badge-soft">${escapeHtml(questionTypeLabel(q.tipo))}</span>
+              <span class="badge badge-soft">${escapeHtml(sourceLabel)}</span>
+              <span class="question-id">${escapeHtml(q.id)}</span>
+            </div>
+            <h3>${highlightSearchTerm(q.pregunta, input.value)}</h3>
+            ${renderSearchMiniPreview(q)}
+            <div class="card-actions">
+              <button type="button" class="primary-btn" data-search-edit="${escapeHtml(q.id)}">Editar pregunta</button>
+              ${canDelete ? `<button type="button" class="danger-btn" data-search-delete="${escapeHtml(q.id)}">Eliminar</button>` : ""}
+            </div>
+          </article>
+        `;
+      }).join("")}
     `;
 
     $all("[data-search-edit]", container).forEach(btn => {
@@ -1222,19 +1285,34 @@ Capitanía de Puerto
   function buildFullQuestionsJson() {
     const officialQuestions = getOfficialQuestionsForExport();
     const localQuestions = loadLocalQuestions();
+    const localById = new Map(localQuestions.map(q => [String(q.id), q]));
 
-    const nextIdBase = officialQuestions.reduce((max, q) => {
+    const usedLocalIds = new Set();
+
+    const mergedOfficialQuestions = officialQuestions.map(q => {
+      const key = String(q.id);
+      const override = localById.get(key);
+
+      if (override) {
+        usedLocalIds.add(key);
+        return cleanQuestionForOfficialBank(override, Number(q.id) || 0);
+      }
+
+      return cleanQuestionForOfficialBank(q, Number(q.id) || 0);
+    });
+
+    const nextIdBase = mergedOfficialQuestions.reduce((max, q) => {
       const id = Number(q.id);
       return Number.isFinite(id) ? Math.max(max, id) : max;
     }, 0);
 
-    const cleanedLocalQuestions = localQuestions.map((q, index) => {
-      return cleanQuestionForOfficialBank(q, nextIdBase + index + 1);
-    });
+    const localOnlyQuestions = localQuestions
+      .filter(q => !usedLocalIds.has(String(q.id)))
+      .map((q, index) => cleanQuestionForOfficialBank(q, nextIdBase + index + 1));
 
     return [
-      ...officialQuestions,
-      ...cleanedLocalQuestions
+      ...mergedOfficialQuestions,
+      ...localOnlyQuestions
     ];
   }
 
