@@ -301,7 +301,7 @@ function renderQuestionHeader(q, percent){
       <span class="badge">${escapeHtml(getQuestionTypeLabel(q.tipo))}</span>
     </div>
     <div class="progress-track"><div class="progress-fill" style="width:${percent}%"></div></div>
-    <p><strong>${escapeHtml(q.pregunta)}</strong></p>
+    <p class="question-text"><strong>${escapeHtml(q.pregunta)}</strong></p>
   `;
 }
 
@@ -690,7 +690,7 @@ function renderFeedbackBase(q, correct, percent, answerHtml, titleOverride){
     <span class="badge">${escapeHtml(q.tema)}</span>
     <span class="badge">${escapeHtml(getQuestionTypeLabel(q.tipo))}</span>
     <div class="progress-track"><div class="progress-fill" style="width:${percent}%"></div></div>
-    <p><strong>${escapeHtml(q.pregunta)}</strong></p>
+    <p class="question-text"><strong>${escapeHtml(q.pregunta)}</strong></p>
     ${answerHtml}
     <div class="details">
       <strong>Explicación:</strong>
