@@ -7,7 +7,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Port Desk">
-  <title>Altamira Port Desk</title>
+  <title>Boarding Agent Tools</title>
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/icon-192.svg">
   <link rel="stylesheet" href="styles.css">
@@ -18,38 +18,36 @@
     <p class="eyebrow">WELCOME BOARDING AGENT</p>
     <h1>BOARDING AGENT TOOLS</h1>
     <p class="subtitle">
-Directorio operativo y simulador de estudio para gestión portuaria.<br>
-Creado por Homely Rojas.
-</p>
+      Directorio operativo y simulador de estudio para gestión portuaria.<br>
+      Creado por Homely Rojas.
+    </p>
   </header>
+
   <main class="home-grid">
+    <button class="feature-card" onclick="window.location.href='buques.html'">
+      <span>🚢</span>
+      <strong>Buques</strong>
+      <small>Arribos, zarpes y próximos buques</small>
+    </button>
 
-  <button class="feature-card" onclick="window.location.href='arribos-zarpes.html'">
-    <span>🚢</span>
-    <strong>Arribos y Zarpes</strong>
-    <small>Consulta de buques y reporte operativo</small>
-  </button>
+    <button class="feature-card" onclick="window.location.href='prestadores.html'">
+      <span>🏗️</span>
+      <strong>Prestadores de Servicios</strong>
+      <small>Consulta de prestadores autorizados por ASIPONA</small>
+    </button>
 
-  <button class="feature-card" onclick="window.location.href='prestadores.html'">
-    <span>🏗️</span>
-    <strong>Prestadores de Servicios</strong>
-    <small>Consulta de prestadores autorizados por ASIPONA</small>
-  </button>
+    <button class="feature-card" onclick="window.location.href='directorio.html'">
+      <span>📇</span>
+      <strong>Directorio</strong>
+      <small>Autoridades y contactos clave</small>
+    </button>
 
-  <button class="feature-card" onclick="renderDirectory()">
-    <span>📇</span>
-    <strong>Directorio</strong>
-    <small>Autoridades y contactos clave</small>
-  </button>
-
-  <button class="feature-card" onclick="renderExamHome()">
-    <span>📚</span>
-    <strong>Guía de Estudio</strong>
-    <small>Simulador y banco de preguntas</small>
-  </button>
-</main>
-  
-</main>
+    <button class="feature-card" onclick="renderExamHome()">
+      <span>📚</span>
+      <strong>Guía de Estudio</strong>
+      <small>Simulador y banco de preguntas</small>
+    </button>
+  </main>
 
   <section id="content" class="panel">
     <h2>Bienvenido</h2>
@@ -57,12 +55,12 @@ Creado por Homely Rojas.
   </section>
 
   <nav class="bottom-nav">
-  <button onclick="renderHome()">Inicio</button>
-  <button onclick="window.location.href='arribos-zarpes.html'">Arribos y Zarpes</button>
-  <button onclick="renderDirectory()">Directorio</button>
-  <button onclick="renderExamHome()">Guía de Estudio</button>
-</nav>
-  
+    <button onclick="renderHome()">Inicio</button>
+    <button onclick="window.location.href='buques.html'">Buques</button>
+    <button onclick="window.location.href='directorio.html'">Directorio</button>
+    <button onclick="renderExamHome()">Guía de Estudio</button>
+  </nav>
+
   <script src="app.js"></script>
   <script src="registros.js"></script>
 </body>

@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Próximos Buques | Boarding Agent Tools</title>
+  <link rel="stylesheet" href="./proximos-buques.css" />
+</head>
+<body>
+  <main class="pb-shell">
+    <section class="pb-card pb-hero">
+      <div>
+        <p class="pb-kicker">BOARDING AGENT TOOLS v0.7.0</p>
+        <h1>Próximos Buques</h1>
+        <p class="pb-subtitle">Pega la programación, genera el bloque operativo vigente y copia el reporte en texto plano.</p>
+      </div>
+      <a class="pb-back" href="./buques.html?v=070">← Volver a Buques</a>
+    </section>
+
+    <section class="pb-grid">
+      <div class="pb-card">
+        <h2>1. Pegar programación</h2>
+        <p class="pb-help">Acepta datos pegados desde Excel con columnas o en formato de líneas. Campos esperados: Buque, Service, ETA Fecha, Hora, Puerto de Arribo, Puerto de Zarpe y Notas.</p>
+        <textarea id="scheduleInput" rows="18" placeholder="Pega aquí la programación de próximos buques..."></textarea>
+        <div class="pb-actions">
+          <button id="btnProcess" type="button">Procesar programación</button>
+          <button id="btnClear" type="button" class="pb-secondary">Limpiar</button>
+        </div>
+        <div id="processStatus" class="pb-status">Sin programación cargada.</div>
+      </div>
+
+      <div class="pb-card">
+        <h2>2. Bloque operativo</h2>
+        <p class="pb-help">El rango se calcula desde ayer hasta el siguiente lunes, miércoles o viernes operativo.</p>
+        <div class="pb-actions">
+          <button id="btnGenerate" type="button">Ver próximos buques</button>
+          <button id="btnCopy" type="button">Copiar reporte</button>
+        </div>
+        <textarea id="reportOutput" rows="18" placeholder="Aquí aparecerán los próximos buques..."></textarea>
+      </div>
+    </section>
+  </main>
+
+  <script src="./proximos-buques.js"></script>
+</body>
+</html>

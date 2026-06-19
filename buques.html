@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Buques | Boarding Agent Tools</title>
+  <link rel="stylesheet" href="./buques.css" />
+</head>
+<body>
+  <main class="ship-shell">
+    <section class="ship-card ship-hero">
+      <div>
+        <p class="ship-kicker">BOARDING AGENT TOOLS v0.7.0</p>
+        <h1>Buques</h1>
+        <p class="ship-subtitle">Consulta movimientos operativos, próximos arribos y herramientas relacionadas con buques.</p>
+      </div>
+      <a class="ship-back" href="./index.html?v=070">← Volver</a>
+    </section>
+
+    <section class="ship-grid">
+      <button class="ship-module" onclick="window.location.href='arribos-zarpes.html'">
+        <span>⚓</span>
+        <strong>Arribos y Zarpes</strong>
+        <small>Carga Excel vigente y genera reporte operativo por buque.</small>
+      </button>
+
+      <button class="ship-module" onclick="window.location.href='proximos-buques.html'">
+        <span>📅</span>
+        <strong>Próximos Buques</strong>
+        <small>Pega la programación y genera listado operativo del siguiente bloque.</small>
+      </button>
+    </section>
+  </main>
+</body>
+</html>
