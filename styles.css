@@ -48,3 +48,6 @@ h1{margin:0;font-size:2rem}
 .bottom-nav button:active,.feature-card:active,.action:active,.pill:active,.option:active,.directory-summary:active{transform:scale(.98)}
 @media(max-width:720px){.stats-grid{grid-template-columns:1fr}.home-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:360px){.home-grid{grid-template-columns:1fr}.hero h1{font-size:1.75rem}}
+.question-counter + .progress-track + p {
+  white-space: pre-line;
+}
