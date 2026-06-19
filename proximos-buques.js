@@ -208,13 +208,29 @@ function getUpcomingRecords() {
     });
 }
 
+function abbreviatePort(port) {
+  const cleanPort = clean(port);
+  if (!cleanPort) return '';
+
+  const normalized = normalize(cleanPort);
+  const aliases = {
+    'veracruz': 'Ver',
+    'altamira': 'Alt',
+    'cristobal': 'Cri',
+    'cartagena': 'Car',
+    'tampico': 'Tam',
+    'progreso': 'Pro',
+    'manzanillo': 'Man',
+    'lazaro cardenas': 'Lzc'
+  };
+
+  return aliases[normalized] || cleanPort.slice(0, 3);
+}
+
 function buildReport(records) {
-  const { start, end } = getRange(new Date());
   const lines = [
     'Próximos Buques',
-    `Periodo: ${formatDateMX(start)} al ${formatDateMX(end)}`,
-    '',
-    'Buque\tService\tETA Fecha\tHora\tPuerto de Arribo'
+    ''
   ];
 
   if (!records.length) {
@@ -223,13 +239,11 @@ function buildReport(records) {
   }
 
   records.forEach(item => {
-    lines.push([
-      item.buque,
-      item.service,
-      item.etaFecha,
-      item.hora,
-      item.puertoArribo
-    ].join('\t'));
+    const prevPort = abbreviatePort(item.puertoZarpe);
+    const prevText = prevPort ? ` [Prev. ${prevPort}]` : '';
+    const hourText = item.hora ? ` ${item.hora}` : '';
+
+    lines.push(`${item.buque} ETA ${item.etaFecha}${hourText}${prevText}`);
   });
 
   return lines.join('\n');
