@@ -4,6 +4,9 @@ let currentExam = [];
 let currentIndex = 0;
 let answers = [];
 let failedQuestions = [];
+let examDisplayOffset = 0;
+let examDisplayTotal = 0;
+let examMode = "random";
 
 async function loadData(){
   try{
@@ -208,7 +211,7 @@ function renderExamHome(){
   const last = history.length ? history[0].score + "%" : "Sin datos";
 
   setContent(`
-    <h2>Examen</h2>
+    <h2>Guía de Estudio</h2>
     <p class="muted">Simulador de estudio diario. Responde, revisa errores y mide avance.</p>
     <div class="stats-grid">
       <div class="stat-card"><strong>${allQuestions.length}</strong><small>Preguntas</small></div>
@@ -220,9 +223,16 @@ function renderExamHome(){
     <div class="toolbar">
       <button class="action" onclick="startExam(10)">Examen diario</button>
       <button class="pill" onclick="startExam(getUnifiedQuestions().length)">Simulador completo</button>
+      <button class="pill" onclick="startSequentialExam(1)">Examen secuencial</button>
       <button class="pill" onclick="startFailedReview()">Repasar errores</button>
       <button class="pill" onclick="renderProgress()">Mi progreso</button>
       <button class="pill" onclick="RegistrosPreguntas.open()">Registros</button>
+    </div>
+    <div class="progress-card">
+      <strong>Continuar examen secuencial</strong><br>
+      <small class="muted">Escribe el número donde te quedaste. Ejemplo: 120.</small>
+      <input id="sequentialFrom" class="search-box" type="number" min="1" max="${allQuestions.length}" placeholder="Continuar desde pregunta #">
+      <button class="pill" onclick="continueSequentialFromInput()">Continuar desde...</button>
     </div>
     <div class="progress-card">
       <strong>Último examen:</strong> ${last}<br>
@@ -238,7 +248,41 @@ function startExam(count){
   currentExam = shuffle(pool).slice(0, Math.min(count, pool.length));
   currentIndex = 0;
   answers = [];
+  examMode = "random";
+  examDisplayOffset = 0;
+  examDisplayTotal = currentExam.length;
   renderQuestion();
+}
+
+function startSequentialExam(from = 1){
+  const pool = getUnifiedQuestions();
+
+  if(!pool.length){
+    setContent(`
+      <h2>Sin preguntas disponibles</h2>
+      <p class="muted">No hay preguntas cargadas para iniciar el examen secuencial.</p>
+      <button class="action" onclick="renderExamHome()">Volver a Guía de Estudio</button>
+    `);
+    return;
+  }
+
+  let startNumber = Number(from || 1);
+  if(!Number.isFinite(startNumber) || startNumber < 1) startNumber = 1;
+  if(startNumber > pool.length) startNumber = pool.length;
+
+  const startIndex = startNumber - 1;
+  currentExam = pool.slice(startIndex);
+  currentIndex = 0;
+  answers = [];
+  examMode = "sequential";
+  examDisplayOffset = startIndex;
+  examDisplayTotal = pool.length;
+  renderQuestion();
+}
+
+function continueSequentialFromInput(){
+  const input = document.getElementById("sequentialFrom");
+  startSequentialExam(input ? input.value : 1);
 }
 
 function startFailedReview(){
@@ -253,6 +297,9 @@ function startFailedReview(){
   currentExam = shuffle(pool);
   currentIndex = 0;
   answers = [];
+  examMode = "failed";
+  examDisplayOffset = 0;
+  examDisplayTotal = currentExam.length;
   renderQuestion();
 }
 
@@ -294,9 +341,12 @@ function renderQuestion(){
 }
 
 function renderQuestionHeader(q, percent){
+  const displayNumber = examDisplayOffset + currentIndex + 1;
+  const displayTotal = examDisplayTotal || currentExam.length;
+
   return `
     <div class="question-counter">
-      <h2>Pregunta ${currentIndex + 1} / ${currentExam.length}</h2>
+      <h2>Pregunta ${displayNumber} / ${displayTotal}</h2>
       <span class="badge">${escapeHtml(q.tema)}</span>
       <span class="badge">${escapeHtml(getQuestionTypeLabel(q.tipo))}</span>
     </div>
@@ -459,10 +509,12 @@ function renderFichaQuestion(q, percent){
   fichaAnswers = [];
   const options = q.opciones || [];
   const questionText = renderFichaQuestionText(q.pregunta || "", q.espacios || 0);
+  const displayNumber = examDisplayOffset + currentIndex + 1;
+  const displayTotal = examDisplayTotal || currentExam.length;
 
   setContent(`
     <div class="question-counter">
-      <h2>Pregunta ${currentIndex + 1} / ${currentExam.length}</h2>
+      <h2>Pregunta ${displayNumber} / ${displayTotal}</h2>
       <span class="badge">${escapeHtml(q.tema)}</span>
       <span class="badge">${escapeHtml(getQuestionTypeLabel(q.tipo))}</span>
     </div>
