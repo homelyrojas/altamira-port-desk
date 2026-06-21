@@ -223,20 +223,63 @@ function renderExamHome(){
     <div class="toolbar">
       <button class="action" onclick="startExam(10)">Examen diario</button>
       <button class="pill" onclick="startExam(getUnifiedQuestions().length)">Simulador completo</button>
-      <button class="pill" onclick="startSequentialExam(1)">Examen secuencial</button>
+      <button class="pill" onclick="renderSequentialMenu()">Examen secuencial</button>
       <button class="pill" onclick="startFailedReview()">Repasar errores</button>
       <button class="pill" onclick="renderProgress()">Mi progreso</button>
       <button class="pill" onclick="RegistrosPreguntas.open()">Registros</button>
     </div>
-    <div class="progress-card">
-      <strong>Continuar examen secuencial</strong><br>
-      <small class="muted">Escribe el número donde te quedaste. Ejemplo: 120.</small>
-      <input id="sequentialFrom" class="search-box" type="number" min="1" max="${allQuestions.length}" placeholder="Continuar desde pregunta #">
-      <button class="pill" onclick="continueSequentialFromInput()">Continuar desde...</button>
-    </div>
+
     <div class="progress-card">
       <strong>Último examen:</strong> ${last}<br>
       <strong>Errores guardados:</strong> ${failedQuestions.length}
+    </div>
+  `);
+}
+function renderSequentialMenu(){
+  const totalQuestions = getUnifiedQuestions().length;
+
+  setContent(`
+    <h2>Examen secuencial</h2>
+    <p class="muted">
+      Estudia el banco completo en orden fijo. La pregunta 120 será siempre la misma en cualquier dispositivo.
+    </p>
+
+    <div class="progress-card">
+      <strong>Iniciar examen secuencial</strong><br>
+      <small class="muted">
+        Comienza desde la primera pregunta del banco.
+      </small>
+      <div class="toolbar">
+        <button class="action" onclick="startSequentialExam(1)">
+          Iniciar desde pregunta 1
+        </button>
+      </div>
+    </div>
+
+    <div class="progress-card">
+      <strong>Continuar examen secuencial</strong><br>
+      <small class="muted">
+        Escribe el número donde te quedaste.
+      </small>
+
+      <input
+        id="sequentialFrom"
+        class="search-box"
+        type="number"
+        min="1"
+        max="${totalQuestions}"
+        placeholder="Ej. 120"
+      >
+
+      <div class="toolbar">
+        <button class="pill" onclick="continueSequentialFromInput()">
+          Continuar
+        </button>
+
+        <button class="pill" onclick="renderExamHome()">
+          Volver
+        </button>
+      </div>
     </div>
   `);
 }
