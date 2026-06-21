@@ -859,3 +859,22 @@ if("serviceWorker" in navigator){
 }
 
 loadData().then(renderHome);
+async function loadVersionInfo() {
+  try {
+    const response = await fetch("version.json?v=" + Date.now());
+    const info = await response.json();
+
+    const versionElement = document.getElementById("versionInfo");
+
+    if(versionElement){
+      versionElement.textContent =
+        `${info.version} | ${info.questions} preguntas | Actualizado ${info.updated}`;
+    }
+  } catch(error){
+    console.error("No fue posible cargar version.json", error);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadVersionInfo();
+});
