@@ -1031,10 +1031,9 @@ async function loadVersionInfo() {
     const info = await response.json();
 
     const versionElement = document.getElementById("versionInfo");
+    const realQuestionCount = getUnifiedQuestions().length;
 
     if(versionElement){
-      const realQuestionCount = getUnifiedQuestions().length;
-
       versionElement.textContent =
         `${info.version} | ${realQuestionCount} preguntas | Actualizado ${info.updated}`;
     }
@@ -1042,7 +1041,7 @@ async function loadVersionInfo() {
     console.error("No fue posible cargar version.json", error);
   }
 }
-
-document.addEventListener("DOMContentLoaded", () => {
+loadData().then(() => {
+  renderHome();
   loadVersionInfo();
 });
