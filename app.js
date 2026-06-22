@@ -1033,8 +1033,10 @@ async function loadVersionInfo() {
     const versionElement = document.getElementById("versionInfo");
 
     if(versionElement){
+      const realQuestionCount = getUnifiedQuestions().length;
+
       versionElement.textContent =
-        `${info.version} | ${info.questions} preguntas | Actualizado ${info.updated}`;
+        `${info.version} | ${realQuestionCount} preguntas | Actualizado ${info.updated}`;
     }
   } catch(error){
     console.error("No fue posible cargar version.json", error);
