@@ -10,7 +10,7 @@
   <main class="pb-shell">
     <section class="pb-card pb-hero">
       <div>
-        <p class="pb-kicker">BOARDING AGENT TOOLS v0.7.0</p>
+        <p class="pb-kicker">BOARDING AGENT TOOLS v0.7.2</p>
         <h1>Próximos Buques</h1>
         <p class="pb-subtitle">Pega la programación, genera el bloque operativo vigente y copia el reporte en texto plano.</p>
       </div>
@@ -38,6 +38,30 @@
         </div>
         <textarea id="reportOutput" rows="18" placeholder="Aquí aparecerán los próximos buques..."></textarea>
       </div>
+    </section>
+
+    <section class="pb-card">
+      <h2>3. Consultar por rango de fecha</h2>
+      <p class="pb-help">Selecciona una fecha inicial y una fecha final para generar un reporte específico en formato compacto.</p>
+
+      <div class="pb-grid">
+        <label>
+          Fecha inicio
+          <input id="rangeStart" type="date" />
+        </label>
+
+        <label>
+          Fecha fin
+          <input id="rangeEnd" type="date" />
+        </label>
+      </div>
+
+      <div class="pb-actions">
+        <button id="btnGenerateRange" type="button">Consultar rango</button>
+        <button id="btnCopyRange" type="button">Copiar rango</button>
+      </div>
+
+      <textarea id="rangeOutput" rows="12" placeholder="Aquí aparecerán los buques del rango seleccionado..."></textarea>
     </section>
   </main>
 

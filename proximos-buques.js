@@ -9,6 +9,11 @@ const btnProcess = document.getElementById('btnProcess');
 const btnGenerate = document.getElementById('btnGenerate');
 const btnCopy = document.getElementById('btnCopy');
 const btnClear = document.getElementById('btnClear');
+const rangeStart = document.getElementById('rangeStart');
+const rangeEnd = document.getElementById('rangeEnd');
+const btnGenerateRange = document.getElementById('btnGenerateRange');
+const btnCopyRange = document.getElementById('btnCopyRange');
+const rangeOutput = document.getElementById('rangeOutput');
 
 const EXPECTED_HEADERS = ['buque', 'service', 'eta fecha', 'hora', 'puerto de arribo', 'puerto de zarpe', 'notas'];
 
@@ -44,6 +49,27 @@ function formatDateMX(date) {
   const mm = String(date.getMonth() + 1).padStart(2, '0');
   const yyyy = date.getFullYear();
   return `${dd}/${mm}/${yyyy}`;
+}
+
+function formatDateInput(date) {
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const dd = String(date.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+function parseDateInput(value) {
+  const text = clean(value);
+  const match = text.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (!match) return null;
+
+  const year = Number(match[1]);
+  const month = Number(match[2]) - 1;
+  const day = Number(match[3]);
+  const date = new Date(year, month, day);
+
+  if (Number.isNaN(date.getTime())) return null;
+  return date;
 }
 
 function formatHour(value) {
@@ -227,11 +253,14 @@ function abbreviatePort(port) {
   return aliases[normalized] || cleanPort.slice(0, 3);
 }
 
-function buildReport(records) {
-  const lines = [
-    'Próximos Buques',
-    ''
-  ];
+function buildReport(records, title = 'Próximos Buques', subtitle = '') {
+  const lines = [title];
+
+  if (subtitle) {
+    lines.push(subtitle);
+  }
+
+  lines.push('');
 
   if (!records.length) {
     lines.push('Sin buques programados para el periodo.');
@@ -265,6 +294,78 @@ function generateUpcoming() {
   reportOutput.value = buildReport(records);
 }
 
+function getRecordsByDateRange(start, end) {
+  const startDate = startOfDay(start);
+  const endDate = startOfDay(end);
+  endDate.setHours(23, 59, 59, 999);
+
+  return currentSchedule
+    .map(item => ({ ...item, etaDateObject: parseDateMX(item.etaFecha) }))
+    .filter(item => item.etaDateObject && item.etaDateObject >= startDate && item.etaDateObject <= endDate)
+    .sort((a, b) => {
+      const dateDiff = a.etaDateObject - b.etaDateObject;
+      if (dateDiff !== 0) return dateDiff;
+      return formatHour(a.hora).localeCompare(formatHour(b.hora));
+    });
+}
+
+function generateRangeReport() {
+  if (!currentSchedule.length) {
+    const payload = loadSchedule();
+    currentSchedule = payload?.records || [];
+    updateStatus(payload);
+  }
+
+  if (!currentSchedule.length) {
+    alert('Primero procesa o carga una programación.');
+    return;
+  }
+
+  const start = parseDateInput(rangeStart?.value);
+  const end = parseDateInput(rangeEnd?.value);
+
+  if (!start || !end) {
+    alert('Selecciona fecha inicio y fecha fin.');
+    return;
+  }
+
+  if (start > end) {
+    alert('La fecha inicio no puede ser mayor que la fecha fin.');
+    return;
+  }
+
+  const records = getRecordsByDateRange(start, end);
+  const subtitle = `Del ${formatDateMX(start)} al ${formatDateMX(end)}`;
+  rangeOutput.value = buildReport(records, 'Buques por rango de fecha', subtitle);
+}
+
+async function copyRangeReport() {
+  const text = rangeOutput.value.trim();
+  if (!text) {
+    alert('Primero genera el reporte por rango de fecha.');
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(rangeOutput.value);
+    alert('Reporte copiado al portapapeles.');
+  } catch {
+    rangeOutput.select();
+    document.execCommand('copy');
+    alert('Reporte copiado al portapapeles.');
+  }
+}
+
+function setDefaultRangeDates() {
+  if (!rangeStart || !rangeEnd) return;
+
+  const today = startOfDay(new Date());
+  const nextWeek = addDays(today, 7);
+
+  if (!rangeStart.value) rangeStart.value = formatDateInput(today);
+  if (!rangeEnd.value) rangeEnd.value = formatDateInput(nextWeek);
+}
+
 async function copyReport() {
   const text = reportOutput.value.trim();
   if (!text) {
@@ -288,6 +389,7 @@ function clearData() {
   currentSchedule = [];
   scheduleInput.value = '';
   reportOutput.value = '';
+  if (rangeOutput) rangeOutput.value = '';
   updateStatus(null);
 }
 
@@ -303,4 +405,7 @@ btnProcess.addEventListener('click', processSchedule);
 btnGenerate.addEventListener('click', generateUpcoming);
 btnCopy.addEventListener('click', copyReport);
 btnClear.addEventListener('click', clearData);
+btnGenerateRange.addEventListener('click', generateRangeReport);
+btnCopyRange.addEventListener('click', copyRangeReport);
+setDefaultRangeDates();
 hydrateFromStorage();
