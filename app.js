@@ -253,6 +253,15 @@ function renderSequentialMenu(){
     </p>
 
     <div class="progress-card">
+      <strong>Reanudar examen desde archivo</strong><br>
+      <small class="muted">Carga un avance JSON descargado previamente para continuar exactamente donde te quedaste.</small>
+      <input id="examProgressInputSequential" type="file" accept=".json,application/json" style="display:none" onchange="loadExamProgressFile(event)">
+      <div class="toolbar">
+        <button class="pill" onclick="document.getElementById('examProgressInputSequential').click()">📂 Cargar avance JSON</button>
+      </div>
+    </div>
+
+    <div class="progress-card">
       <strong>Iniciar examen secuencial</strong><br>
       <small class="muted">Comienza desde la primera pregunta del banco.</small>
       <div class="toolbar">
@@ -359,7 +368,7 @@ function buildExamProgressPayload(){
 
   return {
     type: "boarding-agent-tools-exam-progress",
-    version: "v0.9.0",
+    version: "v0.9.1",
     savedAt: new Date().toISOString(),
     examMode,
     currentIndex: progressIndex,
@@ -503,7 +512,7 @@ function renderQuestionHeader(q, percent){
     <div class="progress-track"><div class="progress-fill" style="width:${percent}%"></div></div>
     <p class="question-text"><strong>${escapeHtml(q.pregunta)}</strong></p>
     <div class="toolbar">
-      <button class="pill" onclick="downloadExamProgress()">💾 Descargar avance</button>
+      <button class="pill" onclick="downloadExamProgress()">💾 Descargar avance JSON</button>
     </div>
   `;
 }
@@ -674,7 +683,7 @@ function renderFichaQuestion(q, percent){
     <div class="progress-track"><div class="progress-fill" style="width:${percent}%"></div></div>
     <p class="question-text"><strong>${questionText}</strong></p>
     <div class="toolbar">
-      <button class="pill" onclick="downloadExamProgress()">💾 Descargar avance</button>
+      <button class="pill" onclick="downloadExamProgress()">💾 Descargar avance JSON</button>
     </div>
 
     <div class="details">
@@ -911,7 +920,7 @@ function renderFeedbackBase(q, correct, percent, answerHtml, titleOverride){
       </div>
     ` : ""}
     <div class="toolbar">
-      <button class="pill" onclick="downloadExamProgress()">💾 Descargar avance</button>
+      <button class="pill" onclick="downloadExamProgress()">💾 Descargar avance JSON</button>
       <button class="action" onclick="nextQuestion()">${currentIndex + 1 === currentExam.length ? "Ver resultado" : "Siguiente"}</button>
     </div>
   `);
