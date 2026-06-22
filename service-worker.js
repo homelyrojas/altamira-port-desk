@@ -1,4 +1,4 @@
-const CACHE_NAME = "altamira-port-desk-v089";
+const CACHE_NAME = "altamira-port-desk-v090";
 
 const ASSETS = [
   "./",
@@ -8,35 +8,39 @@ const ASSETS = [
   "./registros.css",
   "./registros.js",
   "./manifest.json",
+  "./version.json",
   "./directory.json",
   "./questions.json",
+
+  "./buques.html",
+  "./buques.css",
+  "./buques.js",
+
+  "./arribos-zarpes.html",
+  "./arribos-zarpes.css",
+  "./arribos-zarpes.js",
+
+  "./proximos-buques.html",
+  "./proximos-buques.css",
+  "./proximos-buques.js",
+
   "./directorio.html",
   "./directorio.css",
   "./directorio.js",
+
   "./prestadores.html",
   "./prestadores.css",
   "./prestadores.js",
   "./prestadores.json",
-  "./buques.html",
-  "./buques.css",
-  "./buques.js",
-  "./arribos-zarpes.html",
-  "./arribos-zarpes.css",
-  "./arribos-zarpes.js",
-  "./proximos-buques.html",
-  "./proximos-buques.css",
-  "./proximos-buques.js",
+
   "./icons/icon-192.svg",
-  "./icons/icon-512.svg",
-  "./version.json",
+  "./icons/icon-512.svg"
 ];
 
 self.addEventListener("install", event => {
   self.skipWaiting();
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache =>
-      Promise.allSettled(ASSETS.map(asset => cache.add(asset)))
-    )
+    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
   );
 });
 

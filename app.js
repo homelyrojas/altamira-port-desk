@@ -228,13 +228,21 @@ function renderExamHome(){
       <button class="pill" onclick="renderProgress()">Mi progreso</button>
       <button class="pill" onclick="RegistrosPreguntas.open()">Registros</button>
     </div>
-
+    <div class="progress-card">
+      <strong>Reanudar examen desde archivo</strong><br>
+      <small class="muted">Carga un avance JSON descargado previamente para continuar en cualquier dispositivo.</small>
+      <input id="examProgressInput" type="file" accept=".json,application/json" style="display:none" onchange="loadExamProgressFile(event)">
+      <div class="toolbar">
+        <button class="pill" onclick="document.getElementById('examProgressInput').click()">📂 Cargar avance JSON</button>
+      </div>
+    </div>
     <div class="progress-card">
       <strong>Último examen:</strong> ${last}<br>
       <strong>Errores guardados:</strong> ${failedQuestions.length}
     </div>
   `);
 }
+
 function renderSequentialMenu(){
   const totalQuestions = getUnifiedQuestions().length;
 
@@ -246,39 +254,19 @@ function renderSequentialMenu(){
 
     <div class="progress-card">
       <strong>Iniciar examen secuencial</strong><br>
-      <small class="muted">
-        Comienza desde la primera pregunta del banco.
-      </small>
+      <small class="muted">Comienza desde la primera pregunta del banco.</small>
       <div class="toolbar">
-        <button class="action" onclick="startSequentialExam(1)">
-          Iniciar desde pregunta 1
-        </button>
+        <button class="action" onclick="startSequentialExam(1)">Iniciar desde pregunta 1</button>
       </div>
     </div>
 
     <div class="progress-card">
       <strong>Continuar examen secuencial</strong><br>
-      <small class="muted">
-        Escribe el número donde te quedaste.
-      </small>
-
-      <input
-        id="sequentialFrom"
-        class="search-box"
-        type="number"
-        min="1"
-        max="${totalQuestions}"
-        placeholder="Ej. 120"
-      >
-
+      <small class="muted">Escribe el número donde te quedaste.</small>
+      <input id="sequentialFrom" class="search-box" type="number" min="1" max="${totalQuestions}" placeholder="Ej. 120">
       <div class="toolbar">
-        <button class="pill" onclick="continueSequentialFromInput()">
-          Continuar
-        </button>
-
-        <button class="pill" onclick="renderExamHome()">
-          Volver
-        </button>
+        <button class="pill" onclick="continueSequentialFromInput()">Continuar</button>
+        <button class="pill" onclick="renderExamHome()">Volver</button>
       </div>
     </div>
   `);
@@ -346,6 +334,125 @@ function startFailedReview(){
   renderQuestion();
 }
 
+function getQuestionKey(question){
+  return String(question?.id ?? "");
+}
+
+function getQuestionLookup(){
+  const lookup = new Map();
+  getUnifiedQuestions().forEach(question => {
+    const key = getQuestionKey(question);
+    if(key && !lookup.has(key)) lookup.set(key, normalizeQuestion(question));
+  });
+  return lookup;
+}
+
+function getProgressIndexForSave(){
+  // Si ya se contestó la pregunta actual y estamos en la pantalla de feedback,
+  // guardamos la siguiente posición pendiente para evitar duplicar respuestas al reanudar.
+  const nextPending = answers.length > currentIndex ? currentIndex + 1 : currentIndex;
+  return Math.min(nextPending, currentExam.length);
+}
+
+function buildExamProgressPayload(){
+  const progressIndex = getProgressIndexForSave();
+
+  return {
+    type: "boarding-agent-tools-exam-progress",
+    version: "v0.9.0",
+    savedAt: new Date().toISOString(),
+    examMode,
+    currentIndex: progressIndex,
+    examDisplayOffset,
+    examDisplayTotal: examDisplayTotal || currentExam.length,
+    currentExamIds: currentExam.map(getQuestionKey).filter(Boolean),
+    answers,
+    notes: "Este archivo permite reanudar un examen en BOARDING AGENT TOOLS. No editar manualmente salvo que sepas lo que haces."
+  };
+}
+
+function downloadExamProgress(){
+  if(!currentExam.length){
+    alert("No hay examen activo para guardar.");
+    return;
+  }
+
+  const payload = buildExamProgressPayload();
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  const date = new Date().toISOString().slice(0, 10);
+  const nextQuestion = Math.min(payload.currentIndex + 1 + Number(payload.examDisplayOffset || 0), Number(payload.examDisplayTotal || payload.currentExamIds.length));
+
+  a.href = url;
+  a.download = `bat-exam-progress-${date}-pregunta-${nextQuestion}.json`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+function loadExamProgressFile(event){
+  const file = event.target.files?.[0];
+  if(!file) return;
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    try{
+      const payload = JSON.parse(reader.result);
+      restoreExamProgress(payload);
+      event.target.value = "";
+    }catch(error){
+      console.error(error);
+      alert("No se pudo cargar el avance. Revisa que sea un archivo JSON válido de BOARDING AGENT TOOLS.");
+    }
+  };
+
+  reader.readAsText(file, "utf-8");
+}
+
+function restoreExamProgress(payload){
+  if(!payload || payload.type !== "boarding-agent-tools-exam-progress" || !Array.isArray(payload.currentExamIds)){
+    alert("El archivo no parece ser un avance válido de BOARDING AGENT TOOLS.");
+    return;
+  }
+
+  const lookup = getQuestionLookup();
+  const restoredExam = [];
+  const missingIds = [];
+
+  payload.currentExamIds.forEach(id => {
+    const question = lookup.get(String(id));
+    if(question) restoredExam.push(question);
+    else missingIds.push(String(id));
+  });
+
+  if(!restoredExam.length){
+    alert("No pude reconstruir el examen. Es posible que el banco de preguntas de este dispositivo no coincida con el archivo de avance.");
+    return;
+  }
+
+  if(missingIds.length){
+    alert(`Aviso: ${missingIds.length} pregunta(s) del avance no existen en este dispositivo. Se reanudará con las preguntas disponibles.`);
+  }
+
+  currentExam = restoredExam;
+  currentIndex = Number(payload.currentIndex || 0);
+  if(!Number.isFinite(currentIndex) || currentIndex < 0) currentIndex = 0;
+  if(currentIndex > currentExam.length) currentIndex = currentExam.length;
+
+  answers = Array.isArray(payload.answers) ? payload.answers : [];
+  examMode = payload.examMode || "restored";
+  examDisplayOffset = Number(payload.examDisplayOffset || 0);
+  examDisplayTotal = Number(payload.examDisplayTotal || currentExam.length);
+
+  if(currentIndex >= currentExam.length){
+    renderResult();
+  }else{
+    renderQuestion();
+  }
+}
+
 function renderQuestion(){
   const q = normalizeQuestion(currentExam[currentIndex]);
 
@@ -395,6 +502,9 @@ function renderQuestionHeader(q, percent){
     </div>
     <div class="progress-track"><div class="progress-fill" style="width:${percent}%"></div></div>
     <p class="question-text"><strong>${escapeHtml(q.pregunta)}</strong></p>
+    <div class="toolbar">
+      <button class="pill" onclick="downloadExamProgress()">💾 Descargar avance</button>
+    </div>
   `;
 }
 
@@ -563,6 +673,9 @@ function renderFichaQuestion(q, percent){
     </div>
     <div class="progress-track"><div class="progress-fill" style="width:${percent}%"></div></div>
     <p class="question-text"><strong>${questionText}</strong></p>
+    <div class="toolbar">
+      <button class="pill" onclick="downloadExamProgress()">💾 Descargar avance</button>
+    </div>
 
     <div class="details">
       <strong>Orden seleccionado:</strong>
@@ -798,6 +911,7 @@ function renderFeedbackBase(q, correct, percent, answerHtml, titleOverride){
       </div>
     ` : ""}
     <div class="toolbar">
+      <button class="pill" onclick="downloadExamProgress()">💾 Descargar avance</button>
       <button class="action" onclick="nextQuestion()">${currentIndex + 1 === currentExam.length ? "Ver resultado" : "Siguiente"}</button>
     </div>
   `);
