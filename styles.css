@@ -1,6 +1,6 @@
 *{box-sizing:border-box}
 :root{--yellow:#EED484;--gray:#8B827A;--black:#000000;--white:#FFFFFF}
-body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--white);color:var(--black);padding-bottom:88px}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--white);color:var(--black)}
 .hero{background:var(--black);color:var(--white);padding:34px 22px 30px;border-bottom-left-radius:28px;border-bottom-right-radius:28px;box-shadow:0 10px 28px rgba(0,0,0,.22)}
 .eyebrow{margin:0 0 8px;font-size:.76rem;letter-spacing:.08em;text-transform:uppercase;color:var(--yellow);font-weight:900}
 h1{margin:0;font-size:2rem}
@@ -43,9 +43,7 @@ h1{margin:0;font-size:2rem}
 .progress-track{width:100%;height:12px;border:1.5px solid var(--black);border-radius:999px;overflow:hidden;background:var(--white);margin:14px 0}
 .progress-fill{height:100%;background:var(--yellow);width:0%}
 .question-counter{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.bottom-nav{position:fixed;left:12px;right:12px;bottom:12px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;background:rgba(255,255,255,.94);backdrop-filter:blur(14px);border:1.5px solid var(--gray);border-radius:22px;padding:10px;box-shadow:0 12px 32px rgba(0,0,0,.16)}
-.bottom-nav button{border:1.5px solid var(--black);background:var(--white);border-radius:14px;padding:11px 8px;color:var(--black);font-weight:900}
-.bottom-nav button:active,.feature-card:active,.action:active,.pill:active,.option:active,.directory-summary:active{transform:scale(.98)}
+.feature-card:active,.action:active,.pill:active,.option:active,.directory-summary:active{transform:scale(.98)}
 @media(max-width:720px){.stats-grid{grid-template-columns:1fr}.home-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:360px){.home-grid{grid-template-columns:1fr}.hero h1{font-size:1.75rem}}
 .question-text {

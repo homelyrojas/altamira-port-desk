@@ -1024,7 +1024,6 @@ if("serviceWorker" in navigator){
   window.addEventListener("load", () => navigator.serviceWorker.register("./service-worker.js"));
 }
 
-loadData().then(renderHome);
 async function loadVersionInfo() {
   try {
     const response = await fetch("version.json?v=" + Date.now());
