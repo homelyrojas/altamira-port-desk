@@ -175,3 +175,11 @@ pre {
   .form-grid { grid-template-columns: 1fr; }
   .title-row { flex-direction: column; align-items: stretch; }
 }
+
+.registry-tabs {
+  margin-top: 14px;
+}
+
+.registry-section.hidden {
+  display: none;
+}
