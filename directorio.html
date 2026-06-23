@@ -9,7 +9,7 @@
 <body>
   <header class="hero">
     <div>
-      <p class="eyebrow">BOARDING AGENT TOOLS v0.9.6</p>
+      <p class="eyebrow">BOARDING AGENT TOOLS v0.9.7</p>
       <h1>Directorio Operativo</h1>
       <p>Consulta, registra, modifica y exporta contactos operativos en formato JSON.</p>
     </div>
@@ -54,75 +54,92 @@
     </section>
 
     <section id="registrosView" class="hidden">
-      <section class="panel">
-        <h2>1. Nuevo / Editar registro</h2>
-        <p class="muted">Los cambios se guardan en este navegador. Para hacerlos oficiales, exporta el JSON y súbelo a GitHub como <strong>directory.json</strong>.</p>
+      <section class="panel compact-panel">
+        <h2>Registros</h2>
+        <p class="muted">Administra el directorio por secciones para evitar una pantalla demasiado larga.</p>
 
-        <input id="recordId" type="hidden">
-
-        <div class="form-grid">
-          <label>
-            Dependencia
-            <input id="formDependencia" type="text" placeholder="Ej. Capitanía de Puerto Altamira">
-          </label>
-
-          <label>
-            Categoría
-            <input id="formCategoria" type="text" placeholder="Ej. Autoridad marítima">
-          </label>
-
-          <label>
-            Encargado
-            <input id="formEncargado" type="text" placeholder="Nombre del contacto">
-          </label>
-
-          <label>
-            Cargo
-            <input id="formCargo" type="text" placeholder="Cargo / función">
-          </label>
-
-          <label>
-            Teléfono
-            <input id="formTelefono" type="text" placeholder="Teléfono">
-          </label>
-
-          <label>
-            Correo
-            <input id="formCorreo" type="text" placeholder="Correo electrónico">
-          </label>
-        </div>
-
-        <label>
-          Notas
-          <textarea id="formNotas" rows="5" placeholder="Notas operativas, observaciones o referencias internas"></textarea>
-        </label>
-
-        <div class="actions-row">
-          <button onclick="saveRecord()">Guardar registro</button>
-          <button class="secondary" onclick="resetForm()">Nuevo / Limpiar</button>
+        <div class="tabs registry-tabs">
+          <button id="registryTabForm" class="tab active" onclick="showRegistrySection('form')">Nuevo / Editar registro</button>
+          <button id="registryTabBank" class="tab" onclick="showRegistrySection('bank')">Banco de registros</button>
+          <button id="registryTabJson" class="tab" onclick="showRegistrySection('json')">Exportar / Importar JSON</button>
         </div>
       </section>
 
-      <section class="panel">
-        <div class="title-row">
-          <h2>2. Banco de registros</h2>
-          <button onclick="renderBank()">Actualizar lista</button>
-        </div>
-        <div id="bankBox" class="matches-box"></div>
+      <section id="registryFormSection" class="registry-section">
+        <section class="panel">
+          <h2>1. Nuevo / Editar registro</h2>
+          <p class="muted">Los cambios se guardan en este navegador. Para hacerlos oficiales, exporta el JSON y súbelo a GitHub como <strong>directory.json</strong>.</p>
+
+          <input id="recordId" type="hidden">
+
+          <div class="form-grid">
+            <label>
+              Dependencia
+              <input id="formDependencia" type="text" placeholder="Ej. Capitanía de Puerto Altamira">
+            </label>
+
+            <label>
+              Categoría
+              <input id="formCategoria" type="text" placeholder="Ej. Autoridad marítima">
+            </label>
+
+            <label>
+              Encargado
+              <input id="formEncargado" type="text" placeholder="Nombre del contacto">
+            </label>
+
+            <label>
+              Cargo
+              <input id="formCargo" type="text" placeholder="Cargo / función">
+            </label>
+
+            <label>
+              Teléfono
+              <input id="formTelefono" type="text" placeholder="Teléfono">
+            </label>
+
+            <label>
+              Correo
+              <input id="formCorreo" type="text" placeholder="Correo electrónico">
+            </label>
+          </div>
+
+          <label>
+            Notas
+            <textarea id="formNotas" rows="5" placeholder="Notas operativas, observaciones o referencias internas"></textarea>
+          </label>
+
+          <div class="actions-row">
+            <button onclick="saveRecord()">Guardar registro</button>
+            <button class="secondary" onclick="resetForm()">Nuevo / Limpiar</button>
+          </div>
+        </section>
       </section>
 
-      <section class="panel">
-        <h2>3. Exportar / Importar JSON</h2>
-        <p class="muted">Exporta el archivo completo para reemplazar <strong>directory.json</strong> en GitHub.</p>
+      <section id="registryBankSection" class="registry-section hidden">
+        <section class="panel">
+          <div class="title-row">
+            <h2>2. Banco de registros</h2>
+            <button onclick="renderBank()">Actualizar lista</button>
+          </div>
+          <div id="bankBox" class="matches-box"></div>
+        </section>
+      </section>
 
-        <div class="actions-row">
-          <button onclick="downloadDirectoryJson()">Descargar directory.json</button>
-          <button onclick="copyDirectoryJson()">Copiar JSON</button>
-          <button class="secondary" onclick="document.getElementById('importJsonFile').click()">Importar JSON</button>
-          <input id="importJsonFile" type="file" accept=".json,application/json" hidden>
-        </div>
+      <section id="registryJsonSection" class="registry-section hidden">
+        <section class="panel">
+          <h2>3. Exportar / Importar JSON</h2>
+          <p class="muted">Exporta el archivo completo para reemplazar <strong>directory.json</strong> en GitHub.</p>
 
-        <pre id="jsonBox">Aquí aparecerá el JSON exportado...</pre>
+          <div class="actions-row">
+            <button onclick="downloadDirectoryJson()">Descargar directory.json</button>
+            <button onclick="copyDirectoryJson()">Copiar JSON</button>
+            <button class="secondary" onclick="document.getElementById('importJsonFile').click()">Importar JSON</button>
+            <input id="importJsonFile" type="file" accept=".json,application/json" hidden>
+          </div>
+
+          <pre id="jsonBox">Aquí aparecerá el JSON exportado...</pre>
+        </section>
       </section>
     </section>
   </main>

@@ -1,4 +1,4 @@
-const STORAGE_KEY = "bat_directorio_operativo_v096";
+const STORAGE_KEY = "bat_directorio_operativo_v097";
 
 let directoryData = [];
 let lastResult = "";
@@ -166,7 +166,7 @@ function showTab(tab) {
     registros.classList.remove("hidden");
     tabConsulta.classList.remove("active");
     tabRegistros.classList.add("active");
-    renderBank();
+    showRegistrySection("form");
   } else {
     registros.classList.add("hidden");
     consulta.classList.remove("hidden");
@@ -174,6 +174,32 @@ function showTab(tab) {
     tabConsulta.classList.add("active");
     renderMatches();
   }
+}
+
+function showRegistrySection(section) {
+  const sections = {
+    form: $("registryFormSection"),
+    bank: $("registryBankSection"),
+    json: $("registryJsonSection")
+  };
+
+  const tabs = {
+    form: $("registryTabForm"),
+    bank: $("registryTabBank"),
+    json: $("registryTabJson")
+  };
+
+  Object.values(sections).forEach(item => item?.classList.add("hidden"));
+  Object.values(tabs).forEach(item => item?.classList.remove("active"));
+
+  const selectedSection = sections[section] || sections.form;
+  const selectedTab = tabs[section] || tabs.form;
+
+  selectedSection?.classList.remove("hidden");
+  selectedTab?.classList.add("active");
+
+  if (section === "bank") renderBank();
+  if (section === "json") renderJsonBox();
 }
 
 function getFormRecord() {
@@ -242,7 +268,8 @@ function editRecord(id) {
   $("formCorreo").value = item.correo || "";
   $("formNotas").value = item.notas || "";
 
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  showRegistrySection("form");
+  $("registrosView")?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 function deleteRecord(id) {
