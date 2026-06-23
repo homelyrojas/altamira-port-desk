@@ -1,1 +1,1 @@
-// Reserved for future Buques menu interactions.
+// Reservado para futuras funciones del menú Buques.
