@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'bat_schematic_v092_current';
+const STORAGE_KEY = 'bat_schematic_v093_current';
 
 let currentSchematic = [];
 
@@ -28,6 +28,26 @@ function normalize(value) {
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/\s+/g, ' ');
+}
+
+function abbreviateTerminal(value) {
+  const text = clean(value);
+  if (!text) return '';
+
+  const normalized = normalize(text)
+    .replace(/\./g, '')
+    .replace(/,/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  const aliases = {
+    'altamira terminal portuaria sa de cv': 'ATP',
+    'altamira terminal portuaria s a de c v': 'ATP',
+    'infraestructura portuaria mexicana sa de cv': 'IPM',
+    'infraestructura portuaria mexicana s a de c v': 'IPM'
+  };
+
+  return aliases[normalized] || text;
 }
 
 function pad2(value) {
@@ -339,13 +359,18 @@ function buildReport(records, title = 'Schematic') {
   }
 
   records.forEach(item => {
-    const voyage = item.voyageImp ? ` / ${item.voyageImp}` : '';
-    const prev = item.prev ? ` / ${item.prev}` : '';
-    const next = item.next ? ` / ${item.next}` : '';
+    const vessel = item.vessel || '';
+    const imp = item.voyageImp ? ` ${item.voyageImp}` : '';
+    const prev = item.prev ? ` Prev: ${item.prev}` : '';
+    const next = item.next ? ` Next: ${item.next}` : '';
     const etb = item.etbDisplay || item.etb || '';
     const etd = item.etdDisplay || item.etd || '';
-    const terminal = item.terminal || '';
-    lines.push(`${item.vessel}${voyage}${prev}${next} / ${etb} / ${etd} / ${terminal}`);
+    const etbText = etb ? ` ETB: ${etb}` : '';
+    const etdText = etd ? ` ETD: ${etd}` : '';
+    const terminal = abbreviateTerminal(item.terminal || '');
+    const terminalText = terminal ? ` - ${terminal}` : '';
+
+    lines.push(`${vessel}${imp}${prev}${next}${etbText}${etdText}${terminalText}`);
   });
 
   return lines.join('\n');
