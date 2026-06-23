@@ -38,14 +38,46 @@ h2 {
   margin-top: 0;
 }
 
-input {
+.compact-panel {
+  padding: 16px;
+}
+
+.tabs, .actions-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.tab {
+  background: #f1eee8;
+  color: #000;
+}
+
+.tab.active {
+  background: #eed484;
+}
+
+input, select, textarea {
   width: 100%;
   box-sizing: border-box;
   padding: 16px;
   border-radius: 14px;
   border: 1px solid #d8cdb8;
   font-size: 18px;
-  margin-bottom: 16px;
+  margin: 8px 0 16px;
+  background: #fff;
+}
+
+textarea {
+  resize: vertical;
+  font-family: Arial, sans-serif;
+}
+
+.field-label, label {
+  display: block;
+  font-weight: 700;
+  margin-top: 10px;
 }
 
 button {
@@ -76,13 +108,15 @@ pre {
   border: 1px solid #d8cdb8;
   border-radius: 14px;
   padding: 18px;
-  min-height: 260px;
+  min-height: 220px;
   font-size: 16px;
   line-height: 1.5;
-}.matches-box {
+}
+
+.matches-box {
   display: grid;
   gap: 12px;
-  margin-bottom: 16px;
+  margin-top: 16px;
 }
 
 .result-card {
@@ -102,24 +136,42 @@ pre {
 }
 
 .result-card small {
+  display: block;
   color: #8b827a;
   font-size: 14px;
-}
-
-select {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 16px;
-  border-radius: 14px;
-  border: 1px solid #d8cdb8;
-  font-size: 18px;
-  margin-bottom: 16px;
-  background: #fff;
-}
-
-.help-text {
-  color: #8b827a;
-  margin-top: -4px;
-  margin-bottom: 14px;
   line-height: 1.4;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.muted {
+  color: #8b827a;
+  line-height: 1.4;
+}
+
+.hidden {
+  display: none;
+}
+
+.badge {
+  display: inline-block;
+  background: #000;
+  color: #eed484;
+  border-radius: 999px;
+  padding: 4px 9px;
+  font-size: 12px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+@media (max-width: 800px) {
+  body { padding: 14px; }
+  .hero { flex-direction: column; align-items: stretch; }
+  h1 { font-size: 40px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .title-row { flex-direction: column; align-items: stretch; }
 }
