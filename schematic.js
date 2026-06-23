@@ -13,8 +13,10 @@ const rangeEnd = document.getElementById('rangeEnd');
 const btnProcessFile = document.getElementById('btnProcessFile');
 const btnProcessText = document.getElementById('btnProcessText');
 const btnGenerate = document.getElementById('btnGenerate');
+const btnGenerateMsc = document.getElementById('btnGenerateMsc');
 const btnCopy = document.getElementById('btnCopy');
 const btnRange = document.getElementById('btnRange');
+const btnRangeMsc = document.getElementById('btnRangeMsc');
 const btnCopyRange = document.getElementById('btnCopyRange');
 const btnClear = document.getElementById('btnClear');
 
@@ -350,6 +352,14 @@ function getRecordsBetween(start, end) {
     .sort((a, b) => a.etbDateObject - b.etbDateObject);
 }
 
+function hasImpVoyage(item) {
+  return Boolean(clean(item?.voyageImp));
+}
+
+function filterMsc(records) {
+  return records.filter(hasImpVoyage);
+}
+
 function buildReport(records, title = 'Schematic') {
   const lines = [title, ''];
 
@@ -376,7 +386,7 @@ function buildReport(records, title = 'Schematic') {
   return lines.join('\n');
 }
 
-function generateOperationalBlock() {
+function generateOperationalBlock(onlyMsc = false) {
   if (!ensureLoaded()) {
     alert('Primero procesa o carga un schematic.');
     return;
@@ -384,7 +394,9 @@ function generateOperationalBlock() {
 
   const { start, end } = getOperationalRange(new Date());
   const records = getRecordsBetween(start, end);
-  reportOutput.value = buildReport(records, `Schematic - Bloque operativo ${formatDateMX(start)} al ${formatDateMX(end)}`);
+  const outputRecords = onlyMsc ? filterMsc(records) : records;
+  const suffix = onlyMsc ? ' - Solo MSC' : '';
+  reportOutput.value = buildReport(outputRecords, `Schematic - Bloque operativo${suffix} ${formatDateMX(start)} al ${formatDateMX(end)}`);
 }
 
 function getDateInputValue(input) {
@@ -393,7 +405,7 @@ function getDateInputValue(input) {
   return new Date(year, month - 1, day);
 }
 
-function generateRangeReport() {
+function generateRangeReport(onlyMsc = false) {
   if (!ensureLoaded()) {
     alert('Primero procesa o carga un schematic.');
     return;
@@ -414,7 +426,9 @@ function generateRangeReport() {
 
   const end = endOfDay(rawEnd);
   const records = getRecordsBetween(startOfDay(start), end);
-  rangeOutput.value = buildReport(records, `Schematic - Rango ${formatDateMX(start)} al ${formatDateMX(rawEnd)}`);
+  const outputRecords = onlyMsc ? filterMsc(records) : records;
+  const suffix = onlyMsc ? ' - Solo MSC' : '';
+  rangeOutput.value = buildReport(outputRecords, `Schematic - Rango${suffix} ${formatDateMX(start)} al ${formatDateMX(rawEnd)}`);
 }
 
 async function copyTextFrom(textarea, emptyMessage) {
@@ -455,9 +469,11 @@ function hydrateFromStorage() {
 
 btnProcessFile.addEventListener('click', processFile);
 btnProcessText.addEventListener('click', processText);
-btnGenerate.addEventListener('click', generateOperationalBlock);
+btnGenerate.addEventListener('click', () => generateOperationalBlock(false));
+btnGenerateMsc.addEventListener('click', () => generateOperationalBlock(true));
 btnCopy.addEventListener('click', () => copyTextFrom(reportOutput, 'Primero genera el bloque operativo.'));
-btnRange.addEventListener('click', generateRangeReport);
+btnRange.addEventListener('click', () => generateRangeReport(false));
+btnRangeMsc.addEventListener('click', () => generateRangeReport(true));
 btnCopyRange.addEventListener('click', () => copyTextFrom(rangeOutput, 'Primero genera la consulta por rango.'));
 btnClear.addEventListener('click', clearData);
 hydrateFromStorage();

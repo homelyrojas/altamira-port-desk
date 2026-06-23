@@ -11,11 +11,11 @@
   <main class="sc-shell">
     <section class="sc-card sc-hero">
       <div>
-        <p class="sc-kicker">BOARDING AGENT TOOLS v0.9.2</p>
+        <p class="sc-kicker">BOARDING AGENT TOOLS v0.9.4</p>
         <h1>Schematic</h1>
         <p class="sc-subtitle">Carga o pega el Live Schedule, genera el bloque operativo y consulta buques por rango de fecha.</p>
       </div>
-      <a class="sc-back" href="./buques.html?v=092">← Volver a Buques</a>
+      <a class="sc-back" href="./buques.html?v=094">← Volver a Buques</a>
     </section>
 
     <section class="sc-grid">
@@ -37,6 +37,7 @@
         <p class="sc-help">El rango se calcula desde ayer hasta el siguiente lunes, miércoles o viernes operativo, usando ETB.</p>
         <div class="sc-actions">
           <button id="btnGenerate" type="button">Ver bloque operativo</button>
+          <button id="btnGenerateMsc" type="button">Consultar Solo MSC</button>
           <button id="btnCopy" type="button">Copiar reporte</button>
         </div>
         <textarea id="reportOutput" rows="14" placeholder="Aquí aparecerá el bloque operativo del schematic..."></textarea>
@@ -58,6 +59,7 @@
       </div>
       <div class="sc-actions">
         <button id="btnRange" type="button">Consultar rango</button>
+        <button id="btnRangeMsc" type="button">Consultar Solo MSC</button>
         <button id="btnCopyRange" type="button">Copiar rango</button>
       </div>
       <textarea id="rangeOutput" rows="12" placeholder="Aquí aparecerá la consulta por rango de fecha..."></textarea>
