@@ -9,9 +9,9 @@
 <body>
   <header class="hero">
     <div>
-      <p class="eyebrow">BOARDING AGENT TOOLS v0.6.1</p>
+      <p class="eyebrow">BOARDING AGENT TOOLS v0.9.5</p>
       <h1>Directorio Operativo</h1>
-      <p>Busca por dependencia, categoría, encargado, cargo, teléfono, correo o notas.</p>
+      <p>Busca por contacto o consulta directamente por dependencia.</p>
     </div>
     <button onclick="window.location.replace('index.html?v=' + Date.now())">← Volver</button>
   </header>
@@ -26,8 +26,19 @@
     </section>
 
     <section class="panel">
+      <h2>2. Consultar por Dependencia</h2>
+      <p class="help-text">Selecciona una dependencia para mostrar sus datos completos.</p>
+      <select id="dependencyFilter">
+        <option value="">Selecciona una dependencia...</option>
+      </select>
+      <div id="dependencyMatchesBox" class="matches-box"></div>
+      <button onclick="consultDependency()">Consultar dependencia</button>
+      <button class="secondary" onclick="clearDependency()">Limpiar dependencia</button>
+    </section>
+
+    <section class="panel">
       <div class="title-row">
-        <h2>2. Resultado</h2>
+        <h2>3. Resultado</h2>
         <button onclick="copyResult()">Copiar información</button>
       </div>
       <pre id="resultBox">Aquí aparecerá la información del directorio...</pre>

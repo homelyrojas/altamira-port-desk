@@ -105,3 +105,21 @@ pre {
   color: #8b827a;
   font-size: 14px;
 }
+
+select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 16px;
+  border-radius: 14px;
+  border: 1px solid #d8cdb8;
+  font-size: 18px;
+  margin-bottom: 16px;
+  background: #fff;
+}
+
+.help-text {
+  color: #8b827a;
+  margin-top: -4px;
+  margin-bottom: 14px;
+  line-height: 1.4;
+}

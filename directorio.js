@@ -4,6 +4,7 @@ let lastResult = "";
 async function loadDirectory() {
   const response = await fetch("directory.json?v=" + Date.now());
   directoryData = await response.json();
+  populateDependencyFilter();
 }
 
 function normalize(text) {
@@ -24,6 +25,26 @@ Correo: ${item.correo || ""}
 Notas: ${item.notas || ""}`;
 }
 
+function populateDependencyFilter() {
+  const select = document.getElementById("dependencyFilter");
+  if (!select) return;
+
+  const dependencies = [...new Set(
+    directoryData
+      .map(item => item.dependencia)
+      .filter(Boolean)
+  )].sort((a, b) => a.localeCompare(b));
+
+  select.innerHTML = `<option value="">Selecciona una dependencia...</option>`;
+
+  dependencies.forEach(dep => {
+    const option = document.createElement("option");
+    option.value = dep;
+    option.textContent = dep;
+    select.appendChild(option);
+  });
+}
+
 function getMatches(query) {
   const cleanQuery = normalize(query.trim());
 
@@ -33,6 +54,22 @@ function getMatches(query) {
     const searchable = normalize(Object.values(item).join(" "));
     return searchable.includes(cleanQuery);
   });
+}
+
+function renderResultCard(item, targetBox) {
+  const card = document.createElement("button");
+  card.className = "result-card";
+  card.innerHTML = `
+    <strong>${item.dependencia || ""}</strong>
+    <small>${item.categoria || ""} | ${item.encargado || ""}</small>
+  `;
+
+  card.onclick = () => {
+    lastResult = formatContact(item);
+    document.getElementById("resultBox").textContent = lastResult;
+  };
+
+  targetBox.appendChild(card);
 }
 
 function renderMatches() {
@@ -56,21 +93,34 @@ function renderMatches() {
     return;
   }
 
-  matches.forEach(item => {
-    const card = document.createElement("button");
-    card.className = "result-card";
-    card.innerHTML = `
-      <strong>${item.dependencia || ""}</strong>
-      <small>${item.categoria || ""} | ${item.encargado || ""}</small>
-    `;
+  matches.forEach(item => renderResultCard(item, matchesBox));
+}
 
-    card.onclick = () => {
-      lastResult = formatContact(item);
-      resultBox.textContent = lastResult;
-    };
+function consultDependency() {
+  const selected = document.getElementById("dependencyFilter").value;
+  const resultBox = document.getElementById("resultBox");
+  const dependencyMatchesBox = document.getElementById("dependencyMatchesBox");
 
-    matchesBox.appendChild(card);
-  });
+  dependencyMatchesBox.innerHTML = "";
+
+  if (!selected) {
+    resultBox.textContent = "Selecciona una dependencia para consultar.";
+    lastResult = "";
+    return;
+  }
+
+  const matches = directoryData.filter(item => item.dependencia === selected);
+
+  if (matches.length === 0) {
+    resultBox.textContent = "No se encontró la dependencia seleccionada.";
+    lastResult = "";
+    return;
+  }
+
+  matches.forEach(item => renderResultCard(item, dependencyMatchesBox));
+
+  lastResult = matches.map(formatContact).join("\n\n------------------------------\n\n");
+  resultBox.textContent = lastResult;
 }
 
 function searchDirectory() {
@@ -80,6 +130,13 @@ function searchDirectory() {
 function clearSearch() {
   document.getElementById("searchInput").value = "";
   document.getElementById("matchesBox").innerHTML = "";
+  lastResult = "";
+  document.getElementById("resultBox").textContent = "Aquí aparecerá la información del directorio...";
+}
+
+function clearDependency() {
+  document.getElementById("dependencyFilter").value = "";
+  document.getElementById("dependencyMatchesBox").innerHTML = "";
   lastResult = "";
   document.getElementById("resultBox").textContent = "Aquí aparecerá la información del directorio...";
 }
@@ -95,4 +152,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const input = document.getElementById("searchInput");
   input.addEventListener("input", renderMatches);
+
+  const select = document.getElementById("dependencyFilter");
+  if (select) {
+    select.addEventListener("change", consultDependency);
+  }
 });
