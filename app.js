@@ -511,8 +511,18 @@ function renderQuestionHeader(q, percent){
     </div>
     <div class="progress-track"><div class="progress-fill" style="width:${percent}%"></div></div>
     <p class="question-text"><strong>${escapeHtml(q.pregunta)}</strong></p>
-    <div class="toolbar">
-      <button class="pill" onclick="downloadExamProgress()">💾 Descargar avance JSON</button>
+  `;
+}
+
+
+function renderSaveProgressCard(){
+  return `
+    <div class="progress-card">
+      <strong>Guardar avance</strong><br>
+      <small class="muted">Descarga tu avance para continuar después en este u otro dispositivo.</small>
+      <div class="toolbar">
+        <button class="pill" onclick="downloadExamProgress()">💾 Descargar avance JSON</button>
+      </div>
     </div>
   `;
 }
@@ -525,6 +535,7 @@ function renderOptionQuestion(q, percent){
         ${q.tipo === "vf" ? "" : String.fromCharCode(65 + i) + ") "}${escapeHtml(op)}
       </button>
     `).join("")}
+    ${renderSaveProgressCard()}
   `);
 }
 
@@ -543,6 +554,7 @@ function renderConceptQuestion(q, percent){
     <div class="toolbar">
       <button class="action" onclick="answerConceptQuestion()">Validar respuesta</button>
     </div>
+    ${renderSaveProgressCard()}
   `);
 }
 
@@ -566,6 +578,7 @@ function renderRelationQuestion(q, percent){
     <div class="toolbar">
       <button class="action" onclick="answerRelationQuestion()">Validar relaciones</button>
     </div>
+    ${renderSaveProgressCard()}
   `);
 }
 
@@ -579,6 +592,7 @@ function renderOpenQuestion(q, percent){
     <div class="toolbar">
       <button class="action" onclick="answerOpenQuestion()">Validar respuesta</button>
     </div>
+    ${renderSaveProgressCard()}
   `);
 }
 
@@ -682,9 +696,6 @@ function renderFichaQuestion(q, percent){
     </div>
     <div class="progress-track"><div class="progress-fill" style="width:${percent}%"></div></div>
     <p class="question-text"><strong>${questionText}</strong></p>
-    <div class="toolbar">
-      <button class="pill" onclick="downloadExamProgress()">💾 Descargar avance JSON</button>
-    </div>
 
     <div class="details">
       <strong>Orden seleccionado:</strong>
@@ -710,6 +721,7 @@ function renderFichaQuestion(q, percent){
       <button class="pill" onclick="resetFichas()">🔄 Reiniciar</button>
       <button class="action" onclick="answerFichaQuestion()">Validar respuesta</button>
     </div>
+    ${renderSaveProgressCard()}
   `);
 }
 
