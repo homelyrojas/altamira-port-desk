@@ -1,0 +1,21 @@
+BOARDING AGENT TOOLS v1.0.0 - ESTABILIZACIÓN
+
+Archivos incluidos con convención anti-bloqueo de Windows:
+
+indexhtml.txt          -> renombrar a index.html
+stylescss.txt          -> renombrar a styles.css
+appjs.txt              -> renombrar a app.js
+versionjson.txt        -> renombrar a version.json
+service-workerjs.txt   -> renombrar a service-worker.js
+
+Cambios principales:
+- Se conserva la estructura actual del proyecto.
+- Se mantiene el motor actual de Guía de Estudio.
+- Se conserva el contador dinámico de preguntas.
+- Se integra el ajuste para que "Descargar avance JSON" quede en un bloque separado.
+- Se actualiza version.json a v1.0.0.
+- Se actualiza CACHE_NAME a altamira-port-desk-v100.
+
+Importante:
+No subas los archivos con extensión .txt a GitHub como reemplazo directo.
+Primero renómbralos localmente al nombre real indicado.

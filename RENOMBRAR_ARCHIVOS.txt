@@ -1,0 +1,18 @@
+GUÍA RÁPIDA PARA RENOMBRAR
+
+1. Descomprime este ZIP.
+2. Renombra:
+
+indexhtml.txt          -> index.html
+stylescss.txt          -> styles.css
+appjs.txt              -> app.js
+versionjson.txt        -> version.json
+service-workerjs.txt   -> service-worker.js
+
+3. Sube esos archivos renombrados a GitHub Web.
+4. Haz commit con este mensaje sugerido:
+
+v1.0.0 Estabilización del proyecto
+
+5. Abre el portal con:
+https://homelyrojas.github.io/altamira-port-desk/?v=100
