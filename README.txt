@@ -1,9 +1,15 @@
-BAT v1.1.0
+BAT v1.2.0
 
-Esta entrega es una modularización conservadora.
-No se elimina el motor actual del examen.
-No se cambian los módulos operativos.
-Se prepara la base para mover funciones comunes a archivos compartidos.
+Modularización segura del examen.
 
-Siguiente fase recomendada:
-v1.2.0 - Extraer el motor de examen a exam.js, exam-render.js y exam-progress.js.
+Esta entrega NO elimina funciones:
+- Examen diario
+- Simulador completo
+- Examen secuencial
+- Repasar errores
+- Guardar avance JSON
+- Cargar avance JSON
+- Tipos de pregunta existentes
+
+La primera extracción mueve el motor a exam.js.
+Los archivos exam-render.js y exam-progress.js quedan listos para la siguiente subfase.

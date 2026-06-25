@@ -1,27 +1,26 @@
-BOARDING AGENT TOOLS v1.1.0 - MODULARIZACIÓN SEGURA
+BOARDING AGENT TOOLS v1.2.0 - EXAM MODULAR
 
-Objetivo:
-Iniciar Fase 2 sin romper funciones existentes.
+Cambios:
+- app.js queda más ligero: carga datos, home, versión y compatibilidad básica.
+- exam.js contiene el motor completo actual del examen.
+- exam-render.js queda creado como módulo preparado para renderizado.
+- exam-progress.js queda creado como módulo preparado para guardado/carga de avance.
+- index.html carga los nuevos módulos.
+- service-worker.js cachea los nuevos módulos.
+- version.json pasa a v1.2.0.
+- Se mantiene eliminado el menú inferior.
 
-Cambios incluidos:
-- Se elimina nuevamente el menú inferior visualmente estorboso.
-- Se actualiza index.html limpio, sin bottom-nav.
-- Se actualiza styles.css para ocultar cualquier bottom-nav residual.
-- Se conserva el app.js funcional actual con el ajuste del bloque separado para "Descargar avance JSON".
-- Se crea bat-utils.js como primera capa común de utilidades.
-- Se crea bat-version.js como primera capa común para versionado.
-- Se actualiza version.json a v1.1.0.
-- Se actualiza service-worker.js a CACHE_NAME altamira-port-desk-v110.
-- Se agregan bat-utils.js y bat-version.js al caché PWA.
-
-Renombrar antes de subir:
-indexhtml.txt            -> index.html
-stylescss.txt            -> styles.css
-appjs.txt                -> app.js
-bat-utilsjs.txt          -> bat-utils.js
-bat-versionjs.txt        -> bat-version.js
-versionjson.txt          -> version.json
-service-workerjs.txt     -> service-worker.js
+Renombrar:
+indexhtml.txt             -> index.html
+stylescss.txt             -> styles.css
+appjs.txt                 -> app.js
+examjs.txt                -> exam.js
+exam-renderjs.txt         -> exam-render.js
+exam-progressjs.txt       -> exam-progress.js
+bat-utilsjs.txt           -> bat-utils.js
+bat-versionjs.txt         -> bat-version.js
+versionjson.txt           -> version.json
+service-workerjs.txt      -> service-worker.js
 
 Commit sugerido:
-v1.1.0 Modularización segura y limpieza de navegación inferior
+v1.2.0 Extraer motor de examen a módulos

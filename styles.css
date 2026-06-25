@@ -50,7 +50,7 @@ h1{margin:0;font-size:2rem}
 @media(max-width:360px){.home-grid{grid-template-columns:1fr}.hero h1{font-size:1.75rem}}
 
 
-/* v1.1.0 - navegación inferior eliminada definitivamente */
+/* v1.2.0 - navegación inferior eliminada definitivamente */
 .bottom-nav{
   display:none !important;
 }

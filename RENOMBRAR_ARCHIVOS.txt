@@ -1,19 +1,18 @@
-GUÍA RÁPIDA
+RENOMBRAR ANTES DE SUBIR A GITHUB
 
-1. Descomprime el ZIP.
-2. Renombra:
+indexhtml.txt             -> index.html
+stylescss.txt             -> styles.css
+appjs.txt                 -> app.js
+examjs.txt                -> exam.js
+exam-renderjs.txt         -> exam-render.js
+exam-progressjs.txt       -> exam-progress.js
+bat-utilsjs.txt           -> bat-utils.js
+bat-versionjs.txt         -> bat-version.js
+versionjson.txt           -> version.json
+service-workerjs.txt      -> service-worker.js
 
-indexhtml.txt            -> index.html
-stylescss.txt            -> styles.css
-appjs.txt                -> app.js
-bat-utilsjs.txt          -> bat-utils.js
-bat-versionjs.txt        -> bat-version.js
-versionjson.txt          -> version.json
-service-workerjs.txt     -> service-worker.js
+URL para forzar actualización una vez:
+https://homelyrojas.github.io/altamira-port-desk/?v=120
 
-3. Sube esos archivos a GitHub Web.
-4. Commit sugerido:
-v1.1.0 Modularización segura y limpieza de navegación inferior
-
-5. Abre:
-https://homelyrojas.github.io/altamira-port-desk/?v=110
+Después usar normal:
+https://homelyrojas.github.io/altamira-port-desk/

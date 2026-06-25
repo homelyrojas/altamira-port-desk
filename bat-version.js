@@ -1,11 +1,3 @@
-/*
-BOARDING AGENT TOOLS - BATVersion
-v1.1.0
-
-Capa común para leer version.json desde cualquier módulo.
-Los módulos actuales pueden adoptarla gradualmente.
-*/
-
 window.BATVersion = {
   async load(){
     try{
@@ -16,11 +8,9 @@ window.BATVersion = {
       return {};
     }
   },
-
   async render(selector, formatter){
     const element = document.querySelector(selector);
     if(!element) return;
-
     const info = await this.load();
     element.textContent = typeof formatter === "function"
       ? formatter(info)
