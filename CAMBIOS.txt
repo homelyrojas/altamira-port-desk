@@ -1,21 +1,27 @@
-BOARDING AGENT TOOLS v1.0.0 - ESTABILIZACIÓN
+BOARDING AGENT TOOLS v1.1.0 - MODULARIZACIÓN SEGURA
 
-Archivos incluidos con convención anti-bloqueo de Windows:
+Objetivo:
+Iniciar Fase 2 sin romper funciones existentes.
 
-indexhtml.txt          -> renombrar a index.html
-stylescss.txt          -> renombrar a styles.css
-appjs.txt              -> renombrar a app.js
-versionjson.txt        -> renombrar a version.json
-service-workerjs.txt   -> renombrar a service-worker.js
+Cambios incluidos:
+- Se elimina nuevamente el menú inferior visualmente estorboso.
+- Se actualiza index.html limpio, sin bottom-nav.
+- Se actualiza styles.css para ocultar cualquier bottom-nav residual.
+- Se conserva el app.js funcional actual con el ajuste del bloque separado para "Descargar avance JSON".
+- Se crea bat-utils.js como primera capa común de utilidades.
+- Se crea bat-version.js como primera capa común para versionado.
+- Se actualiza version.json a v1.1.0.
+- Se actualiza service-worker.js a CACHE_NAME altamira-port-desk-v110.
+- Se agregan bat-utils.js y bat-version.js al caché PWA.
 
-Cambios principales:
-- Se conserva la estructura actual del proyecto.
-- Se mantiene el motor actual de Guía de Estudio.
-- Se conserva el contador dinámico de preguntas.
-- Se integra el ajuste para que "Descargar avance JSON" quede en un bloque separado.
-- Se actualiza version.json a v1.0.0.
-- Se actualiza CACHE_NAME a altamira-port-desk-v100.
+Renombrar antes de subir:
+indexhtml.txt            -> index.html
+stylescss.txt            -> styles.css
+appjs.txt                -> app.js
+bat-utilsjs.txt          -> bat-utils.js
+bat-versionjs.txt        -> bat-version.js
+versionjson.txt          -> version.json
+service-workerjs.txt     -> service-worker.js
 
-Importante:
-No subas los archivos con extensión .txt a GitHub como reemplazo directo.
-Primero renómbralos localmente al nombre real indicado.
+Commit sugerido:
+v1.1.0 Modularización segura y limpieza de navegación inferior

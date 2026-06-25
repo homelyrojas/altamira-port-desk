@@ -1,9 +1,11 @@
-const CACHE_NAME = "altamira-port-desk-v100";
+const CACHE_NAME = "altamira-port-desk-v110";
 const ASSETS = [
   "./",
   "./index.html",
   "./styles.css",
   "./app.js",
+  "./bat-utils.js",
+  "./bat-version.js",
   "./manifest.json",
   "./version.json",
   "./directory.json",

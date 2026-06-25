@@ -1,12 +1,9 @@
-BAT v1.0.0 - PAQUETE SEGURO
+BAT v1.1.0
 
-Este paquete es una estabilización conservadora.
-No reorganiza carpetas ni elimina archivos.
-La idea es cerrar la etapa v0.9.x sin perder funciones.
+Esta entrega es una modularización conservadora.
+No se elimina el motor actual del examen.
+No se cambian los módulos operativos.
+Se prepara la base para mover funciones comunes a archivos compartidos.
 
-Siguiente fase:
-BOARDING AGENT TOOLS VERSION 2
-- Modularización gradual.
-- Dashboard operativo.
-- Prestadores administrables.
-- Bitácora de Boarding Agent.
+Siguiente fase recomendada:
+v1.2.0 - Extraer el motor de examen a exam.js, exam-render.js y exam-progress.js.
