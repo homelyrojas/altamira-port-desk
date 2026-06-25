@@ -1,8 +1,13 @@
-RENOMBRAR ANTES DE SUBIR
+RENOMBRAR ANTES DE SUBIR A GITHUB
 
-examjs.txt              -> exam.js
+prestadoreshtml.txt     -> prestadores.html
+prestadorescss.txt      -> prestadores.css
+prestadoresjs.txt       -> prestadores.js
 versionjson.txt         -> version.json
 service-workerjs.txt    -> service-worker.js
 
 URL para refrescar una vez:
-https://homelyrojas.github.io/altamira-port-desk/?v=121
+https://homelyrojas.github.io/altamira-port-desk/prestadores.html?v=130
+
+Después usar normal:
+https://homelyrojas.github.io/altamira-port-desk/

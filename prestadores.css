@@ -36,14 +36,15 @@ h1 {
 
 h2 { margin-top: 0; }
 
-input {
+input, textarea, select {
   width: 100%;
   box-sizing: border-box;
   padding: 16px;
   border-radius: 14px;
   border: 1px solid #d8cdb8;
   font-size: 18px;
-  margin-bottom: 16px;
+  margin: 8px 0 16px;
+  background: #fff;
 }
 
 button {
@@ -64,6 +65,7 @@ button.secondary { background: #8b827a; }
   justify-content: space-between;
   gap: 16px;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 pre {
@@ -106,23 +108,6 @@ pre {
   line-height: 1.4;
 }
 
-@media (max-width: 700px) {
-  body { padding: 14px; }
-  .hero { display: block; }
-  h1 { font-size: 40px; }
-  .hero button { margin-top: 16px; }
-}
-select {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 16px;
-  border-radius: 14px;
-  border: 1px solid #d8cdb8;
-  font-size: 18px;
-  margin: 8px 0 16px;
-  background: #fff;
-}
-
 .badge-ok {
   color: #008000;
   font-weight: 800;
@@ -131,4 +116,93 @@ select {
 .badge-neutral {
   color: #8b827a;
   font-weight: 700;
+}
+
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.tab {
+  background: #f0f0f0;
+  color: #000;
+  border-radius: 999px;
+}
+
+.tab.active {
+  background: #eed484;
+}
+
+.compact-panel {
+  padding: 18px 22px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.muted {
+  color: #777;
+  line-height: 1.45;
+}
+
+.field-label {
+  display: block;
+  font-weight: 700;
+  margin-top: 10px;
+}
+
+.actions-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 12px 0 18px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.registry-tabs .tab {
+  min-width: 210px;
+}
+
+.bank-card {
+  background: #fbfaf7;
+  border: 1px solid #d8cdb8;
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.bank-card strong {
+  display: block;
+  font-size: 18px;
+  margin-bottom: 4px;
+}
+
+.bank-card small {
+  display: block;
+  color: #777;
+  margin-bottom: 10px;
+}
+
+.bank-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.danger {
+  background: #8a2626;
+}
+
+@media (max-width: 700px) {
+  body { padding: 14px; }
+  .hero { display: block; }
+  h1 { font-size: 40px; }
+  .hero button { margin-top: 16px; }
+  .form-grid { grid-template-columns: 1fr; }
 }

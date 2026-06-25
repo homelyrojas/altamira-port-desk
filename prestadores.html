@@ -9,9 +9,9 @@
 <body>
   <header class="hero">
     <div>
-      <p class="eyebrow">BOARDING AGENT TOOLS v0.9.8</p>
+      <p class="eyebrow">BOARDING AGENT TOOLS v1.3.0</p>
       <h1>Prestadores de Servicios</h1>
-      <p>Consulta prestadores autorizados por ASIPONA Altamira. Busca por servicio, empresa, contacto, teléfono, correo o alta MSC.</p>
+      <p>Consulta, registra, modifica y exporta prestadores autorizados en formato JSON.</p>
     </div>
     <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
       <button onclick="window.location.replace('index.html?v=' + Date.now())">← Volver</button>
@@ -20,30 +20,133 @@
   </header>
 
   <main>
-   <section class="panel">
-  <h2>1. Consultar prestador</h2>
-
-  <label for="serviceFilter"><strong>Filtrar por servicio</strong></label>
-  <select id="serviceFilter">
-    <option value="">Todos los servicios</option>
-  </select>
-
-  <input id="searchInput" type="text" placeholder="Ej. Amarre, Avituallamiento, Ronalú, MXA22804">
-  <div id="matchesBox" class="matches-box"></div>
-
-  <button onclick="searchProviders()">Buscar</button>
-  <button class="secondary" onclick="clearSearch()">Limpiar</button>
-</section>
-
-    <section class="panel">
-      <div class="title-row">
-        <h2>2. Información completa</h2>
-        <button onclick="copyResult()">Copiar información</button>
+    <section class="panel compact-panel">
+      <div class="tabs">
+        <button id="tabConsulta" class="tab active" onclick="showTab('consulta')">🔍 Consultar</button>
+        <button id="tabRegistros" class="tab" onclick="showTab('registros')">📝 Registros</button>
       </div>
-      <pre id="resultBox">Aquí aparecerá la información del prestador de servicios...</pre>
+    </section>
+
+    <section id="consultaView">
+      <section class="panel">
+        <h2>1. Consultar prestador</h2>
+
+        <label for="serviceFilter"><strong>Filtrar por servicio</strong></label>
+        <select id="serviceFilter">
+          <option value="">Todos los servicios</option>
+        </select>
+
+        <label class="field-label">Buscar por palabra clave</label>
+        <input id="searchInput" type="text" placeholder="Ej. Amarre, Avituallamiento, Ronalú, MXA22804">
+
+        <div class="actions-row">
+          <button onclick="searchProviders()">Buscar</button>
+          <button class="secondary" onclick="clearSearch()">Limpiar</button>
+        </div>
+
+        <div id="matchesBox" class="matches-box"></div>
+      </section>
+
+      <section class="panel">
+        <div class="title-row">
+          <h2>2. Información completa</h2>
+          <button onclick="copyResult()">Copiar información</button>
+        </div>
+        <pre id="resultBox">Aquí aparecerá la información del prestador de servicios...</pre>
+      </section>
+    </section>
+
+    <section id="registrosView" class="hidden">
+      <section class="panel compact-panel">
+        <h2>Registros</h2>
+        <p class="muted">Administra prestadores por secciones para evitar una pantalla demasiado larga.</p>
+
+        <div class="tabs registry-tabs">
+          <button id="registryTabForm" class="tab active" onclick="showRegistrySection('form')">Nuevo / Editar prestador</button>
+          <button id="registryTabBank" class="tab" onclick="showRegistrySection('bank')">Banco de prestadores</button>
+          <button id="registryTabJson" class="tab" onclick="showRegistrySection('json')">Exportar / Importar JSON</button>
+        </div>
+      </section>
+
+      <section id="registryFormSection" class="registry-section">
+        <section class="panel">
+          <h2>1. Nuevo / Editar prestador</h2>
+          <p class="muted">Los cambios se guardan en este navegador. Para hacerlos oficiales, exporta el JSON y súbelo a GitHub como <strong>prestadores.json</strong>.</p>
+
+          <input id="recordId" type="hidden">
+
+          <div class="form-grid">
+            <label>
+              Denominación
+              <input id="formDenominacion" type="text" placeholder="Nombre de la empresa">
+            </label>
+
+            <label>
+              Servicio
+              <input id="formServicio" type="text" placeholder="Ej. Amarre de Cabos">
+            </label>
+
+            <label>
+              Alta MSC
+              <input id="formAltaMsc" type="text" placeholder="Ej. MXA22017 / NO">
+            </label>
+
+            <label>
+              Teléfono
+              <input id="formTelefono" type="text" placeholder="Teléfono">
+            </label>
+
+            <label>
+              Contacto
+              <input id="formContacto" type="text" placeholder="Nombre del contacto">
+            </label>
+
+            <label>
+              Email
+              <input id="formEmail" type="text" placeholder="Correo electrónico">
+            </label>
+          </div>
+
+          <label>
+            Dirección
+            <textarea id="formDireccion" rows="4" placeholder="Dirección completa"></textarea>
+          </label>
+
+          <div class="actions-row">
+            <button onclick="saveRecord()">Guardar prestador</button>
+            <button class="secondary" onclick="resetForm()">Nuevo / Limpiar</button>
+          </div>
+        </section>
+      </section>
+
+      <section id="registryBankSection" class="registry-section hidden">
+        <section class="panel">
+          <div class="title-row">
+            <h2>2. Banco de prestadores</h2>
+            <button onclick="renderBank()">Actualizar lista</button>
+          </div>
+          <div id="bankBox" class="matches-box"></div>
+        </section>
+      </section>
+
+      <section id="registryJsonSection" class="registry-section hidden">
+        <section class="panel">
+          <h2>3. Exportar / Importar JSON</h2>
+          <p class="muted">Exporta el archivo completo para reemplazar <strong>prestadores.json</strong> en GitHub.</p>
+
+          <div class="actions-row">
+            <button onclick="downloadProvidersJson()">Descargar prestadores.json</button>
+            <button onclick="copyProvidersJson()">Copiar JSON</button>
+            <button class="secondary" onclick="document.getElementById('importJsonFile').click()">Importar JSON</button>
+            <input id="importJsonFile" type="file" accept=".json,application/json" hidden>
+          </div>
+
+          <pre id="jsonBox">Aquí aparecerá el JSON exportado...</pre>
+        </section>
+      </section>
     </section>
   </main>
- 
+
   <script src="prestadores.js"></script>
 </body>
 </html>

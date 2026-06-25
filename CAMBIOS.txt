@@ -1,15 +1,25 @@
-BOARDING AGENT TOOLS v1.2.1 - Feedback con globo de avance
+BOARDING AGENT TOOLS v1.3.0 - Prestadores Administrable
 
-Cambio puntual:
-- En la pantalla de retroalimentación, el botón "Descargar avance JSON" ya no aparece junto a "Siguiente".
-- Ahora aparece en su propio globo inferior mediante renderSaveProgressCard().
-- Se actualiza version.json a v1.2.1.
-- Se actualiza CACHE_NAME a altamira-port-desk-v121.
+Cambios:
+- Prestadores ahora tiene dos pestañas: Consultar y Registros.
+- Registros se divide en:
+  1. Nuevo / Editar prestador
+  2. Banco de prestadores
+  3. Exportar / Importar JSON
+- Se guarda localmente en el navegador con STORAGE_KEY bat_prestadores_servicios_v130.
+- Se puede exportar prestadores.json para subirlo a GitHub.
+- Se normaliza alta_msc:
+  X, vacío, NO, N/A -> NO
+  MX... -> Alta en MSC
+- Se actualiza version.json a v1.3.0.
+- Se actualiza service-worker.js a CACHE_NAME altamira-port-desk-v130.
 
-Archivos a reemplazar:
-examjs.txt              -> exam.js
+Renombrar:
+prestadoreshtml.txt     -> prestadores.html
+prestadorescss.txt      -> prestadores.css
+prestadoresjs.txt       -> prestadores.js
 versionjson.txt         -> version.json
 service-workerjs.txt    -> service-worker.js
 
 Commit sugerido:
-v1.2.1 Mover descarga de avance a globo inferior en feedback
+v1.3.0 Prestadores administrable

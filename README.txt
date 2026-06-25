@@ -1,15 +1,10 @@
-BAT v1.2.0
+BAT v1.3.0 - Prestadores Administrable
 
-Modularización segura del examen.
+Esta versión replica el modelo de Directorio Administrable para Prestadores.
 
-Esta entrega NO elimina funciones:
-- Examen diario
-- Simulador completo
-- Examen secuencial
-- Repasar errores
-- Guardar avance JSON
-- Cargar avance JSON
-- Tipos de pregunta existentes
-
-La primera extracción mueve el motor a exam.js.
-Los archivos exam-render.js y exam-progress.js quedan listos para la siguiente subfase.
+Flujo recomendado:
+1. Entrar a Prestadores.
+2. Abrir Registros.
+3. Crear o editar prestadores.
+4. Exportar prestadores.json.
+5. Subir prestadores.json a GitHub cuando se quiera hacer oficial.
