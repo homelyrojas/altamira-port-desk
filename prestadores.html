@@ -9,7 +9,7 @@
 <body>
   <header class="hero">
     <div>
-      <p class="eyebrow">BOARDING AGENT TOOLS v1.3.0</p>
+      <p class="eyebrow">BOARDING AGENT TOOLS v1.4.0</p>
       <h1>Prestadores de Servicios</h1>
       <p>Consulta, registra, modifica y exporta prestadores autorizados en formato JSON.</p>
     </div>
@@ -36,6 +36,11 @@
           <option value="">Todos los servicios</option>
         </select>
 
+        <label class="check-row">
+          <input id="onlyMscCheck" type="checkbox">
+          <span>Solo Alta MSC</span>
+        </label>
+
         <label class="field-label">Buscar por palabra clave</label>
         <input id="searchInput" type="text" placeholder="Ej. Amarre, Avituallamiento, Ronalú, MXA22804">
 
@@ -44,6 +49,7 @@
           <button class="secondary" onclick="clearSearch()">Limpiar</button>
         </div>
 
+        <p id="resultCounter" class="muted">Selecciona un servicio o escribe una palabra clave para buscar.</p>
         <div id="matchesBox" class="matches-box"></div>
       </section>
 
@@ -147,6 +153,7 @@
     </section>
   </main>
 
+  <script src="bat-catalog.js"></script>
   <script src="prestadores.js"></script>
 </body>
 </html>

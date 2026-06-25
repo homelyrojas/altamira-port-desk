@@ -1,10 +1,6 @@
-BAT v1.3.0 - Prestadores Administrable
+BAT v1.4.0
 
-Esta versión replica el modelo de Directorio Administrable para Prestadores.
+Esta versión agrega "Solo Alta MSC" en Prestadores y crea la primera base de componente reutilizable para consultas tipo catálogo.
 
-Flujo recomendado:
-1. Entrar a Prestadores.
-2. Abrir Registros.
-3. Crear o editar prestadores.
-4. Exportar prestadores.json.
-5. Subir prestadores.json a GitHub cuando se quiera hacer oficial.
+Próxima evolución sugerida:
+v1.5.0 Bitácora de Boarding Agent

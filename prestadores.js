@@ -1,4 +1,4 @@
-const STORAGE_KEY = "bat_prestadores_servicios_v130";
+const STORAGE_KEY = "bat_prestadores_servicios_v140";
 
 let providersData = [];
 let lastResult = "";
@@ -36,6 +36,7 @@ function loadLocalProviders() {
 }
 
 function normalize(text) {
+  if (window.BATCatalog?.normalize) return window.BATCatalog.normalize(text);
   return String(text || "")
     .toLowerCase()
     .normalize("NFD")
@@ -119,13 +120,32 @@ function populateServiceFilter() {
 function getMatches(query = "") {
   const cleanQuery = normalize((query || $("searchInput")?.value || "").trim());
   const selectedService = $("serviceFilter")?.value || "";
+  const onlyMsc = Boolean($("onlyMscCheck")?.checked);
 
   return providersData.filter(item => {
     const serviceMatch = !selectedService || item.servicio === selectedService;
     const searchable = normalize(Object.values(item).join(" "));
     const textMatch = !cleanQuery || searchable.includes(cleanQuery);
-    return serviceMatch && textMatch;
+    const mscMatch = !onlyMsc || isAltaMSC(item);
+    return serviceMatch && textMatch && mscMatch;
   });
+}
+
+function renderResultCounter(matches) {
+  const counter = $("resultCounter");
+  if (!counter) return;
+
+  const selectedService = $("serviceFilter")?.value || "";
+  const query = $("searchInput")?.value || "";
+  const onlyMsc = Boolean($("onlyMscCheck")?.checked);
+
+  if (!selectedService && !query.trim() && !onlyMsc) {
+    counter.textContent = "Selecciona un servicio o escribe una palabra clave para buscar.";
+    return;
+  }
+
+  const suffix = onlyMsc ? " con Alta MSC" : "";
+  counter.textContent = `${matches.length} prestador(es) encontrado(s)${suffix}.`;
 }
 
 function renderMatches() {
@@ -133,12 +153,14 @@ function renderMatches() {
   const resultBox = $("resultBox");
   const matchesBox = $("matchesBox");
   const selectedService = $("serviceFilter")?.value || "";
+  const onlyMsc = Boolean($("onlyMscCheck")?.checked);
   if (!resultBox || !matchesBox) return;
 
   const matches = getMatches(query);
   matchesBox.innerHTML = "";
+  renderResultCounter(matches);
 
-  if (!query.trim() && !selectedService) {
+  if (!query.trim() && !selectedService && !onlyMsc) {
     resultBox.textContent = "Selecciona un servicio o escribe una palabra clave para buscar.";
     lastResult = "";
     return;
@@ -181,9 +203,11 @@ function searchProviders() {
 function clearSearch() {
   $("searchInput").value = "";
   $("serviceFilter").value = "";
+  $("onlyMscCheck").checked = false;
   $("matchesBox").innerHTML = "";
   lastResult = "";
   $("resultBox").textContent = "Aquí aparecerá la información del prestador de servicios...";
+  renderMatches();
 }
 
 async function copyResult() {
@@ -392,5 +416,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   $("searchInput")?.addEventListener("input", renderMatches);
   $("serviceFilter")?.addEventListener("change", renderMatches);
+  $("onlyMscCheck")?.addEventListener("change", renderMatches);
   $("importJsonFile")?.addEventListener("change", importProvidersJson);
 });

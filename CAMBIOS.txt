@@ -1,25 +1,24 @@
-BOARDING AGENT TOOLS v1.3.0 - Prestadores Administrable
+BOARDING AGENT TOOLS v1.4.0 - Consulta Alta MSC y base de componente catálogo
 
-Cambios:
-- Prestadores ahora tiene dos pestañas: Consultar y Registros.
-- Registros se divide en:
-  1. Nuevo / Editar prestador
-  2. Banco de prestadores
-  3. Exportar / Importar JSON
-- Se guarda localmente en el navegador con STORAGE_KEY bat_prestadores_servicios_v130.
-- Se puede exportar prestadores.json para subirlo a GitHub.
-- Se normaliza alta_msc:
-  X, vacío, NO, N/A -> NO
-  MX... -> Alta en MSC
-- Se actualiza version.json a v1.3.0.
-- Se actualiza service-worker.js a CACHE_NAME altamira-port-desk-v130.
+Incluye la mejora v1.3.1:
+- Checkbox "Solo Alta MSC" en Prestadores.
+- El filtro funciona combinado con servicio y palabra clave.
+- El contador indica resultados filtrados y cuando aplica Alta MSC.
+- Limpiar búsqueda también desmarca Solo Alta MSC.
+
+Además incluye la base v1.4:
+- Nuevo archivo bat-catalog.js para iniciar componente reutilizable de consultas tipo catálogo.
+- Prestadores ya puede usar BATCatalog.normalize().
+- service-worker.js cachea bat-catalog.js.
+- version.json pasa a v1.4.0.
 
 Renombrar:
 prestadoreshtml.txt     -> prestadores.html
 prestadorescss.txt      -> prestadores.css
 prestadoresjs.txt       -> prestadores.js
+bat-catalogjs.txt       -> bat-catalog.js
 versionjson.txt         -> version.json
 service-workerjs.txt    -> service-worker.js
 
 Commit sugerido:
-v1.3.0 Prestadores administrable
+v1.4.0 Solo Alta MSC y componente de catálogo
