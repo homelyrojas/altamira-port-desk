@@ -1,26 +1,15 @@
-BOARDING AGENT TOOLS v1.2.0 - EXAM MODULAR
+BOARDING AGENT TOOLS v1.2.1 - Feedback con globo de avance
 
-Cambios:
-- app.js queda más ligero: carga datos, home, versión y compatibilidad básica.
-- exam.js contiene el motor completo actual del examen.
-- exam-render.js queda creado como módulo preparado para renderizado.
-- exam-progress.js queda creado como módulo preparado para guardado/carga de avance.
-- index.html carga los nuevos módulos.
-- service-worker.js cachea los nuevos módulos.
-- version.json pasa a v1.2.0.
-- Se mantiene eliminado el menú inferior.
+Cambio puntual:
+- En la pantalla de retroalimentación, el botón "Descargar avance JSON" ya no aparece junto a "Siguiente".
+- Ahora aparece en su propio globo inferior mediante renderSaveProgressCard().
+- Se actualiza version.json a v1.2.1.
+- Se actualiza CACHE_NAME a altamira-port-desk-v121.
 
-Renombrar:
-indexhtml.txt             -> index.html
-stylescss.txt             -> styles.css
-appjs.txt                 -> app.js
-examjs.txt                -> exam.js
-exam-renderjs.txt         -> exam-render.js
-exam-progressjs.txt       -> exam-progress.js
-bat-utilsjs.txt           -> bat-utils.js
-bat-versionjs.txt         -> bat-version.js
-versionjson.txt           -> version.json
-service-workerjs.txt      -> service-worker.js
+Archivos a reemplazar:
+examjs.txt              -> exam.js
+versionjson.txt         -> version.json
+service-workerjs.txt    -> service-worker.js
 
 Commit sugerido:
-v1.2.0 Extraer motor de examen a módulos
+v1.2.1 Mover descarga de avance a globo inferior en feedback

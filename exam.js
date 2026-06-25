@@ -860,9 +860,9 @@ function renderFeedbackBase(q, correct, percent, answerHtml, titleOverride){
       </div>
     ` : ""}
     <div class="toolbar">
-      <button class="pill" onclick="downloadExamProgress()">💾 Descargar avance JSON</button>
       <button class="action" onclick="nextQuestion()">${currentIndex + 1 === currentExam.length ? "Ver resultado" : "Siguiente"}</button>
     </div>
+    ${renderSaveProgressCard()}
   `);
 }
 
