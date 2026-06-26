@@ -1,6 +1,4 @@
-BAT v1.4.0
+BAT v1.4.1
 
-Esta versión agrega "Solo Alta MSC" en Prestadores y crea la primera base de componente reutilizable para consultas tipo catálogo.
-
-Próxima evolución sugerida:
-v1.5.0 Bitácora de Boarding Agent
+Schematic ahora permite consulta por nombre de buque.
+Esta mejora es útil cuando ya tienes el Live Schedule cargado y necesitas ubicar rápidamente ETB/ETD de un buque específico.

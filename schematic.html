@@ -11,13 +11,13 @@
   <main class="sc-shell">
     <section class="sc-card sc-hero">
       <div>
-        <p class="sc-kicker">BOARDING AGENT TOOLS v0.9.8</p>
+        <p class="sc-kicker">BOARDING AGENT TOOLS v1.4.1</p>
         <h1>Schematic</h1>
-        <p class="sc-subtitle">Carga o pega el Live Schedule, genera el bloque operativo y consulta buques por rango de fecha.</p>
+        <p class="sc-subtitle">Carga o pega el Live Schedule, genera el bloque operativo y consulta buques por rango de fecha o por nombre.</p>
       </div>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-        <a class="sc-back" href="./buques.html?v=098">← Volver a Buques</a>
-        <a class="sc-back" href="./index.html?v=098">🏠 Inicio</a>
+        <a class="sc-back" href="./buques.html?v=141">← Volver a Buques</a>
+        <a class="sc-back" href="./index.html?v=141">🏠 Inicio</a>
       </div>
     </section>
 
@@ -51,14 +51,8 @@
       <h2>3. Consultar por rango de fecha</h2>
       <p class="sc-help">Selecciona un rango de fechas para consultar buques por ETB.</p>
       <div class="sc-range-grid">
-        <label>
-          Fecha inicio
-          <input id="rangeStart" type="date" />
-        </label>
-        <label>
-          Fecha fin
-          <input id="rangeEnd" type="date" />
-        </label>
+        <label>Fecha inicio<input id="rangeStart" type="date" /></label>
+        <label>Fecha fin<input id="rangeEnd" type="date" /></label>
       </div>
       <div class="sc-actions">
         <button id="btnRange" type="button">Consultar rango</button>
@@ -66,6 +60,17 @@
         <button id="btnCopyRange" type="button">Copiar rango</button>
       </div>
       <textarea id="rangeOutput" rows="12" placeholder="Aquí aparecerá la consulta por rango de fecha..."></textarea>
+    </section>
+
+    <section class="sc-card">
+      <h2>4. Consultar por buque</h2>
+      <p class="sc-help">Busca por nombre completo o parcial del buque. Ejemplo: MSC PHOENIX, PHOENIX, NADRIELY.</p>
+      <input id="vesselSearch" type="search" placeholder="Buscar buque..." />
+      <div class="sc-actions">
+        <button id="btnVesselSearch" type="button">Buscar buque</button>
+        <button id="btnCopyVessel" type="button">Copiar consulta</button>
+      </div>
+      <textarea id="vesselOutput" rows="10" placeholder="Aquí aparecerán los resultados por buque..."></textarea>
     </section>
   </main>
 

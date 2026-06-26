@@ -1,24 +1,20 @@
-BOARDING AGENT TOOLS v1.4.0 - Consulta Alta MSC y base de componente catálogo
+BOARDING AGENT TOOLS v1.4.1 - Schematic consulta por buque
 
-Incluye la mejora v1.3.1:
-- Checkbox "Solo Alta MSC" en Prestadores.
-- El filtro funciona combinado con servicio y palabra clave.
-- El contador indica resultados filtrados y cuando aplica Alta MSC.
-- Limpiar búsqueda también desmarca Solo Alta MSC.
-
-Además incluye la base v1.4:
-- Nuevo archivo bat-catalog.js para iniciar componente reutilizable de consultas tipo catálogo.
-- Prestadores ya puede usar BATCatalog.normalize().
-- service-worker.js cachea bat-catalog.js.
-- version.json pasa a v1.4.0.
+Cambios:
+- Se agrega bloque 4: Consultar por buque.
+- Permite buscar por nombre completo o parcial del buque.
+- La salida conserva el formato compacto.
+- Permite copiar la consulta por buque.
+- Enter en el campo de búsqueda ejecuta la consulta.
+- Se actualiza version.json a v1.4.1.
+- Se actualiza service-worker.js a CACHE_NAME altamira-port-desk-v141.
 
 Renombrar:
-prestadoreshtml.txt     -> prestadores.html
-prestadorescss.txt      -> prestadores.css
-prestadoresjs.txt       -> prestadores.js
-bat-catalogjs.txt       -> bat-catalog.js
+schematichtml.txt       -> schematic.html
+schematiccss.txt        -> schematic.css
+schematicjs.txt         -> schematic.js
 versionjson.txt         -> version.json
 service-workerjs.txt    -> service-worker.js
 
 Commit sugerido:
-v1.4.0 Solo Alta MSC y componente de catálogo
+v1.4.1 Schematic consulta por buque

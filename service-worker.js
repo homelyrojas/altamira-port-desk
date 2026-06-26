@@ -1,4 +1,4 @@
-const CACHE_NAME = "altamira-port-desk-v140";
+const CACHE_NAME = "altamira-port-desk-v141";
 const ASSETS = [
   "./",
   "./index.html",

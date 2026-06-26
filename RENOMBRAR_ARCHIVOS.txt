@@ -1,14 +1,10 @@
 RENOMBRAR ANTES DE SUBIR A GITHUB
 
-prestadoreshtml.txt     -> prestadores.html
-prestadorescss.txt      -> prestadores.css
-prestadoresjs.txt       -> prestadores.js
-bat-catalogjs.txt       -> bat-catalog.js
+schematichtml.txt       -> schematic.html
+schematiccss.txt        -> schematic.css
+schematicjs.txt         -> schematic.js
 versionjson.txt         -> version.json
 service-workerjs.txt    -> service-worker.js
 
 URL para refrescar una vez:
-https://homelyrojas.github.io/altamira-port-desk/prestadores.html?v=140
-
-Después usar normal:
-https://homelyrojas.github.io/altamira-port-desk/
+https://homelyrojas.github.io/altamira-port-desk/schematic.html?v=141
