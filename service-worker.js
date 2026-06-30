@@ -1,4 +1,4 @@
-const CACHE_NAME = "altamira-port-desk-v141";
+const CACHE_NAME = "altamira-port-desk-v142";
 const ASSETS = [
   "./",
   "./index.html",
@@ -7,6 +7,7 @@ const ASSETS = [
   "./bat-utils.js",
   "./bat-version.js",
   "./bat-catalog.js",
+  "./bat-phone.js",
   "./exam.js",
   "./exam-render.js",
   "./exam-progress.js",
