@@ -1,4 +1,4 @@
-const STORAGE_KEY = 'bat_proximos_buques_v070_current';
+const STORAGE_KEY = 'bat_proximos_buques_v143_current';
 
 let currentSchedule = [];
 
@@ -17,31 +17,40 @@ const rangeOutput = document.getElementById('rangeOutput');
 
 const EXPECTED_HEADERS = ['buque', 'service', 'eta fecha', 'hora', 'puerto de arribo', 'puerto de zarpe', 'notas'];
 
+const KNOWN_SERVICES = [
+  'CANADA GULF BRIDGE',
+  'MEXICO GULF EXPRESS',
+  'MEDGULF SERVICE',
+  'PAMEX SERVICE',
+  'N/A'
+];
+
+const KNOWN_PORTS = [
+  'Altamira',
+  'Veracruz',
+  'Cristobal',
+  'Cartagena',
+  'Tampico',
+  'Progreso',
+  'Manzanillo',
+  'Lazaro Cardenas',
+  'Lázaro Cárdenas'
+];
+
 function clean(value) {
-  return String(value ?? '').replace(/\r/g, '').trim();
+  return BATImport.clean(value);
 }
 
 function normalize(value) {
-  return clean(value)
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/\s+/g, ' ');
+  return BATImport.normalize(value);
 }
 
 function parseDateMX(value) {
-  const text = clean(value);
-  const match = text.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})$/);
-  if (!match) return null;
+  return BATImport.parseDateMX(value);
+}
 
-  const day = Number(match[1]);
-  const month = Number(match[2]) - 1;
-  let year = Number(match[3]);
-  if (year < 100) year += 2000;
-
-  const date = new Date(year, month, day);
-  if (Number.isNaN(date.getTime())) return null;
-  return date;
+function formatHour(value) {
+  return BATImport.formatHour(value);
 }
 
 function formatDateMX(date) {
@@ -72,16 +81,6 @@ function parseDateInput(value) {
   return date;
 }
 
-function formatHour(value) {
-  const text = clean(value);
-  if (!text) return '';
-
-  const match = text.match(/^(\d{1,2}):(\d{2})/);
-  if (match) return `${String(Number(match[1])).padStart(2, '0')}:${match[2]}`;
-
-  return text;
-}
-
 function startOfDay(date) {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }
@@ -94,7 +93,7 @@ function addDays(date, days) {
 
 function getRange(today = new Date()) {
   const start = addDays(startOfDay(today), -1);
-  const day = today.getDay(); // 0 domingo, 1 lunes...
+  const day = today.getDay();
   let targetDay;
 
   if (day === 1 || day === 2) targetDay = 3;       // lunes/martes → miércoles
@@ -110,68 +109,17 @@ function getRange(today = new Date()) {
   return { start, end };
 }
 
-function isHeaderRow(values) {
-  const joined = values.map(normalize).join('|');
-  return EXPECTED_HEADERS.some(header => joined.includes(header));
-}
-
-function parseTabular(text) {
-  const rows = text
-    .split('\n')
-    .map(line => line.replace(/\r/g, ''))
-    .filter(line => line.trim())
-    .map(line => line.split('\t').map(clean));
-
-  if (!rows.some(row => row.length >= 5)) return [];
-
-  const dataRows = rows.filter(row => !isHeaderRow(row) && row.length >= 5);
-
-  return dataRows.map(row => ({
-    buque: row[0] || '',
-    service: row[1] || '',
-    etaFecha: row[2] || '',
-    hora: formatHour(row[3] || ''),
-    puertoArribo: row[4] || '',
-    puertoZarpe: row[5] || '',
-    notas: row[6] || ''
-  })).filter(item => item.buque && item.etaFecha);
-}
-
-function parseLineBlocks(text) {
-  let lines = text.split('\n').map(line => line.replace(/\r/g, '').trim());
-
-  // Si el usuario pegó encabezados línea por línea, se eliminan los primeros 7.
-  const firstSeven = lines.slice(0, 7).map(normalize);
-  const hasHeaders = EXPECTED_HEADERS.every((header, index) => firstSeven[index] === header);
-  if (hasHeaders) lines = lines.slice(7);
-
-  // Conservamos líneas vacías porque Notas puede venir en blanco.
-  const records = [];
-  for (let i = 0; i < lines.length; i += 7) {
-    const chunk = lines.slice(i, i + 7);
-    if (chunk.length < 5) continue;
-
-    const [buque, service, etaFecha, hora, puertoArribo, puertoZarpe, notas] = chunk;
-    if (!clean(buque) || !clean(etaFecha)) continue;
-
-    records.push({
-      buque: clean(buque),
-      service: clean(service),
-      etaFecha: clean(etaFecha),
-      hora: formatHour(hora),
-      puertoArribo: clean(puertoArribo),
-      puertoZarpe: clean(puertoZarpe),
-      notas: clean(notas)
-    });
-  }
-
-  return records;
+function isValidScheduleItem(item) {
+  return Boolean(clean(item?.buque) && clean(item?.etaFecha) && parseDateMX(item.etaFecha));
 }
 
 function parseSchedule(text) {
-  const tabular = parseTabular(text);
-  if (tabular.length) return tabular;
-  return parseLineBlocks(text);
+  return BATImport.parseSchedule(text, {
+    expectedHeaders: EXPECTED_HEADERS,
+    services: KNOWN_SERVICES,
+    ports: KNOWN_PORTS,
+    validate: isValidScheduleItem
+  });
 }
 
 function saveSchedule(records) {
@@ -210,7 +158,7 @@ function processSchedule() {
 
   const records = parseSchedule(text);
   if (!records.length) {
-    alert('No pude interpretar la programación. Revisa que venga en columnas de Excel o en bloques de 7 campos.');
+    alert('No pude interpretar la programación. Revisa que venga en columnas de Excel, texto tabulado o líneas con fecha y hora.');
     return;
   }
 

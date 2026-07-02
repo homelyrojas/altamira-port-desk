@@ -1,0 +1,43 @@
+# Entregable BAT v1.4.3
+
+## Objetivo
+
+Corregir el procesamiento de Próximos Buques para que la programación pegada desde Excel, correo o texto tabulado procese todos los registros válidos, incluyendo notas vacías y servicios N/A.
+
+## Archivos de aplicación para subir a altamira-port-desk
+
+1. bat-import.js.txt -> subir como bat-import.js
+2. proximos-buques.html.txt -> subir como proximos-buques.html
+3. proximos-buques.js.txt -> subir como proximos-buques.js
+4. service-worker.js.txt -> subir como service-worker.js
+5. version.json.txt -> subir como version.json
+
+## Archivos de documentación para subir a BAT-Documentation
+
+1. README.md.txt -> subir como README.md
+2. 04_MODULO_BUQUES.md.txt -> subir como 04_MODULO_BUQUES.md
+3. 06_CHANGELOG.md.txt -> subir como 06_CHANGELOG.md
+4. 07_BACKLOG.md.txt -> subir como 07_BACKLOG.md
+5. 08_DECISION_LOG.md.txt -> subir como 08_DECISION_LOG.md
+
+## Commit sugerido para altamira-port-desk
+
+v1.4.3 BAT Import Engine inicial y fix Próximos Buques
+
+## Commit sugerido para BAT-Documentation
+
+Docs v1.4.3 BAT Import Engine inicial
+
+## Prueba mínima posterior a publicación
+
+1. Abrir proximos-buques.html?v=143.
+2. Limpiar la programación vigente.
+3. Pegar la programación de julio 2026.
+4. Presionar Procesar programación.
+5. Confirmar alerta: Programación procesada: 15 buque(s).
+6. Consultar rango del 02/07/2026 al 23/07/2026.
+7. Confirmar que aparecen los 15 buques esperados.
+
+## Nota operativa
+
+Después de publicar, en móvil puede ser necesario cerrar la PWA o limpiar caché si el navegador conserva el service worker anterior.

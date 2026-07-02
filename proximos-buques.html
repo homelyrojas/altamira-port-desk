@@ -4,26 +4,26 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Próximos Buques | Boarding Agent Tools</title>
-  <link rel="stylesheet" href="./proximos-buques.css" />
+  <link rel="stylesheet" href="./proximos-buques.css?v=143" />
 </head>
 <body>
   <main class="pb-shell">
     <section class="pb-card pb-hero">
       <div>
-        <p class="pb-kicker">BOARDING AGENT TOOLS v0.9.8</p>
+        <p class="pb-kicker">BOARDING AGENT TOOLS v1.4.3</p>
         <h1>Próximos Buques</h1>
         <p class="pb-subtitle">Pega la programación, genera el bloque operativo vigente y copia el reporte en texto plano.</p>
       </div>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-        <a class="pb-back" href="./buques.html?v=098">← Volver a Buques</a>
-        <a class="pb-back" href="./index.html?v=098">🏠 Inicio</a>
+        <a class="pb-back" href="./buques.html?v=143">← Volver a Buques</a>
+        <a class="pb-back" href="./index.html?v=143">🏠 Inicio</a>
       </div>
     </section>
 
     <section class="pb-grid">
       <div class="pb-card">
         <h2>1. Pegar programación</h2>
-        <p class="pb-help">Acepta datos pegados desde Excel con columnas o en formato de líneas. Campos esperados: Buque, Service, ETA Fecha, Hora, Puerto de Arribo, Puerto de Zarpe y Notas.</p>
+        <p class="pb-help">Acepta datos pegados desde Excel, correo o texto tabulado. Campos esperados: Buque, Service, ETA Fecha, Hora, Puerto de Arribo, Puerto de Zarpe y Notas.</p>
         <textarea id="scheduleInput" rows="18" placeholder="Pega aquí la programación de próximos buques..."></textarea>
         <div class="pb-actions">
           <button id="btnProcess" type="button">Procesar programación</button>
@@ -68,6 +68,7 @@
     </section>
   </main>
 
-  <script src="./proximos-buques.js"></script>
+  <script src="./bat-import.js?v=143"></script>
+  <script src="./proximos-buques.js?v=143"></script>
 </body>
 </html>
