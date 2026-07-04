@@ -8,16 +8,40 @@
 </head>
 <body>
   <main class="dashboard">
-    <header>
-      <h1>BOARDING AGENT TOOLS</h1>
-      <p>Operational Intelligence Dashboard</p>
+    <header class="hero">
+      <div>
+        <h1>BOARDING AGENT TOOLS</h1>
+        <p>Operational Intelligence Dashboard</p>
+      </div>
+      <div class="status">
+        <span id="apiStatus">Conectando...</span>
+        <small id="lastUpdate">Sin actualizar</small>
+        <button onclick="loadDashboard()">Actualizar</button>
+      </div>
     </header>
+
+    <section class="filters">
+      <input id="searchInput" placeholder="Buscar buque, servicio o puerto..." />
+      <select id="statusFilter">
+        <option value="">Todos los estados</option>
+        <option value="DELAYED">Demorados</option>
+        <option value="SCHEDULED">Programados</option>
+        <option value="OPERATING">Operando</option>
+        <option value="COMPLETED">Finalizados</option>
+      </select>
+    </section>
 
     <section class="cards">
       <div><strong id="totalCalls">0</strong><span>Escalas</span></div>
       <div><strong id="delayedCalls">0</strong><span>Demoradas</span></div>
       <div><strong id="todayCalls">0</strong><span>ETA Hoy</span></div>
       <div><strong id="attentionCalls">0</strong><span>Atención</span></div>
+      <div><strong id="completedCalls">0</strong><span>Finalizadas</span></div>
+    </section>
+
+    <section>
+      <h2>Fleet View</h2>
+      <div id="fleetList" class="list"></div>
     </section>
 
     <section>
@@ -28,6 +52,11 @@
     <section>
       <h2>Alertas</h2>
       <div id="alertsList" class="list"></div>
+    </section>
+
+    <section>
+      <h2>Timeline</h2>
+      <div id="timelineBox" class="timeline-empty">Selecciona un buque para ver su timeline.</div>
     </section>
   </main>
 

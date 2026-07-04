@@ -2,41 +2,74 @@
   margin: 0;
   font-family: Arial, sans-serif;
   background: #f4f6f8;
-  color: #1f2937;
+  color: #0f172a;
 }
 
 .dashboard {
-  max-width: 1100px;
+  max-width: 1200px;
   margin: auto;
   padding: 24px;
 }
 
-header {
+.hero {
   background: #0f172a;
   color: white;
   padding: 24px;
   border-radius: 16px;
   margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
 }
 
-header h1 {
+.hero h1 {
   margin: 0;
   font-size: 24px;
 }
 
-header p {
+.hero p {
   margin: 8px 0 0;
   opacity: .8;
 }
 
+.status {
+  text-align: right;
+  display: grid;
+  gap: 8px;
+}
+
+.status button {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.filters input,
+.filters select {
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid #d1d5db;
+  flex: 1;
+}
+
 .cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 16px;
   margin-bottom: 24px;
 }
 
-.cards div, section {
+.cards div,
+section {
   background: white;
   border-radius: 16px;
   padding: 18px;
@@ -45,10 +78,11 @@ header p {
 
 .cards strong {
   display: block;
-  font-size: 34px;
+  font-size: 32px;
 }
 
-.cards span {
+.cards span,
+small {
   color: #64748b;
 }
 
@@ -63,6 +97,11 @@ h2 {
 .item {
   border-bottom: 1px solid #e5e7eb;
   padding: 12px 0;
+  cursor: pointer;
+}
+
+.item:hover {
+  background: #f8fafc;
 }
 
 .item:last-child {
@@ -73,8 +112,36 @@ h2 {
   display: inline-block;
   padding: 4px 8px;
   border-radius: 999px;
-  background: #fee2e2;
-  color: #991b1b;
+  background: #e5e7eb;
   font-size: 12px;
   margin-left: 8px;
+}
+
+.badge.delay {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.badge.ok {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.timeline-step {
+  padding: 10px 0;
+  border-left: 3px solid #cbd5e1;
+  padding-left: 14px;
+  margin-left: 6px;
+}
+
+.timeline-step.done {
+  border-left-color: #16a34a;
+}
+
+.timeline-step.pending {
+  border-left-color: #f97316;
+}
+
+.timeline-empty {
+  color: #64748b;
 }
