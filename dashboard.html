@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BAT Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css" />
+</head>
+<body>
+  <main class="dashboard">
+    <header>
+      <h1>BOARDING AGENT TOOLS</h1>
+      <p>Operational Intelligence Dashboard</p>
+    </header>
+
+    <section class="cards">
+      <div><strong id="totalCalls">0</strong><span>Escalas</span></div>
+      <div><strong id="delayedCalls">0</strong><span>Demoradas</span></div>
+      <div><strong id="todayCalls">0</strong><span>ETA Hoy</span></div>
+      <div><strong id="attentionCalls">0</strong><span>Atención</span></div>
+    </section>
+
+    <section>
+      <h2>Próximos ETA</h2>
+      <div id="upcomingList" class="list"></div>
+    </section>
+
+    <section>
+      <h2>Alertas</h2>
+      <div id="alertsList" class="list"></div>
+    </section>
+  </main>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>
