@@ -1,38 +1,54 @@
-const STORAGE_KEY = "bat_prestadores_servicios_v140";
+﻿const API_BASE = localStorage.getItem("BAT_API_BASE_URL") || "http://127.0.0.1:8000";
 
 let providersData = [];
 let lastResult = "";
 
 const $ = (id) => document.getElementById(id);
 
-async function loadProviders() {
-  const local = loadLocalProviders();
+async function apiGet(path) {
+  const response = await fetch(`${API_BASE}${path}`);
+  if (!response.ok) throw new Error("No se pudo consultar BAT-API");
+  return response.json();
+}
 
-  if (local?.length) {
-    providersData = local;
-  } else {
-    const response = await fetch("prestadores.json?v=" + Date.now());
-    providersData = await response.json();
-    providersData = providersData.map(normalizeProviderRecord);
-    saveLocalProviders();
+async function apiPost(path, payload) {
+  const response = await fetch(`${API_BASE}${path}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+  if (!response.ok) throw new Error("No se pudo enviar información a BAT-API");
+  return response.json();
+}
+
+async function apiPatch(path, payload) {
+  const response = await fetch(`${API_BASE}${path}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+  if (!response.ok) throw new Error("No se pudo actualizar información en BAT-API");
+  return response.json();
+}
+
+async function apiDelete(path) {
+  const response = await fetch(`${API_BASE}${path}`, { method: "DELETE" });
+  if (!response.ok) throw new Error("No se pudo eliminar información en BAT-API");
+  return response.json();
+}
+
+async function loadProviders() {
+  try {
+    const data = await apiGet("/api/v1/service-providers");
+    providersData = (data.records || []).map(normalizeProviderRecord);
+  } catch {
+    providersData = [];
+    alert("Sin conexión con BAT-API. Enciende el backend para consultar Prestadores.");
   }
 
   populateServiceFilter();
   renderMatches();
   renderBank();
-}
-
-function saveLocalProviders() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(providersData));
-}
-
-function loadLocalProviders() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw).map(normalizeProviderRecord) : null;
-  } catch {
-    return null;
-  }
 }
 
 function normalize(text) {
@@ -48,15 +64,15 @@ function safeText(value) {
   return String(value || "").trim();
 }
 
-function slugify(text) {
-  return normalize(text)
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "") || `prestador-${Date.now()}`;
+function normalizeAltaMsc(value) {
+  const text = safeText(value).toUpperCase();
+  if (!text || text === "X" || text === "NO" || text === "N/A") return "NO";
+  return text;
 }
 
 function normalizeProviderRecord(item) {
   return {
-    id: item.id || slugify(`${item.denominacion || ""}-${item.servicio || ""}-${item.contacto || ""}`),
+    id: item.id || "",
     denominacion: item.denominacion || item.nombre || "",
     servicio: item.servicio || "",
     alta_msc: normalizeAltaMsc(item.alta_msc || item.altaMSC || ""),
@@ -67,12 +83,6 @@ function normalizeProviderRecord(item) {
   };
 }
 
-function normalizeAltaMsc(value) {
-  const text = safeText(value).toUpperCase();
-  if (!text || text === "X" || text === "NO" || text === "N/A") return "NO";
-  return text;
-}
-
 function isAltaMSC(item) {
   const alta = String(item.alta_msc || "").toUpperCase();
   return alta.startsWith("MX");
@@ -80,6 +90,15 @@ function isAltaMSC(item) {
 
 function getMxCode(item) {
   return item.alta_msc || "";
+}
+
+function escapeHtml(value) {
+  return String(value || "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
 function formatProvider(item) {
@@ -140,7 +159,9 @@ function renderResultCounter(matches) {
   const onlyMsc = Boolean($("onlyMscCheck")?.checked);
 
   if (!selectedService && !query.trim() && !onlyMsc) {
-    counter.textContent = "Selecciona un servicio o escribe una palabra clave para buscar.";
+    counter.textContent = providersData.length
+      ? "Selecciona un servicio o escribe una palabra clave para buscar."
+      : "No hay prestadores cargados en PostgreSQL.";
     return;
   }
 
@@ -177,7 +198,7 @@ function renderMatches() {
     card.className = "result-card";
 
     const altaBadge = isAltaMSC(item)
-      ? `<span class="badge-ok">✅ Alta MSC ${getMxCode(item)}</span>`
+      ? `<span class="badge-ok">✅ Alta MSC ${escapeHtml(getMxCode(item))}</span>`
       : `<span class="badge-neutral">⚪ Sin Alta MSC</span>`;
 
     card.innerHTML = `
@@ -219,7 +240,6 @@ async function copyResult() {
 function showTab(tab) {
   $("consultaView").classList.toggle("hidden", tab !== "consulta");
   $("registrosView").classList.toggle("hidden", tab !== "registros");
-
   $("tabConsulta").classList.toggle("active", tab === "consulta");
   $("tabRegistros").classList.toggle("active", tab === "registros");
 }
@@ -228,7 +248,6 @@ function showRegistrySection(section) {
   $("registryFormSection").classList.toggle("hidden", section !== "form");
   $("registryBankSection").classList.toggle("hidden", section !== "bank");
   $("registryJsonSection").classList.toggle("hidden", section !== "json");
-
   $("registryTabForm").classList.toggle("active", section === "form");
   $("registryTabBank").classList.toggle("active", section === "bank");
   $("registryTabJson").classList.toggle("active", section === "json");
@@ -239,7 +258,6 @@ function showRegistrySection(section) {
 
 function getFormData() {
   return normalizeProviderRecord({
-    id: $("recordId").value || "",
     denominacion: safeText($("formDenominacion").value),
     servicio: safeText($("formServicio").value),
     alta_msc: safeText($("formAltaMsc").value),
@@ -250,7 +268,7 @@ function getFormData() {
   });
 }
 
-function saveRecord() {
+async function saveRecord() {
   const record = getFormData();
 
   if (!record.denominacion || !record.servicio) {
@@ -258,22 +276,21 @@ function saveRecord() {
     return;
   }
 
-  const existingIndex = providersData.findIndex(item => item.id === record.id);
+  const id = safeText($("recordId").value);
 
-  if (existingIndex >= 0) {
-    providersData[existingIndex] = record;
-  } else {
-    record.id = record.id || slugify(`${record.denominacion}-${record.servicio}-${Date.now()}`);
-    providersData.unshift(record);
+  try {
+    if (id) {
+      await apiPatch(`/api/v1/service-providers/${id}`, record);
+    } else {
+      await apiPost("/api/v1/service-providers", record);
+    }
+
+    resetForm();
+    await loadProviders();
+    alert("Prestador guardado en PostgreSQL.");
+  } catch (error) {
+    alert(error.message);
   }
-
-  saveLocalProviders();
-  populateServiceFilter();
-  renderMatches();
-  renderBank();
-  resetForm();
-
-  alert("Prestador guardado.");
 }
 
 function resetForm() {
@@ -304,17 +321,18 @@ function editRecord(id) {
   $("formEmail").value = item.email || "";
 }
 
-function deleteRecord(id) {
+async function deleteRecord(id) {
   const item = providersData.find(record => record.id === id);
   if (!item) return;
 
   if (!confirm(`¿Eliminar ${item.denominacion}?`)) return;
 
-  providersData = providersData.filter(record => record.id !== id);
-  saveLocalProviders();
-  populateServiceFilter();
-  renderMatches();
-  renderBank();
+  try {
+    await apiDelete(`/api/v1/service-providers/${id}`);
+    await loadProviders();
+  } catch (error) {
+    alert(error.message);
+  }
 }
 
 function renderBank() {
@@ -322,7 +340,7 @@ function renderBank() {
   if (!bankBox) return;
 
   if (!providersData.length) {
-    bankBox.innerHTML = `<p class="muted">No hay prestadores registrados.</p>`;
+    bankBox.innerHTML = `<p class="muted">No hay prestadores registrados en PostgreSQL.</p>`;
     return;
   }
 
@@ -373,7 +391,7 @@ function importProvidersJson(event) {
 
   const reader = new FileReader();
 
-  reader.onload = () => {
+  reader.onload = async () => {
     try {
       const data = JSON.parse(reader.result);
 
@@ -382,17 +400,15 @@ function importProvidersJson(event) {
         return;
       }
 
-      providersData = data.map(normalizeProviderRecord);
-      saveLocalProviders();
-      populateServiceFilter();
-      renderMatches();
-      renderBank();
+      const records = data.map(normalizeProviderRecord).filter(item => item.denominacion && item.servicio);
+      const result = await apiPost("/api/v1/service-providers/import", { records });
+
+      await loadProviders();
       renderJsonBox();
 
-      alert("Prestadores importados correctamente.");
+      alert(`Importación a PostgreSQL completa: ${result.created} prestador(es).`);
     } catch (error) {
-      console.error(error);
-      alert("No se pudo importar el JSON.");
+      alert("No se pudo importar el JSON. Revisa el formato o la conexión API.");
     } finally {
       event.target.value = "";
     }
@@ -401,21 +417,15 @@ function importProvidersJson(event) {
   reader.readAsText(file, "utf-8");
 }
 
-function escapeHtml(text) {
-  return String(text ?? "").replace(/[&<>"']/g, c => ({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    "\"":"&quot;",
-    "'":"&#039;"
-  }[c]));
+function refreshProviders() {
+  loadProviders();
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
   await loadProviders();
 
-  $("searchInput")?.addEventListener("input", renderMatches);
-  $("serviceFilter")?.addEventListener("change", renderMatches);
-  $("onlyMscCheck")?.addEventListener("change", renderMatches);
-  $("importJsonFile")?.addEventListener("change", importProvidersJson);
+  $("searchInput").addEventListener("input", renderMatches);
+  $("serviceFilter").addEventListener("change", renderMatches);
+  $("onlyMscCheck").addEventListener("change", renderMatches);
+  $("importJsonFile").addEventListener("change", importProvidersJson);
 });

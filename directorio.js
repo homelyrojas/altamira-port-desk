@@ -1,37 +1,54 @@
-const STORAGE_KEY = "bat_directorio_operativo_v097";
+﻿const API_BASE = localStorage.getItem("BAT_API_BASE_URL") || "http://127.0.0.1:8000";
 
 let directoryData = [];
 let lastResult = "";
 
 const $ = (id) => document.getElementById(id);
 
-async function loadDirectory() {
-  const local = loadLocalDirectory();
+async function apiGet(path) {
+  const response = await fetch(`${API_BASE}${path}`);
+  if (!response.ok) throw new Error("No se pudo consultar BAT-API");
+  return response.json();
+}
 
-  if (local?.length) {
-    directoryData = local;
-  } else {
-    const response = await fetch("directory.json?v=" + Date.now());
-    directoryData = await response.json();
-    saveLocalDirectory();
+async function apiPost(path, payload) {
+  const response = await fetch(`${API_BASE}${path}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+  if (!response.ok) throw new Error("No se pudo enviar información a BAT-API");
+  return response.json();
+}
+
+async function apiPatch(path, payload) {
+  const response = await fetch(`${API_BASE}${path}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload)
+  });
+  if (!response.ok) throw new Error("No se pudo actualizar información en BAT-API");
+  return response.json();
+}
+
+async function apiDelete(path) {
+  const response = await fetch(`${API_BASE}${path}`, { method: "DELETE" });
+  if (!response.ok) throw new Error("No se pudo eliminar información en BAT-API");
+  return response.json();
+}
+
+async function loadDirectory() {
+  try {
+    const data = await apiGet("/api/v1/directory");
+    directoryData = data.records || [];
+  } catch {
+    directoryData = [];
+    alert("Sin conexión con BAT-API. Enciende el backend para consultar el Directorio.");
   }
 
   populateDependencyFilter();
   renderMatches();
   renderBank();
-}
-
-function saveLocalDirectory() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(directoryData));
-}
-
-function loadLocalDirectory() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : null;
-  } catch {
-    return null;
-  }
 }
 
 function normalize(text) {
@@ -44,12 +61,6 @@ function normalize(text) {
 
 function safeText(value) {
   return String(value || "").trim();
-}
-
-function slugify(text) {
-  return normalize(text)
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "") || `registro-${Date.now()}`;
 }
 
 function formatContact(item) {
@@ -203,10 +214,7 @@ function showRegistrySection(section) {
 }
 
 function getFormRecord() {
-  const id = safeText($("recordId").value) || slugify($("formDependencia").value);
-
   return {
-    id,
     dependencia: safeText($("formDependencia").value),
     categoria: safeText($("formCategoria").value),
     encargado: safeText($("formEncargado").value),
@@ -223,7 +231,7 @@ function validateRecord(record) {
   return "";
 }
 
-function saveRecord() {
+async function saveRecord() {
   const record = getFormRecord();
   const error = validateRecord(record);
 
@@ -232,27 +240,21 @@ function saveRecord() {
     return;
   }
 
-  const index = directoryData.findIndex(item => item.id === record.id);
+  const id = safeText($("recordId").value);
 
-  if (index >= 0) {
-    directoryData[index] = record;
-  } else {
-    let newId = record.id;
-    let counter = 2;
-    while (directoryData.some(item => item.id === newId)) {
-      newId = `${record.id}-${counter}`;
-      counter += 1;
+  try {
+    if (id) {
+      await apiPatch(`/api/v1/directory/${id}`, record);
+    } else {
+      await apiPost("/api/v1/directory", record);
     }
-    record.id = newId;
-    directoryData.push(record);
-  }
 
-  directoryData.sort((a, b) => (a.dependencia || "").localeCompare(b.dependencia || ""));
-  saveLocalDirectory();
-  populateDependencyFilter();
-  renderBank();
-  resetForm();
-  alert("Registro guardado.");
+    resetForm();
+    await loadDirectory();
+    alert("Registro guardado en PostgreSQL.");
+  } catch (error) {
+    alert(error.message);
+  }
 }
 
 function editRecord(id) {
@@ -272,17 +274,18 @@ function editRecord(id) {
   $("registrosView")?.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
-function deleteRecord(id) {
+async function deleteRecord(id) {
   const item = directoryData.find(record => record.id === id);
   if (!item) return;
 
   if (!confirm(`¿Eliminar ${item.dependencia}?`)) return;
 
-  directoryData = directoryData.filter(record => record.id !== id);
-  saveLocalDirectory();
-  populateDependencyFilter();
-  renderBank();
-  renderMatches();
+  try {
+    await apiDelete(`/api/v1/directory/${id}`);
+    await loadDirectory();
+  } catch (error) {
+    alert(error.message);
+  }
 }
 
 function resetForm() {
@@ -303,7 +306,7 @@ function renderBank() {
   bankBox.innerHTML = "";
 
   if (!directoryData.length) {
-    bankBox.innerHTML = `<p class="muted">No hay registros disponibles.</p>`;
+    bankBox.innerHTML = `<p class="muted">No hay registros disponibles en PostgreSQL.</p>`;
     return;
   }
 
@@ -360,13 +363,12 @@ function importDirectoryJson(event) {
 
   const reader = new FileReader();
 
-  reader.onload = () => {
+  reader.onload = async () => {
     try {
       const imported = JSON.parse(reader.result);
       if (!Array.isArray(imported)) throw new Error("El JSON debe ser una lista.");
 
-      directoryData = imported.map(item => ({
-        id: safeText(item.id) || slugify(item.dependencia),
+      const records = imported.map(item => ({
         dependencia: safeText(item.dependencia),
         categoria: safeText(item.categoria),
         encargado: safeText(item.encargado),
@@ -376,15 +378,13 @@ function importDirectoryJson(event) {
         notas: safeText(item.notas)
       })).filter(item => item.dependencia);
 
-      saveLocalDirectory();
-      populateDependencyFilter();
-      renderBank();
-      renderMatches();
+      const result = await apiPost("/api/v1/directory/import", { records });
+      await loadDirectory();
       renderJsonBox();
-      alert(`JSON importado: ${directoryData.length} registro(s).`);
+
+      alert(`Importación a PostgreSQL completa: ${result.created} registro(s).`);
     } catch (error) {
-      console.error(error);
-      alert("No se pudo importar el JSON. Revisa el formato.");
+      alert("No se pudo importar el JSON. Revisa el formato o la conexión API.");
     } finally {
       event.target.value = "";
     }
