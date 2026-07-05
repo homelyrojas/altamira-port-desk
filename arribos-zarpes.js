@@ -1,4 +1,4 @@
-ï»¿const API_BASE = localStorage.getItem("BAT_API_BASE_URL") || "http://127.0.0.1:8000";
+const API_BASE = localStorage.getItem("BAT_API_BASE_URL") || "";
 
 let currentRows = [];
 let selectedRecord = null;
@@ -70,8 +70,8 @@ async function loadFromApi() {
 
     if (searchBox.value.trim()) searchRecords();
   } catch (error) {
-    loadStatus.textContent = "Sin conexiÃ³n con BAT-API.";
-    alert(error.message);
+    loadStatus.textContent = "Sin conexión con BAT-API.";
+    console.warn(error.message);
   }
 }
 
@@ -127,7 +127,7 @@ function searchRecords() {
 }
 
 function buildReport(record) {
-  const title = `InformaciÃ³n de Arribo / Salida del buque ${record.vessel_name}${record.voyage ? " " + record.voyage : ""}`;
+  const title = `Información de Arribo / Salida del buque ${record.vessel_name}${record.voyage ? " " + record.voyage : ""}`;
   const lines = [title, ""];
 
   lines.push(`SERVICIO: ${record.service_name || "PENDIENTE"}`);
