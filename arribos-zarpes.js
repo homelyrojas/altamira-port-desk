@@ -1,10 +1,12 @@
-﻿const API_BASE = localStorage.getItem("BAT_API_BASE_URL") || "";
+let API_BASE = localStorage.getItem("BAT_API_BASE_URL") || "";
 let currentRows = [];
 let selectedRecord = null;
 
 const btnRefresh = document.getElementById("btnRefresh");
 const btnClear = document.getElementById("btnClear");
 const btnCopy = document.getElementById("btnCopy");
+const btnUploadExcel = document.getElementById("btnUploadExcel");
+const excelFile = document.getElementById("excelFile");
 const loadStatus = document.getElementById("loadStatus");
 const searchBox = document.getElementById("searchBox");
 const results = document.getElementById("results");
@@ -60,11 +62,7 @@ async function fetchJson(url) {
 }
 
 async function loadLocalData() {
-  const storageKeys = [
-    "bat_arribos_zarpes_v060_current",
-    "BAT_ARRIBOS_ZARPES_CURRENT",
-    "arribos_zarpes_data"
-  ];
+  const storageKeys = ["bat_arribos_zarpes_v060_current", "BAT_ARRIBOS_ZARPES_CURRENT", "arribos_zarpes_data"];
 
   for (const key of storageKeys) {
     try {
@@ -95,16 +93,17 @@ async function loadLocalData() {
 
 async function loadData() {
   loadStatus.textContent = "Cargando datos operativos...";
+  API_BASE = clean(localStorage.getItem("BAT_API_BASE_URL") || API_BASE);
 
   if (API_BASE) {
     try {
-      const data = await fetchJson(`${API_BASE}/api/v1/vessel-calls`);
+      const data = await fetchJson(`${API_BASE.replace(/\/$/, "")}/api/v1/vessel-calls?limit=200`);
       currentRows = normalizeRecords(data);
       loadStatus.textContent = `Base vigente desde BAT-API | Registros: ${currentRows.length}`;
       if (searchBox.value.trim()) searchRecords();
       return;
     } catch (error) {
-      console.warn("BAT-API no disponible. Se usará respaldo local.", error);
+      console.warn("BAT-API no disponible. Se usara respaldo local.", error);
     }
   }
 
@@ -116,10 +115,45 @@ async function loadData() {
   if (currentRows.length) {
     loadStatus.textContent = `Modo web recuperado | Registros locales: ${currentRows.length}`;
   } else {
-    loadStatus.textContent = "Modo web activo, pero no se encontró base local de Arribos y Zarpes.";
+    loadStatus.textContent = "Modo web activo, pero no se encontro base local de Arribos y Zarpes.";
   }
 
   if (searchBox.value.trim()) searchRecords();
+}
+
+async function uploadExcel() {
+  const file = excelFile && excelFile.files ? excelFile.files[0] : null;
+  API_BASE = clean(localStorage.getItem("BAT_API_BASE_URL") || API_BASE);
+
+  if (!file) {
+    loadStatus.textContent = "Selecciona primero un archivo Excel.";
+    return;
+  }
+
+  if (!API_BASE) {
+    loadStatus.textContent = "Falta configurar BAT_API_BASE_URL en este navegador antes de subir el Excel.";
+    return;
+  }
+
+  const form = new FormData();
+  form.append("file", file);
+  btnUploadExcel.disabled = true;
+  loadStatus.textContent = `Subiendo Excel: ${file.name}`;
+
+  try {
+    const response = await fetch(`${API_BASE.replace(/\/$/, "")}/api/v1/imports/arribos-zarpes`, { method: "POST", body: form });
+    const payload = await response.json().catch(() => ({}));
+
+    if (!response.ok) throw new Error(payload.detail || "No fue posible importar el Excel.");
+
+    loadStatus.textContent = `Excel importado | Creados: ${payload.created} | Actualizados: ${payload.updated} | Omitidos: ${payload.skipped}`;
+    await loadData();
+  } catch (error) {
+    console.error("Error importando Excel", error);
+    loadStatus.textContent = `Error al importar Excel: ${error.message || error}`;
+  } finally {
+    btnUploadExcel.disabled = false;
+  }
 }
 
 function getVessel(record) {
@@ -160,10 +194,7 @@ function searchRecords() {
     return;
   }
 
-  const matches = currentRows.filter((r) => {
-    const haystack = normalizeText(Object.values(r).join(" "));
-    return haystack.includes(q);
-  }).slice(0, 30);
+  const matches = currentRows.filter((r) => normalizeText(Object.values(r).join(" ")).includes(q)).slice(0, 30);
 
   if (!matches.length) {
     results.innerHTML = '<div class="az-status">Sin coincidencias.</div>';
@@ -173,10 +204,7 @@ function searchRecords() {
   for (const record of matches) {
     const item = document.createElement("div");
     item.className = "az-result";
-    item.innerHTML = `
-      <strong>${getVessel(record)} ${getVoyage(record)}</strong>
-      <span>Servicio: ${getService(record) || "-"} | Puerto: ${getPort(record) || "-"} | Estado: ${getStatus(record) || "-"}</span>
-    `;
+    item.innerHTML = `<strong>${getVessel(record)} ${getVoyage(record)}</strong><span>Servicio: ${getService(record) || "-"} | Puerto: ${getPort(record) || "-"} | Estado: ${getStatus(record) || "-"}</span>`;
 
     item.addEventListener("click", () => {
       selectedRecord = record;
@@ -217,6 +245,7 @@ function generateReport(record) {
   reportBox.value = lines.join("\n");
 }
 
+btnUploadExcel?.addEventListener("click", uploadExcel);
 btnRefresh?.addEventListener("click", loadData);
 btnClear?.addEventListener("click", () => {
   selectedRecord = null;
