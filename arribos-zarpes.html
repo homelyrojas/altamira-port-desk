@@ -1,42 +1,41 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="es">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Arribos & Zarpes | Boarding Agent Tools</title>
   <link rel="stylesheet" href="./arribos-zarpes.css" />
-  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
   <main class="az-shell">
     <section class="az-card az-hero">
       <div>
-        <p class="az-kicker">BOARDING AGENT TOOLS v0.9.8</p>
+        <p class="az-kicker">BOARDING AGENT TOOLS | BAT-API</p>
         <h1>Arribos & Zarpes</h1>
-        <p class="az-subtitle">Carga el Excel vigente, reemplaza la información anterior y genera reportes operativos por buque.</p>
+        <p class="az-subtitle">Consulta escalas desde PostgreSQL y genera reportes operativos por buque.</p>
       </div>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-        <a class="az-back" href="./buques.html?v=098">← Volver a Buques</a>
-        <a class="az-back" href="./index.html?v=098">🏠 Inicio</a>
+        <a class="az-back" href="./dashboard.html">📊 Dashboard</a>
+        <a class="az-back" href="./buques.html">← Volver a Buques</a>
+        <a class="az-back" href="./index.html">🏠 Inicio</a>
       </div>
     </section>
 
     <section class="az-grid">
       <div class="az-card">
-        <h2>1. Actualizar base vigente</h2>
-        <p class="az-help">No guarda histórico. Cada Excel cargado reemplaza el archivo anterior.</p>
-        <input id="excelFile" type="file" accept=".xlsx,.xls" />
+        <h2>1. Estado de conexión</h2>
+        <p class="az-help">Esta pantalla ya consulta BAT-API. Los datos provienen de PostgreSQL.</p>
         <div class="az-actions">
-          <button id="btnLoad" type="button">Actualizar información</button>
-          <button id="btnClear" type="button" class="az-secondary">Limpiar datos</button>
+          <button id="btnRefresh" type="button">Actualizar desde API</button>
+          <button id="btnClear" type="button" class="az-secondary">Limpiar pantalla</button>
         </div>
-        <div id="loadStatus" class="az-status">Sin archivo cargado.</div>
+        <div id="loadStatus" class="az-status">Sin consulta realizada.</div>
       </div>
 
       <div class="az-card">
         <h2>2. Consultar buque</h2>
-        <p class="az-help">Puedes buscar por buque, viaje, IMO o folio.</p>
-        <input id="searchBox" type="search" placeholder="Ej. MSC COTE, 624E, 7709" />
+        <p class="az-help">Puedes buscar por buque, servicio, puerto, viaje o estado.</p>
+        <input id="searchBox" type="search" placeholder="Ej. MSC ALICANTE, Altamira, DELAYED" />
         <div id="results" class="az-results"></div>
       </div>
     </section>
