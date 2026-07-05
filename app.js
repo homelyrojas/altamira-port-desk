@@ -8,14 +8,54 @@ let examDisplayOffset = 0;
 let examDisplayTotal = 0;
 let examMode = "random";
 
-const BAT_API_BASE = localStorage.getItem("BAT_API_BASE_URL") || "http://127.0.0.1:8000";
+const BAT_API_BASE = localStorage.getItem("BAT_API_BASE_URL") || "";
+
+async function fetchOfficialQuestions(){
+  const sources = [];
+
+  if(BAT_API_BASE){
+    sources.push(`${BAT_API_BASE.replace(/\/$/, "")}/api/v1/exam/questions`);
+  }
+
+  sources.push(`questions.json?v=${Date.now()}`);
+
+  let lastError = null;
+
+  for(const source of sources){
+    try{
+      const response = await fetch(source, { cache: "no-store" });
+      if(!response.ok) throw new Error(`HTTP ${response.status} al cargar ${source}`);
+
+      const payload = await response.json();
+      const records = Array.isArray(payload)
+        ? payload
+        : Array.isArray(payload.records)
+          ? payload.records
+          : [];
+
+      const normalized = records
+        .map(item => item && item.raw && item.raw.pregunta ? item.raw : item)
+        .filter(item => item && item.pregunta);
+
+      if(normalized.length){
+        return normalized;
+      }
+
+      throw new Error(`Fuente sin preguntas válidas: ${source}`);
+    }catch(error){
+      lastError = error;
+      console.warn("No fue posible cargar preguntas desde", source, error);
+    }
+  }
+
+  throw lastError || new Error("No fue posible cargar el banco oficial de preguntas.");
+}
 
 async function loadData(){
   try{
-    const qRes = await fetch(`${BAT_API_BASE}/api/v1/exam/questions`);
-    const qPayload = await qRes.json();
+    const officialQuestions = await fetchOfficialQuestions();
 
-    questionsData.splice(0, questionsData.length, ...(qPayload.records || []).map(item => item.raw && item.raw.pregunta ? item.raw : item));
+    questionsData.splice(0, questionsData.length, ...officialQuestions);
     window.questionsData = questionsData;
 
     const officialTopics = [...new Set(
@@ -27,8 +67,8 @@ async function loadData(){
     localStorage.setItem("bat_temas_oficiales_v1", JSON.stringify(officialTopics));
     failedQuestions = JSON.parse(localStorage.getItem("failedQuestions") || "[]");
   }catch(error){
-    console.error("Error cargando datos desde BAT-API", error);
-    questionsData = [];
+    console.error("Error cargando banco oficial de preguntas", error);
+    questionsData.splice(0, questionsData.length);
     window.questionsData = questionsData;
     failedQuestions = JSON.parse(localStorage.getItem("failedQuestions") || "[]");
   }
@@ -81,4 +121,3 @@ loadData().then(() => {
   renderHome();
   loadVersionInfo();
 });
-
