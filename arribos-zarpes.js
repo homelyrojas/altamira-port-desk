@@ -98,7 +98,7 @@ async function loadData() {
 
   if (API_BASE) {
     try {
-      const data = await fetchJson(`${API_BASE}/api/v1/vessel-calls?limit=500`);
+      const data = await fetchJson(`${API_BASE}/api/v1/vessel-calls`);
       currentRows = normalizeRecords(data);
       loadStatus.textContent = `Base vigente desde BAT-API | Registros: ${currentRows.length}`;
       if (searchBox.value.trim()) searchRecords();
