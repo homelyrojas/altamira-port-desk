@@ -15,7 +15,7 @@ async function loadData(){
     const qRes = await fetch(`${BAT_API_BASE}/api/v1/exam/questions`);
     const qPayload = await qRes.json();
 
-    questionsData = (qPayload.records || []).map(item => item.raw && item.raw.pregunta ? item.raw : item);
+    questionsData.splice(0, questionsData.length, ...(qPayload.records || []).map(item => item.raw && item.raw.pregunta ? item.raw : item));
     window.questionsData = questionsData;
 
     const officialTopics = [...new Set(
@@ -81,3 +81,4 @@ loadData().then(() => {
   renderHome();
   loadVersionInfo();
 });
+
