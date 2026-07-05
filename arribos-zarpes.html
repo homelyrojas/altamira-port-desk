@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="es">
 <head>
   <meta charset="utf-8" />
@@ -15,18 +15,20 @@
         <p class="az-subtitle">Consulta escalas desde BAT-API o respaldo local y genera reportes operativos por buque.</p>
       </div>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-        <a class="az-back" href="./dashboard.html">📊 Dashboard</a>
-        <a class="az-back" href="./buques.html">← Volver a Buques</a>
-        <a class="az-back" href="./index.html">🏠 Inicio</a>
+        <a class="az-back" href="./dashboard.html">Dashboard</a>
+        <a class="az-back" href="./buques.html">Volver a Buques</a>
+        <a class="az-back" href="./index.html">Inicio</a>
       </div>
     </section>
 
     <section class="az-grid">
       <div class="az-card">
-        <h2>1. Estado de conexión</h2>
-        <p class="az-help">Esta pantalla consulta BAT-API cuando está configurada; si no, opera con respaldo local.</p>
+        <h2>1. Base operativa</h2>
+        <p class="az-help">Sube el Excel de Arribos y Zarpes a BAT-API para dejarlo disponible desde cualquier equipo.</p>
+        <input id="excelFile" type="file" accept=".xlsx,.xlsm" />
         <div class="az-actions">
-          <button id="btnRefresh" type="button">Actualizar desde API</button>
+          <button id="btnUploadExcel" type="button">Subir Excel de Arribos y Zarpes</button>
+          <button id="btnRefresh" type="button" class="az-secondary">Consultar base</button>
           <button id="btnClear" type="button" class="az-secondary">Limpiar pantalla</button>
         </div>
         <div id="loadStatus" class="az-status">Sin consulta realizada.</div>
@@ -45,7 +47,7 @@
         <h2>3. Reporte generado</h2>
         <button id="btnCopy" type="button">Copiar reporte</button>
       </div>
-      <textarea id="reportBox" rows="16" placeholder="Aquí aparecerá el reporte de Arribo / Salida..."></textarea>
+      <textarea id="reportBox" rows="16" placeholder="Aqui aparecera el reporte de Arribo / Salida..."></textarea>
     </section>
   </main>
 
