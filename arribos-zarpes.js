@@ -1,4 +1,4 @@
-let API_BASE = localStorage.getItem("BAT_API_BASE_URL") || "";
+const API_BASE = "https://bat-api-production.up.railway.app";
 let currentRows = [];
 let selectedRecord = null;
 
