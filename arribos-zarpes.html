@@ -12,7 +12,7 @@
       <div>
         <p class="az-kicker">BOARDING AGENT TOOLS | BAT-API</p>
         <h1>Arribos & Zarpes</h1>
-        <p class="az-subtitle">Consulta escalas desde PostgreSQL y genera reportes operativos por buque.</p>
+        <p class="az-subtitle">Consulta escalas desde BAT-API o respaldo local y genera reportes operativos por buque.</p>
       </div>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
         <a class="az-back" href="./dashboard.html">📊 Dashboard</a>
@@ -24,7 +24,7 @@
     <section class="az-grid">
       <div class="az-card">
         <h2>1. Estado de conexión</h2>
-        <p class="az-help">Esta pantalla ya consulta BAT-API. Los datos provienen de PostgreSQL.</p>
+        <p class="az-help">Esta pantalla consulta BAT-API cuando está configurada; si no, opera con respaldo local.</p>
         <div class="az-actions">
           <button id="btnRefresh" type="button">Actualizar desde API</button>
           <button id="btnClear" type="button" class="az-secondary">Limpiar pantalla</button>

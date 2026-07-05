@@ -1,0 +1,73 @@
+﻿<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Configuración BAT</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .bat-config-card{max-width:760px;margin:48px auto;padding:28px;border:1px solid #d8c48a;border-radius:18px;background:#fff}
+    .bat-config-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+    .bat-config-row input{flex:1;min-width:280px;padding:14px;border:1px solid #cfc7b5;border-radius:10px;font-size:16px}
+    .bat-config-row button,.bat-btn{padding:12px 18px;border:0;border-radius:10px;background:#000;color:#fff;font-weight:700;cursor:pointer;text-decoration:none}
+    .bat-status{margin-top:18px;padding:14px;border-radius:10px;background:#f6f2e9}
+    .bat-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:22px}
+  </style>
+</head>
+<body>
+  <main class="bat-config-card">
+    <p>BOARDING AGENT TOOLS | CONFIGURACIÓN</p>
+    <h1>Configuración BAT</h1>
+    <p>Define la URL de BAT-API para conectar módulos como Arribos & Zarpes.</p>
+
+    <label for="apiUrl"><strong>URL BAT-API</strong></label>
+    <div class="bat-config-row">
+      <input id="apiUrl" placeholder="http://127.0.0.1:8000">
+      <button id="saveApi">Guardar</button>
+      <button id="testApi">Probar API</button>
+    </div>
+
+    <div id="status" class="bat-status">Pendiente de configuración.</div>
+
+    <div class="bat-actions">
+      <a class="bat-btn" href="arribos-zarpes.html?v=104">← Arribos & Zarpes</a>
+      <a class="bat-btn" href="index.html?v=104">🏠 Inicio</a>
+    </div>
+  </main>
+
+  <script>
+    const input = document.getElementById("apiUrl");
+    const statusBox = document.getElementById("status");
+    const saved = localStorage.getItem("BAT_API_BASE_URL") || "";
+    input.value = saved;
+
+    function setStatus(msg) {
+      statusBox.textContent = msg;
+    }
+
+    document.getElementById("saveApi").addEventListener("click", () => {
+      const url = input.value.trim().replace(/\/$/, "");
+      localStorage.setItem("BAT_API_BASE_URL", url);
+      setStatus("URL guardada: " + (url || "sin API configurada"));
+    });
+
+    document.getElementById("testApi").addEventListener("click", async () => {
+      const url = input.value.trim().replace(/\/$/, "");
+      if (!url) {
+        setStatus("Captura una URL de BAT-API.");
+        return;
+      }
+
+      setStatus("Probando conexión...");
+      try {
+        const res = await fetch(url + "/health", { cache: "no-store" });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+        setStatus("Conexión exitosa con BAT-API: " + JSON.stringify(data));
+      } catch (error) {
+        setStatus("No se pudo conectar con BAT-API: " + error.message);
+      }
+    });
+  </script>
+</body>
+</html>
