@@ -1,4 +1,4 @@
-let directoryData = [];
+﻿let directoryData = [];
 let questionsData = [];
 let currentExam = [];
 let currentIndex = 0;
@@ -8,12 +8,14 @@ let examDisplayOffset = 0;
 let examDisplayTotal = 0;
 let examMode = "random";
 
+const BAT_API_BASE = localStorage.getItem("BAT_API_BASE_URL") || "http://127.0.0.1:8000";
+
 async function loadData(){
   try{
-    const [dirRes, qRes] = await Promise.all([fetch("./directory.json"), fetch("./questions.json")]);
-    directoryData = await dirRes.json();
-    questionsData = await qRes.json();
+    const qRes = await fetch(`${BAT_API_BASE}/api/v1/exam/questions`);
+    const qPayload = await qRes.json();
 
+    questionsData = (qPayload.records || []).map(item => item.raw && item.raw.pregunta ? item.raw : item);
     window.questionsData = questionsData;
 
     const officialTopics = [...new Set(
@@ -23,10 +25,12 @@ async function loadData(){
     )].sort((a, b) => a.localeCompare(b));
 
     localStorage.setItem("bat_temas_oficiales_v1", JSON.stringify(officialTopics));
-
     failedQuestions = JSON.parse(localStorage.getItem("failedQuestions") || "[]");
   }catch(error){
-    console.error("Error cargando datos", error);
+    console.error("Error cargando datos desde BAT-API", error);
+    questionsData = [];
+    window.questionsData = questionsData;
+    failedQuestions = JSON.parse(localStorage.getItem("failedQuestions") || "[]");
   }
 }
 
@@ -39,36 +43,7 @@ function renderHome(){
 }
 
 function renderDirectory(filter = ""){
-  const term = filter.toLowerCase().trim();
-  const list = directoryData.filter(item =>
-    [item.dependencia,item.categoria,item.encargado,item.cargo,item.telefono,item.correo,item.notas]
-      .join(" ").toLowerCase().includes(term)
-  );
-
-  setContent(`
-    <h2>Directorio</h2>
-    <p class="muted">Dependencias y contactos operativos registrados.</p>
-    <input class="search-box" placeholder="Buscar dependencia, encargado o tema..." value="${escapeHtml(filter)}" oninput="renderDirectory(this.value)">
-    <p class="muted">${list.length} resultado(s)</p>
-    ${list.map(item => `
-      <article class="directory-card" id="card-${item.id}">
-        <button class="directory-summary" onclick="toggleDirectoryCard('${item.id}')">
-          <div class="directory-title">
-            <span class="badge">${escapeHtml(item.categoria)}</span>
-            <strong>${escapeHtml(item.dependencia)}</strong>
-            <small>${escapeHtml(item.encargado)}</small>
-          </div>
-          <span class="chevron">⌄</span>
-        </button>
-        <div class="directory-details">
-          <p><strong>Cargo:</strong><br>${escapeHtml(item.cargo || "Por registrar")}</p>
-          <p><strong>Teléfono:</strong><br>${escapeHtml(item.telefono || "Por registrar")}</p>
-          <p><strong>Correo:</strong><br>${escapeHtml(item.correo || "Por registrar")}</p>
-          <p><strong>Notas:</strong><br>${escapeHtml(item.notas || "Sin notas")}</p>
-        </div>
-      </article>
-    `).join("") || `<p>No encontramos coincidencias. La base no miente, pero a veces se hace la difícil.</p>`}
-  `);
+  setContent(`<h2>Directorio</h2><p>El Directorio ahora vive en su módulo dedicado conectado a BAT-API.</p><button class="action" onclick="window.location.href='directorio.html'">Abrir Directorio</button>`);
 }
 
 function toggleDirectoryCard(id){

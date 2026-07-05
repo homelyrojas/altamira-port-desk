@@ -1,0 +1,42 @@
+﻿<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Importar Examen | BAT</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="panel" style="max-width:900px;margin:30px auto">
+    <h1>Importar banco de preguntas</h1>
+    <p class="muted">Selecciona questions.json para cargar el banco oficial a PostgreSQL.</p>
+    <input id="fileInput" type="file" accept=".json,application/json">
+    <button class="action" onclick="importQuestions()">Importar a BAT-API</button>
+    <pre id="output">Sin importación.</pre>
+    <p><a href="index.html">Volver al inicio</a></p>
+  </main>
+
+  <script>
+    const API_BASE = localStorage.getItem("BAT_API_BASE_URL") || "http://127.0.0.1:8000";
+
+    async function importQuestions(){
+      const file = document.getElementById("fileInput").files[0];
+      if(!file){
+        alert("Selecciona questions.json");
+        return;
+      }
+
+      const text = await file.text();
+      const data = JSON.parse(text);
+
+      const response = await fetch(`${API_BASE}/api/v1/exam/questions/import`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({records: data})
+      });
+
+      const result = await response.json();
+      document.getElementById("output").textContent = JSON.stringify(result, null, 2);
+    }
+  </script>
+</body>
+</html>
