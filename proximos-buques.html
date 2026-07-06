@@ -3,49 +3,49 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Próximos Buques | Boarding Agent Tools</title>
-  <link rel="stylesheet" href="./proximos-buques.css?v=143" />
+  <title>Proximos Buques | Boarding Agent Tools</title>
+  <link rel="stylesheet" href="./proximos-buques.css?v=148" />
 </head>
 <body>
   <main class="pb-shell">
     <section class="pb-card pb-hero">
       <div>
-        <p class="pb-kicker">BOARDING AGENT TOOLS v1.4.3</p>
-        <h1>Próximos Buques</h1>
-        <p class="pb-subtitle">Pega la programación, genera el bloque operativo vigente y copia el reporte en texto plano.</p>
+        <p class="pb-kicker">BOARDING AGENT TOOLS | BAT-API</p>
+        <h1>Proximos Buques</h1>
+        <p class="pb-subtitle">Pega la programacion, guardala en PostgreSQL y consulta el bloque operativo desde cualquier equipo.</p>
       </div>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-        <a class="pb-back" href="./buques.html?v=143">← Volver a Buques</a>
-        <a class="pb-back" href="./index.html?v=143">🏠 Inicio</a>
+        <a class="pb-back" href="./buques.html?v=148">Volver a Buques</a>
+        <a class="pb-back" href="./index.html?v=148">Inicio</a>
       </div>
     </section>
 
     <section class="pb-grid">
       <div class="pb-card">
-        <h2>1. Pegar programación</h2>
+        <h2>1. Pegar programacion</h2>
         <p class="pb-help">Acepta datos pegados desde Excel, correo o texto tabulado. Campos esperados: Buque, Service, ETA Fecha, Hora, Puerto de Arribo, Puerto de Zarpe y Notas.</p>
-        <textarea id="scheduleInput" rows="18" placeholder="Pega aquí la programación de próximos buques..."></textarea>
+        <textarea id="scheduleInput" rows="18" placeholder="Pega aqui la programacion de proximos buques..."></textarea>
         <div class="pb-actions">
-          <button id="btnProcess" type="button">Procesar programación</button>
+          <button id="btnProcess" type="button">Guardar programacion</button>
           <button id="btnClear" type="button" class="pb-secondary">Limpiar</button>
         </div>
-        <div id="processStatus" class="pb-status">Sin programación cargada.</div>
+        <div id="processStatus" class="pb-status">Sin programacion cargada.</div>
       </div>
 
       <div class="pb-card">
         <h2>2. Bloque operativo</h2>
-        <p class="pb-help">El rango se calcula desde ayer hasta el siguiente lunes, miércoles o viernes operativo.</p>
+        <p class="pb-help">El rango se calcula desde ayer hasta el siguiente lunes, miercoles o viernes operativo.</p>
         <div class="pb-actions">
-          <button id="btnGenerate" type="button">Ver próximos buques</button>
+          <button id="btnGenerate" type="button">Ver proximos buques</button>
           <button id="btnCopy" type="button">Copiar reporte</button>
         </div>
-        <textarea id="reportOutput" rows="18" placeholder="Aquí aparecerán los próximos buques..."></textarea>
+        <textarea id="reportOutput" rows="18" placeholder="Aqui apareceran los proximos buques..."></textarea>
       </div>
     </section>
 
     <section class="pb-card">
       <h2>3. Consultar por rango de fecha</h2>
-      <p class="pb-help">Selecciona una fecha inicial y una fecha final para generar un reporte específico en formato compacto.</p>
+      <p class="pb-help">Selecciona una fecha inicial y una fecha final para generar un reporte especifico en formato compacto.</p>
 
       <div class="pb-grid">
         <label>
@@ -64,11 +64,10 @@
         <button id="btnCopyRange" type="button">Copiar rango</button>
       </div>
 
-      <textarea id="rangeOutput" rows="12" placeholder="Aquí aparecerán los buques del rango seleccionado..."></textarea>
+      <textarea id="rangeOutput" rows="12" placeholder="Aqui apareceran los buques del rango seleccionado..."></textarea>
     </section>
   </main>
 
-  <script src="./bat-import.js?v=143"></script>
-  <script src="./proximos-buques.js?v=143"></script>
+  <script src="./proximos-buques.js?v=148"></script>
 </body>
 </html>
