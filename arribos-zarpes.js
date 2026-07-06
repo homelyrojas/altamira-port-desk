@@ -125,33 +125,43 @@ async function loadData() {
 }
 
 async function uploadExcel() {
-
-  const file =
-      excelFile && excelFile.files
-          ? excelFile.files[0]
-          : null;
+  const file = excelFile && excelFile.files ? excelFile.files[0] : null;
 
   if (!file) {
     loadStatus.textContent = "Selecciona primero un archivo Excel.";
+    alert("Selecciona primero un archivo Excel.");
     return;
   }
 
+  const apiUrl = `${API_BASE.replace(/\/$/, "")}/api/v1/imports/arribos-zarpes`;
+
   const form = new FormData();
   form.append("file", file);
+
   btnUploadExcel.disabled = true;
-  loadStatus.textContent = `Subiendo Excel: ${file.name}`;
+  loadStatus.textContent = `Subiendo Excel a BAT-API: ${file.name}`;
 
   try {
-    const response = await fetch(`${API_BASE.replace(/\/$/, "")}/api/v1/imports/arribos-zarpes`, { method: "POST", body: form });
+    const response = await fetch(apiUrl, {
+      method: "POST",
+      body: form
+    });
+
     const payload = await response.json().catch(() => ({}));
 
-    if (!response.ok) throw new Error(payload.detail || "No fue posible importar el Excel.");
+    if (!response.ok) {
+      throw new Error(payload.detail || `Error HTTP ${response.status}`);
+    }
 
-    loadStatus.textContent = `Excel importado | Creados: ${payload.created} | Actualizados: ${payload.updated} | Omitidos: ${payload.skipped}`;
+    loadStatus.textContent =
+      `Excel importado correctamente | Creados: ${payload.created} | Actualizados: ${payload.updated} | Omitidos: ${payload.skipped}`;
+
     await loadData();
+
   } catch (error) {
-    console.error("Error importando Excel", error);
+    console.error("Error importando Excel:", error);
     loadStatus.textContent = `Error al importar Excel: ${error.message || error}`;
+    alert(`Error al importar Excel: ${error.message || error}`);
   } finally {
     btnUploadExcel.disabled = false;
   }
