@@ -1,4 +1,4 @@
-﻿const API_BASE = localStorage.getItem("BAT_API_BASE_URL") || "http://127.0.0.1:8000";
+const API_BASE = "https://bat-api-production.up.railway.app";
 
 let currentSchedule = [];
 
@@ -15,21 +15,27 @@ const btnGenerateRange = document.getElementById("btnGenerateRange");
 const btnCopyRange = document.getElementById("btnCopyRange");
 const rangeOutput = document.getElementById("rangeOutput");
 
+function apiUrl(path) {
+  return `${API_BASE.replace(/\/$/, "")}${path}`;
+}
+
 async function apiGet(path) {
-  const response = await fetch(`${API_BASE}${path}`);
-  if (!response.ok) throw new Error("No se pudo consultar BAT-API");
-  return response.json();
+  const response = await fetch(apiUrl(path), { cache: "no-store" });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(payload.detail || `No se pudo consultar BAT-API. HTTP ${response.status}`);
+  return payload;
 }
 
 async function apiPost(path, payload) {
-  const response = await fetch(`${API_BASE}${path}`, {
+  const response = await fetch(apiUrl(path), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
   });
 
-  if (!response.ok) throw new Error("No se pudo enviar información a BAT-API");
-  return response.json();
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.detail || `No se pudo enviar informacion a BAT-API. HTTP ${response.status}`);
+  return data;
 }
 
 function clean(value) {
@@ -37,7 +43,7 @@ function clean(value) {
 }
 
 function normalize(value) {
-  return clean(value).toLowerCase().replace(/\s+/g, " ");
+  return clean(value).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/\s+/g, " ");
 }
 
 function startOfDay(date) {
@@ -70,16 +76,22 @@ function parseDateInput(value) {
   return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
 }
 
-function parseApiDate(value) {
+function parseScheduleDate(value) {
   if (!value) return null;
-  const date = new Date(value);
+  const text = clean(value);
+  const dateOnly = text.slice(0, 10);
+  const match = dateOnly.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+  if (match) return new Date(Number(match[1]), Number(match[2]) - 1, Number(match[3]));
+  const date = new Date(text);
   return Number.isNaN(date.getTime()) ? null : date;
 }
 
-function formatHourFromApi(value) {
-  const date = parseApiDate(value);
-  if (!date) return "";
-  return date.toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit", hour12: false });
+function normalizeTime(value) {
+  const text = clean(value);
+  if (!text) return "";
+  const match = text.match(/^(\d{1,2}):(\d{2})/);
+  if (!match) return text;
+  return `${String(match[1]).padStart(2, "0")}:${match[2]}`;
 }
 
 function getRange(today = new Date()) {
@@ -120,27 +132,27 @@ function abbreviatePort(port) {
 }
 
 function toScheduleItem(record) {
-  const etaDate = parseApiDate(record.eta_datetime);
+  const etaDate = parseScheduleDate(record.eta_date || record.eta_datetime);
 
   return {
     id: record.id,
-    buque: record.vessel_name,
-    service: record.service_name,
+    buque: record.vessel_name || record.buque || "",
+    service: record.service_name || record.service || "",
     etaFecha: etaDate ? formatDateMX(etaDate) : "",
-    hora: formatHourFromApi(record.eta_datetime),
-    puertoArribo: record.arrival_port_name,
-    puertoZarpe: record.departure_port_name,
-    notas: record.notes,
-    statusCode: record.status_code,
+    hora: normalizeTime(record.eta_time || record.hora || ""),
+    puertoArribo: record.arrival_port || record.arrival_port_name || record.puertoArribo || "",
+    puertoZarpe: record.departure_port || record.departure_port_name || record.puertoZarpe || "",
+    notas: record.notes || record.notas || "",
+    statusCode: record.status_code || "",
     etaDateObject: etaDate
   };
 }
 
-async function loadScheduleFromApi() {
-  processStatus.textContent = "Consultando BAT-API...";
-  const data = await apiGet("/api/v1/vessel-calls?limit=500");
-  currentSchedule = (data.records || []).map(toScheduleItem);
-  processStatus.textContent = `Programación desde API: ${currentSchedule.length} registro(s).`;
+async function loadScheduleFromApi(params = "") {
+  processStatus.textContent = "Consultando programación central en BAT-API...";
+  const data = await apiGet(`/api/v1/vessels/schedule${params}`);
+  currentSchedule = (Array.isArray(data) ? data : data.records || []).map(toScheduleItem);
+  processStatus.textContent = `Programación central disponible: ${currentSchedule.length} registro(s).`;
   return currentSchedule;
 }
 
@@ -152,10 +164,12 @@ async function processSchedule() {
     return;
   }
 
-  try {
-    processStatus.textContent = "Importando programación a BAT-API...";
+  btnProcess.disabled = true;
 
-    const result = await apiPost("/api/v1/vessels/import/text", {
+  try {
+    processStatus.textContent = "Guardando programación en BAT-API/PostgreSQL...";
+
+    const result = await apiPost("/api/v1/vessels/schedule/import-text", {
       text,
       source: "proximos-buques"
     });
@@ -163,12 +177,15 @@ async function processSchedule() {
     currentSchedule = (result.records || []).map(toScheduleItem);
 
     processStatus.textContent =
-      `Importación completa: ${result.created} creado(s), ${result.updated} actualizado(s), ${result.ignored} ignorado(s), ${result.errors} error(es).`;
+      `Programación guardada | Importados: ${result.imported} | Duplicados: ${result.duplicates} | Omitidos: ${result.ignored} | Batch: ${result.import_batch_id}`;
 
-    alert("Programación importada correctamente a PostgreSQL.");
+    alert("Programación guardada correctamente en PostgreSQL.");
   } catch (error) {
-    processStatus.textContent = "Error al importar programación.";
-    alert(error.message);
+    console.error("Error guardando programación", error);
+    processStatus.textContent = `Error al guardar programación: ${error.message || error}`;
+    alert(error.message || error);
+  } finally {
+    btnProcess.disabled = false;
   }
 }
 
@@ -184,7 +201,7 @@ function getUpcomingRecords() {
     });
 }
 
-function buildReport(records, title = "Próximos Buques", subtitle = "") {
+function buildReport(records, title = "Proximos Buques", subtitle = "") {
   const lines = [title];
 
   if (subtitle) lines.push(subtitle);
@@ -199,9 +216,9 @@ function buildReport(records, title = "Próximos Buques", subtitle = "") {
     const prevPort = abbreviatePort(item.puertoZarpe);
     const prevText = prevPort ? ` [Prev. ${prevPort}]` : "";
     const hourText = item.hora ? ` ${item.hora}` : "";
-    const statusText = item.statusCode ? ` (${item.statusCode})` : "";
+    const serviceText = item.service ? ` | ${item.service}` : "";
 
-    lines.push(`${item.buque} ETA ${item.etaFecha}${hourText}${prevText}${statusText}`);
+    lines.push(`${item.buque} ETA ${item.etaFecha}${hourText}${prevText}${serviceText}`);
   });
 
   return lines.join("\n");
@@ -212,7 +229,7 @@ async function generateUpcoming() {
     await loadScheduleFromApi();
     reportOutput.value = buildReport(getUpcomingRecords());
   } catch (error) {
-    alert(error.message);
+    alert(error.message || error);
   }
 }
 
@@ -245,12 +262,13 @@ async function generateRangeReport() {
   }
 
   try {
-    await loadScheduleFromApi();
+    const params = `?start=${formatDateInput(start)}&end=${formatDateInput(end)}`;
+    await loadScheduleFromApi(params);
     const records = getRecordsByDateRange(start, end);
     const subtitle = `Del ${formatDateMX(start)} al ${formatDateMX(end)}`;
     rangeOutput.value = buildReport(records, "Buques por rango de fecha", subtitle);
   } catch (error) {
-    alert(error.message);
+    alert(error.message || error);
   }
 }
 
@@ -289,14 +307,15 @@ function setDefaultRangeDates() {
   if (!rangeEnd.value) rangeEnd.value = formatDateInput(nextWeek);
 }
 
-btnProcess.addEventListener("click", processSchedule);
-btnGenerate.addEventListener("click", generateUpcoming);
-btnCopy.addEventListener("click", () => copyTextFrom(reportOutput, "Primero genera el reporte de próximos buques."));
-btnClear.addEventListener("click", clearData);
-btnGenerateRange.addEventListener("click", generateRangeReport);
-btnCopyRange.addEventListener("click", () => copyTextFrom(rangeOutput, "Primero genera el reporte por rango de fecha."));
+btnProcess?.addEventListener("click", processSchedule);
+btnGenerate?.addEventListener("click", generateUpcoming);
+btnCopy?.addEventListener("click", () => copyTextFrom(reportOutput, "Primero genera el reporte de próximos buques."));
+btnClear?.addEventListener("click", clearData);
+btnGenerateRange?.addEventListener("click", generateRangeReport);
+btnCopyRange?.addEventListener("click", () => copyTextFrom(rangeOutput, "Primero genera el reporte por rango de fecha."));
 
 setDefaultRangeDates();
-loadScheduleFromApi().catch(() => {
-  processStatus.textContent = "Sin conexión con BAT-API. Enciende el backend para consultar datos.";
+loadScheduleFromApi().catch((error) => {
+  console.warn("No se pudo cargar programación inicial", error);
+  processStatus.textContent = "No se pudo consultar BAT-API. Verifica Railway.";
 });
