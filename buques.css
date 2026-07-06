@@ -47,6 +47,7 @@ body {
 }
 
 h1 { margin: 0 0 10px; font-size: clamp(30px, 5vw, 48px); }
+h2 { margin: 0 0 10px; font-size: clamp(24px, 4vw, 34px); }
 .bq-subtitle { color: #4b4742; line-height: 1.45; margin: 0; }
 
 .bq-back {
@@ -66,6 +67,7 @@ h1 { margin: 0 0 10px; font-size: clamp(30px, 5vw, 48px); }
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 18px;
+  margin-bottom: 18px;
 }
 
 .bq-module {
@@ -85,8 +87,75 @@ h1 { margin: 0 0 10px; font-size: clamp(30px, 5vw, 48px); }
 .bq-module strong { display: block; font-size: 20px; margin-bottom: 8px; }
 .bq-module small { color: var(--msc-gray); line-height: 1.45; }
 
+.bq-detail-card { border-top: 8px solid var(--msc-yellow); }
+
+.bq-detail-search {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.bq-detail-search input {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 13px 14px;
+  font: inherit;
+}
+
+.bq-detail-search button {
+  appearance: none;
+  border: 0;
+  border-radius: 12px;
+  padding: 13px 18px;
+  background: var(--msc-black);
+  color: var(--msc-white);
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.bq-status {
+  margin-top: 14px;
+  background: #f6f1e8;
+  border-radius: 12px;
+  color: #4b4742;
+  padding: 12px 14px;
+  line-height: 1.4;
+}
+
+.bq-detail-result {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.bq-detail-result div {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 16px;
+  background: #fffdf8;
+}
+
+.bq-detail-result small {
+  display: block;
+  color: var(--msc-gray);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.bq-detail-result strong {
+  display: block;
+  font-size: 18px;
+  line-height: 1.25;
+}
+
 @media (max-width: 800px) {
   .bq-shell { padding: 14px; }
   .bq-hero { flex-direction: column; align-items: stretch; }
   .bq-grid { grid-template-columns: 1fr; }
+  .bq-detail-search { grid-template-columns: 1fr; }
+  .bq-detail-result { grid-template-columns: 1fr; }
 }
