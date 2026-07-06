@@ -6,10 +6,14 @@ const vesselDetailSearch = document.getElementById('vesselDetailSearch');
 const btnVesselDetailSearch = document.getElementById('btnVesselDetailSearch');
 const vesselDetailStatus = document.getElementById('vesselDetailStatus');
 const vesselDetailResult = document.getElementById('vesselDetailResult');
+const vesselSuggestions = document.getElementById('vesselSuggestions');
 const detailVesselName = document.getElementById('detailVesselName');
 const detailVesselFlag = document.getElementById('detailVesselFlag');
 const detailVesselNationality = document.getElementById('detailVesselNationality');
 const detailVesselImo = document.getElementById('detailVesselImo');
+
+let suggestionTimer = null;
+let lastSuggestions = [];
 
 function clean(value) { return String(value || '').trim(); }
 function apiUrl(path) { return `${API_BASE.replace(/\/$/, '')}${path}`; }
@@ -23,13 +27,61 @@ function pickBestMatch(records, query) {
     || records[0];
 }
 
+function hideSuggestions() {
+  if (!vesselSuggestions) return;
+  vesselSuggestions.hidden = true;
+  vesselSuggestions.innerHTML = '';
+}
+
 function renderVesselDetail(vessel) {
-  const flag = vessel?.flag || '-';
   detailVesselName.textContent = vessel?.name || vessel?.official_name || '-';
-  detailVesselFlag.textContent = flag;
-  detailVesselNationality.textContent = flag;
+  detailVesselFlag.textContent = vessel?.flag || '-';
+  detailVesselNationality.textContent = vessel?.home_port || '-';
   detailVesselImo.textContent = vessel?.imo || '-';
   vesselDetailResult.hidden = false;
+}
+
+function renderSuggestions(records) {
+  if (!vesselSuggestions) return;
+  lastSuggestions = records;
+
+  if (!records.length) {
+    hideSuggestions();
+    return;
+  }
+
+  vesselSuggestions.innerHTML = records.slice(0, 8).map((record, index) => {
+    const name = record.name || record.official_name || 'Sin nombre';
+    const imo = record.imo ? `IMO ${record.imo}` : 'IMO no registrado';
+    const flag = record.flag || 'Bandera no registrada';
+    const homePort = record.home_port || 'Home Port no registrado';
+    return `<button type="button" class="bq-suggestion" data-index="${index}"><strong>${name}</strong><small>${imo} | ${flag} | ${homePort}</small></button>`;
+  }).join('');
+
+  vesselSuggestions.hidden = false;
+}
+
+async function fetchVesselMatches(query) {
+  const response = await fetch(apiUrl(`/api/v1/vessels?q=${encodeURIComponent(query)}&limit=10`), { cache: 'no-store' });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(payload.detail || `Error HTTP ${response.status}`);
+  return Array.isArray(payload.records) ? payload.records : [];
+}
+
+async function updateSuggestions() {
+  const query = clean(vesselDetailSearch?.value);
+  if (query.length < 2) {
+    hideSuggestions();
+    return;
+  }
+
+  try {
+    const records = await fetchVesselMatches(query);
+    renderSuggestions(records);
+  } catch (error) {
+    console.warn('No se pudieron cargar sugerencias de buques', error);
+    hideSuggestions();
+  }
 }
 
 async function importFleetFile() {
@@ -62,6 +114,7 @@ async function searchVesselDetail() {
   if (!query) {
     vesselDetailStatus.textContent = 'Escribe el nombre del buque para consultar.';
     vesselDetailResult.hidden = true;
+    hideSuggestions();
     return;
   }
 
@@ -70,19 +123,17 @@ async function searchVesselDetail() {
   vesselDetailResult.hidden = true;
 
   try {
-    const response = await fetch(apiUrl(`/api/v1/vessels?q=${encodeURIComponent(query)}&limit=20`), { cache: 'no-store' });
-    const payload = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(payload.detail || `Error HTTP ${response.status}`);
-
-    const records = Array.isArray(payload.records) ? payload.records : [];
+    const records = await fetchVesselMatches(query);
     const vessel = pickBestMatch(records, query);
     if (!vessel) {
       vesselDetailStatus.textContent = 'No se encontró el buque en la base central.';
+      hideSuggestions();
       return;
     }
 
     renderVesselDetail(vessel);
-    vesselDetailStatus.textContent = `Buque encontrado en BAT-API. Coincidencias: ${payload.total ?? records.length}.`;
+    hideSuggestions();
+    vesselDetailStatus.textContent = `Buque encontrado en BAT-API. Coincidencias: ${records.length}.`;
   } catch (error) {
     console.error('Error consultando detalle de buque', error);
     vesselDetailStatus.textContent = `Error al consultar BAT-API: ${error.message || error}`;
@@ -94,4 +145,28 @@ async function searchVesselDetail() {
 
 btnFleetImport?.addEventListener('click', importFleetFile);
 btnVesselDetailSearch?.addEventListener('click', searchVesselDetail);
-vesselDetailSearch?.addEventListener('keydown', event => { if (event.key === 'Enter') searchVesselDetail(); });
+
+vesselDetailSearch?.addEventListener('input', () => {
+  clearTimeout(suggestionTimer);
+  suggestionTimer = setTimeout(updateSuggestions, 250);
+});
+
+vesselDetailSearch?.addEventListener('keydown', event => {
+  if (event.key === 'Enter') searchVesselDetail();
+  if (event.key === 'Escape') hideSuggestions();
+});
+
+vesselSuggestions?.addEventListener('click', event => {
+  const button = event.target.closest('.bq-suggestion');
+  if (!button) return;
+  const record = lastSuggestions[Number(button.dataset.index)];
+  if (!record) return;
+  vesselDetailSearch.value = record.name || record.official_name || '';
+  renderVesselDetail(record);
+  hideSuggestions();
+  vesselDetailStatus.textContent = 'Buque seleccionado desde sugerencias.';
+});
+
+document.addEventListener('click', event => {
+  if (!event.target.closest('.bq-search-wrap')) hideSuggestions();
+});
