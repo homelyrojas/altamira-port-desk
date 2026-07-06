@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Buques | Boarding Agent Tools</title>
-  <link rel="stylesheet" href="./buques.css?v=153" />
+  <link rel="stylesheet" href="./buques.css?v=154" />
 </head>
 <body>
   <main class="bq-shell">
@@ -15,80 +15,47 @@
         <p class="bq-subtitle">Consulta movimientos operativos, próximos arribos, schematic y herramientas relacionadas con buques.</p>
       </div>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-        <a class="bq-back" href="./index.html?v=153">Volver</a>
-        <a class="bq-back" href="./index.html?v=153">Inicio</a>
+        <a class="bq-back" href="./index.html?v=154">Volver</a>
+        <a class="bq-back" href="./index.html?v=154">Inicio</a>
       </div>
     </section>
 
     <section class="bq-grid">
-      <a class="bq-module" href="./arribos-zarpes.html?v=153">
-        <span>⚓</span>
-        <strong>Arribos y Zarpes</strong>
-        <small>Carga Excel vigente y genera reporte operativo por buque.</small>
-      </a>
-
-      <a class="bq-module" href="./proximos-buques.html?v=153">
-        <span>📅</span>
-        <strong>Próximos Buques</strong>
-        <small>Pega la programación y genera listado operativo del siguiente bloque.</small>
-      </a>
-
-      <a class="bq-module" href="./schematic.html?v=153">
-        <span>🗂️</span>
-        <strong>Schematic</strong>
-        <small>Carga Live Schedule y consulta ETB / ETD por bloque operativo o rango de fecha.</small>
-      </a>
+      <a class="bq-module" href="./arribos-zarpes.html?v=154"><span>⚓</span><strong>Arribos y Zarpes</strong><small>Carga Excel vigente y genera reporte operativo por buque.</small></a>
+      <a class="bq-module" href="./proximos-buques.html?v=154"><span>📅</span><strong>Próximos Buques</strong><small>Pega la programación y genera listado operativo del siguiente bloque.</small></a>
+      <a class="bq-module" href="./schematic.html?v=154"><span>🗂️</span><strong>Schematic</strong><small>Carga Live Schedule y consulta ETB / ETD por bloque operativo o rango de fecha.</small></a>
     </section>
 
     <section class="bq-card bq-detail-card">
-      <div class="bq-detail-head">
-        <div>
-          <p class="bq-kicker">CONSULTA CENTRAL | BAT-API</p>
-          <h2>Detalle de Buque</h2>
-          <p class="bq-subtitle">Busca por nombre de buque y consulta los datos principales registrados en la base.</p>
-        </div>
-      </div>
+      <div class="bq-detail-head"><div><p class="bq-kicker">CONSULTA CENTRAL | BAT-API</p><h2>Detalle de Buque</h2><p class="bq-subtitle">Busca por nombre de buque y consulta los datos principales registrados en la base.</p></div></div>
 
       <div class="bq-import-box">
-        <div>
-          <strong>Importar base anual de buques</strong>
-          <small>Usa el archivo Proforma Rotations en formato .xlsb para actualizar la base central.</small>
-        </div>
+        <div><strong>Importar base anual de buques</strong><small>Usa el archivo Proforma Rotations en formato .xlsb para actualizar la base central.</small></div>
         <input id="fleetImportFile" type="file" accept=".xlsb,.csv" />
         <button id="btnFleetImport" type="button">Importar base de buques</button>
       </div>
 
       <div class="bq-detail-search">
-        <div class="bq-search-wrap">
-          <input id="vesselDetailSearch" type="search" placeholder="Ej. MSC ALICANTE VI" autocomplete="off" />
-          <div id="vesselSuggestions" class="bq-suggestions" hidden></div>
-        </div>
+        <div class="bq-search-wrap"><input id="vesselDetailSearch" type="search" placeholder="Ej. MSC ALICANTE VI" autocomplete="off" /><div id="vesselSuggestions" class="bq-suggestions" hidden></div></div>
         <button id="btnVesselDetailSearch" type="button">Consultar buque</button>
       </div>
 
       <div id="vesselDetailStatus" class="bq-status">Escribe el nombre del buque para consultar.</div>
 
       <div id="vesselDetailResult" class="bq-detail-result" hidden>
-        <div>
-          <small>Nombre del Buque</small>
-          <strong id="detailVesselName">-</strong>
-        </div>
-        <div>
-          <small>Bandera</small>
-          <strong id="detailVesselFlag">-</strong>
-        </div>
-        <div>
-          <small>Nacionalidad</small>
-          <strong id="detailVesselNationality">-</strong>
-        </div>
-        <div>
-          <small>IMO</small>
-          <strong id="detailVesselImo">-</strong>
-        </div>
+        <div><small>Nombre del Buque</small><strong id="detailVesselName">-</strong></div>
+        <div><small>Bandera</small><strong id="detailVesselFlag">-</strong></div>
+        <div><small>Nacionalidad</small><strong id="detailVesselNationality">-</strong></div>
+        <div><small>IMO</small><strong id="detailVesselImo">-</strong></div>
+        <div><small>Vessel Email</small><strong id="detailVesselEmail">-</strong></div>
+        <div><small>Vessel Principle Tel</small><strong id="detailVesselPrincipalTel">-</strong></div>
+        <div><small>Mobile Tel</small><strong id="detailVesselMobileTel">-</strong></div>
+        <div><small>Captain / Nationality</small><strong id="detailVesselCaptain">-</strong></div>
+        <div><small>ChEng / Nationality</small><strong id="detailVesselChiefEngineer">-</strong></div>
       </div>
     </section>
   </main>
 
-  <script src="./buques.js?v=153"></script>
+  <script src="./buques.js?v=154"></script>
 </body>
 </html>
