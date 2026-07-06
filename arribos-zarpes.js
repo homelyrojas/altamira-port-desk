@@ -93,18 +93,21 @@ async function loadLocalData() {
 
 async function loadData() {
   loadStatus.textContent = "Cargando datos operativos...";
-  API_BASE = clean(localStorage.getItem("BAT_API_BASE_URL") || API_BASE);
 
-  if (API_BASE) {
-    try {
+      try {
       const data = await fetchJson(`${API_BASE.replace(/\/$/, "")}/api/v1/vessel-calls?limit=200`);
       currentRows = normalizeRecords(data);
-      loadStatus.textContent = `Base vigente desde BAT-API | Registros: ${currentRows.length}`;
-      if (searchBox.value.trim()) searchRecords();
+      loadStatus.textContent =
+          `Base vigente desde BAT-API | Registros: ${currentRows.length}`;
+
+      if (searchBox.value.trim()) {
+          searchRecords();
+      }
+
       return;
-    } catch (error) {
-      console.warn("BAT-API no disponible. Se usara respaldo local.", error);
-    }
+
+  } catch (error) {
+      console.warn("BAT-API no disponible.", error);
   }
 
   currentRows = await loadLocalData();
@@ -122,16 +125,14 @@ async function loadData() {
 }
 
 async function uploadExcel() {
-  const file = excelFile && excelFile.files ? excelFile.files[0] : null;
-  API_BASE = clean(localStorage.getItem("BAT_API_BASE_URL") || API_BASE);
+
+  const file =
+      excelFile && excelFile.files
+          ? excelFile.files[0]
+          : null;
 
   if (!file) {
     loadStatus.textContent = "Selecciona primero un archivo Excel.";
-    return;
-  }
-
-  if (!API_BASE) {
-    loadStatus.textContent = "Falta configurar BAT_API_BASE_URL en este navegador antes de subir el Excel.";
     return;
   }
 
