@@ -94,6 +94,16 @@ function startOfDay(date) { return new Date(date.getFullYear(), date.getMonth(),
 function endOfDay(date) { const copy = startOfDay(date); copy.setHours(23,59,59,999); return copy; }
 function addDays(date, days) { const copy = new Date(date); copy.setDate(copy.getDate() + days); return copy; }
 
+function formatDateInput(date) { return `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`; }
+
+function initializeDefaultRangeDates() {
+  if (!rangeStart || !rangeEnd) return;
+  const today = startOfDay(new Date());
+  const endDate = addDays(today, 7);
+  if (!rangeStart.value) rangeStart.value = formatDateInput(today);
+  if (!rangeEnd.value) rangeEnd.value = formatDateInput(endDate);
+}
+
 function getOperationalRange(today = new Date()) {
   const start = addDays(startOfDay(today), -1);
   const day = today.getDay();
@@ -271,4 +281,5 @@ btnVesselSearch.addEventListener('click', generateVesselReport);
 btnCopyVessel.addEventListener('click', () => copyTextFrom(vesselOutput, 'Primero consulta un buque.'));
 vesselSearch.addEventListener('keydown', event => { if (event.key === 'Enter') generateVesselReport(); });
 btnClear.addEventListener('click', clearData);
+initializeDefaultRangeDates();
 hydrateFromStorage();
