@@ -11,6 +11,11 @@ const detailVesselName = document.getElementById('detailVesselName');
 const detailVesselFlag = document.getElementById('detailVesselFlag');
 const detailVesselNationality = document.getElementById('detailVesselNationality');
 const detailVesselImo = document.getElementById('detailVesselImo');
+const detailVesselEmail = document.getElementById('detailVesselEmail');
+const detailVesselPrincipalTel = document.getElementById('detailVesselPrincipalTel');
+const detailVesselMobileTel = document.getElementById('detailVesselMobileTel');
+const detailVesselCaptain = document.getElementById('detailVesselCaptain');
+const detailVesselChiefEngineer = document.getElementById('detailVesselChiefEngineer');
 
 let suggestionTimer = null;
 let lastSuggestions = [];
@@ -18,6 +23,7 @@ let lastSuggestions = [];
 function clean(value) { return String(value || '').trim(); }
 function apiUrl(path) { return `${API_BASE.replace(/\/$/, '')}${path}`; }
 function normalizeVesselName(value) { return clean(value).toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, ' '); }
+function joinNameNationality(name, nationality) { const n = clean(name); const nat = clean(nationality); if (n && nat) return `${n} / ${nat}`; return n || nat || '-'; }
 
 function pickBestMatch(records, query) {
   if (!records.length) return null;
@@ -38,6 +44,11 @@ function renderVesselDetail(vessel) {
   detailVesselFlag.textContent = vessel?.flag || '-';
   detailVesselNationality.textContent = vessel?.home_port || '-';
   detailVesselImo.textContent = vessel?.imo || '-';
+  detailVesselEmail.textContent = vessel?.vessel_email || '-';
+  detailVesselPrincipalTel.textContent = vessel?.principal_phone || '-';
+  detailVesselMobileTel.textContent = vessel?.mobile_phone || '-';
+  detailVesselCaptain.textContent = joinNameNationality(vessel?.master_name, vessel?.master_nationality);
+  detailVesselChiefEngineer.textContent = joinNameNationality(vessel?.chief_engineer_name, vessel?.chief_engineer_nationality);
   vesselDetailResult.hidden = false;
 }
 
