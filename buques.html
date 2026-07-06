@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Buques | Boarding Agent Tools</title>
-  <link rel="stylesheet" href="./buques.css?v=152" />
+  <link rel="stylesheet" href="./buques.css?v=153" />
 </head>
 <body>
   <main class="bq-shell">
@@ -15,25 +15,25 @@
         <p class="bq-subtitle">Consulta movimientos operativos, próximos arribos, schematic y herramientas relacionadas con buques.</p>
       </div>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-        <a class="bq-back" href="./index.html?v=152">Volver</a>
-        <a class="bq-back" href="./index.html?v=152">Inicio</a>
+        <a class="bq-back" href="./index.html?v=153">Volver</a>
+        <a class="bq-back" href="./index.html?v=153">Inicio</a>
       </div>
     </section>
 
     <section class="bq-grid">
-      <a class="bq-module" href="./arribos-zarpes.html?v=152">
+      <a class="bq-module" href="./arribos-zarpes.html?v=153">
         <span>⚓</span>
         <strong>Arribos y Zarpes</strong>
         <small>Carga Excel vigente y genera reporte operativo por buque.</small>
       </a>
 
-      <a class="bq-module" href="./proximos-buques.html?v=152">
+      <a class="bq-module" href="./proximos-buques.html?v=153">
         <span>📅</span>
         <strong>Próximos Buques</strong>
         <small>Pega la programación y genera listado operativo del siguiente bloque.</small>
       </a>
 
-      <a class="bq-module" href="./schematic.html?v=152">
+      <a class="bq-module" href="./schematic.html?v=153">
         <span>🗂️</span>
         <strong>Schematic</strong>
         <small>Carga Live Schedule y consulta ETB / ETD por bloque operativo o rango de fecha.</small>
@@ -59,7 +59,10 @@
       </div>
 
       <div class="bq-detail-search">
-        <input id="vesselDetailSearch" type="search" placeholder="Ej. MSC ALICANTE VI" autocomplete="off" />
+        <div class="bq-search-wrap">
+          <input id="vesselDetailSearch" type="search" placeholder="Ej. MSC ALICANTE VI" autocomplete="off" />
+          <div id="vesselSuggestions" class="bq-suggestions" hidden></div>
+        </div>
         <button id="btnVesselDetailSearch" type="button">Consultar buque</button>
       </div>
 
@@ -86,6 +89,6 @@
     </section>
   </main>
 
-  <script src="./buques.js?v=152"></script>
+  <script src="./buques.js?v=153"></script>
 </body>
 </html>
