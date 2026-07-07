@@ -1,4 +1,5 @@
 const STORAGE_KEY = 'bat_schematic_v141_current';
+const API_BASE = 'https://bat-api-production.up.railway.app';
 let currentSchematic = [];
 
 const schematicFile = document.getElementById('schematicFile');
@@ -93,7 +94,7 @@ function formatDateMX(date) { if (!date || Number.isNaN(date.getTime())) return 
 function startOfDay(date) { return new Date(date.getFullYear(), date.getMonth(), date.getDate()); }
 function endOfDay(date) { const copy = startOfDay(date); copy.setHours(23,59,59,999); return copy; }
 function addDays(date, days) { const copy = new Date(date); copy.setDate(copy.getDate() + days); return copy; }
-
+function apiUrl(path) { return `${API_BASE.replace(/\/$/, '')}${path}`; }
 function formatDateInput(date) { return `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`; }
 
 function initializeDefaultRangeDates() {
@@ -102,6 +103,91 @@ function initializeDefaultRangeDates() {
   const endDate = addDays(today, 7);
   if (!rangeStart.value) rangeStart.value = formatDateInput(today);
   if (!rangeEnd.value) rangeEnd.value = formatDateInput(endDate);
+}
+
+function toApiRecord(item) {
+  return {
+    terminal: item.terminal || null,
+    vessel: item.vessel || '',
+    voyageImp: item.voyageImp || null,
+    voyageExp: item.voyageExp || null,
+    service: item.service || null,
+    prev: item.prev || null,
+    next: item.next || null,
+    etb: item.etb || null,
+    etd: item.etd || null,
+    etbDisplay: item.etbDisplay || null,
+    etdDisplay: item.etdDisplay || null,
+    etbIso: item.etbIso || null,
+    etdIso: item.etdIso || null
+  };
+}
+
+function fromApiRecord(item) {
+  return {
+    terminal: item.terminal || '',
+    vessel: item.vessel || '',
+    voyageImp: item.voyageImp || '',
+    voyageExp: item.voyageExp || '',
+    service: item.service || '',
+    prev: item.prev || '',
+    next: item.next || '',
+    etb: item.etb || '',
+    etd: item.etd || '',
+    etbDisplay: item.etbDisplay || item.etb || '',
+    etdDisplay: item.etdDisplay || item.etd || '',
+    etbIso: item.etbIso || '',
+    etdIso: item.etdIso || ''
+  };
+}
+
+async function saveSchematicToApi(records) {
+  const response = await fetch(apiUrl('/api/v1/schematic/import-records'), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ source: 'schematic-page', records: records.map(toApiRecord) })
+  });
+  const payload = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(payload.detail || `Error HTTP ${response.status}`);
+  return payload;
+}
+
+async function loadSchematicFromApi() {
+  const response = await fetch(apiUrl('/api/v1/schematic'), { cache: 'no-store' });
+  const payload = await response.json().catch(() => []);
+  if (!response.ok) throw new Error(payload.detail || `Error HTTP ${response.status}`);
+  return Array.isArray(payload) ? payload.map(fromApiRecord) : [];
+}
+
+async function hydrateFromApiOrStorage() {
+  try {
+    processStatus.textContent = 'Consultando Schematic central en BAT-API...';
+    const records = await loadSchematicFromApi();
+    if (records.length) {
+      currentSchematic = records;
+      const loadedAt = new Date().toISOString();
+      saveSchematic(records);
+      updateStatus({ loadedAt, records });
+      return true;
+    }
+  } catch (error) {
+    console.warn('No se pudo cargar Schematic desde BAT-API', error);
+  }
+
+  const payload = loadSchematic();
+  if (payload?.records?.length) {
+    currentSchematic = payload.records;
+    updateStatus(payload);
+    return true;
+  }
+
+  updateStatus(null);
+  return false;
+}
+
+async function ensureLoadedAsync() {
+  if (currentSchematic.length) return true;
+  return hydrateFromApiOrStorage();
 }
 
 function getOperationalRange(today = new Date()) {
@@ -174,21 +260,35 @@ async function processFile() {
   const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, raw: true, defval: '' });
   const records = parseRows(rows);
   if (!records.length) { alert('No pude interpretar el schematic. Revisa que el archivo tenga columnas Vessel, Imp, Prev, Next, ETB, ETD y Terminal.'); return; }
-  currentSchematic = records;
-  saveSchematic(records);
-  updateStatus({ loadedAt: new Date().toISOString(), records });
-  alert(`Schematic procesado: ${records.length} buque(s).`);
+  try {
+    processStatus.textContent = 'Guardando Schematic en BAT-API/PostgreSQL...';
+    const result = await saveSchematicToApi(records);
+    currentSchematic = records;
+    saveSchematic(records);
+    updateStatus({ loadedAt: new Date().toISOString(), records });
+    alert(`Schematic procesado y guardado: ${result.imported || records.length} buque(s).`);
+  } catch (error) {
+    console.error('Error guardando Schematic en BAT-API', error);
+    alert(`No se pudo guardar en BAT-API: ${error.message || error}`);
+  }
 }
 
-function processText() {
+async function processText() {
   const text = schematicInput.value.trim();
   if (!text) { alert('Pega primero el contenido del schematic.'); return; }
   const records = parseText(text);
   if (!records.length) { alert('No pude interpretar el texto pegado. Intenta pegarlo desde Excel con columnas visibles.'); return; }
-  currentSchematic = records;
-  saveSchematic(records);
-  updateStatus({ loadedAt: new Date().toISOString(), records });
-  alert(`Schematic procesado: ${records.length} buque(s).`);
+  try {
+    processStatus.textContent = 'Guardando Schematic en BAT-API/PostgreSQL...';
+    const result = await saveSchematicToApi(records);
+    currentSchematic = records;
+    saveSchematic(records);
+    updateStatus({ loadedAt: new Date().toISOString(), records });
+    alert(`Schematic procesado y guardado: ${result.imported || records.length} buque(s).`);
+  } catch (error) {
+    console.error('Error guardando Schematic en BAT-API', error);
+    alert(`No se pudo guardar en BAT-API: ${error.message || error}`);
+  }
 }
 
 function ensureLoaded() { if (!currentSchematic.length) { const payload = loadSchematic(); currentSchematic = payload?.records || []; updateStatus(payload); } return currentSchematic.length > 0; }
@@ -216,8 +316,8 @@ function buildReport(records, title = 'Schematic') {
   return lines.join('\n');
 }
 
-function generateOperationalBlock(onlyMsc = false) {
-  if (!ensureLoaded()) { alert('Primero procesa o carga un schematic.'); return; }
+async function generateOperationalBlock(onlyMsc = false) {
+  if (!(await ensureLoadedAsync())) { alert('Primero procesa o carga un schematic.'); return; }
   const { start, end } = getOperationalRange(new Date());
   const records = getRecordsBetween(start, end);
   const outputRecords = onlyMsc ? filterMsc(records) : records;
@@ -226,8 +326,8 @@ function generateOperationalBlock(onlyMsc = false) {
 }
 
 function getDateInputValue(input) { if (!input.value) return null; const [year, month, day] = input.value.split('-').map(Number); return new Date(year, month - 1, day); }
-function generateRangeReport(onlyMsc = false) {
-  if (!ensureLoaded()) { alert('Primero procesa o carga un schematic.'); return; }
+async function generateRangeReport(onlyMsc = false) {
+  if (!(await ensureLoadedAsync())) { alert('Primero procesa o carga un schematic.'); return; }
   const start = getDateInputValue(rangeStart);
   const rawEnd = getDateInputValue(rangeEnd);
   if (!start || !rawEnd) { alert('Selecciona fecha inicio y fecha fin.'); return; }
@@ -239,8 +339,8 @@ function generateRangeReport(onlyMsc = false) {
   rangeOutput.value = buildReport(outputRecords, `Schematic - Rango${suffix} ${formatDateMX(start)} al ${formatDateMX(rawEnd)}`);
 }
 
-function generateVesselReport() {
-  if (!ensureLoaded()) { alert('Primero procesa o carga un schematic.'); return; }
+async function generateVesselReport() {
+  if (!(await ensureLoadedAsync())) { alert('Primero procesa o carga un schematic.'); return; }
   const query = vesselSearch.value.trim();
   if (!query) { alert('Escribe el nombre del buque o parte del nombre.'); return; }
   const records = getRecordsByVessel(query);
@@ -282,4 +382,4 @@ btnCopyVessel.addEventListener('click', () => copyTextFrom(vesselOutput, 'Primer
 vesselSearch.addEventListener('keydown', event => { if (event.key === 'Enter') generateVesselReport(); });
 btnClear.addEventListener('click', clearData);
 initializeDefaultRangeDates();
-hydrateFromStorage();
+hydrateFromApiOrStorage();
