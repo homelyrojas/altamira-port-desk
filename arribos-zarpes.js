@@ -1,214 +1,38 @@
-const API_BASE = "https://bat-api-production.up.railway.app";
-let currentRows = [];
-let selectedRecord = null;
-let searchTimer = null;
-
-const btnRefresh = document.getElementById("btnRefresh");
-const btnClear = document.getElementById("btnClear");
-const btnCopy = document.getElementById("btnCopy");
-const btnUploadExcel = document.getElementById("btnUploadExcel");
-const excelFile = document.getElementById("excelFile");
-const loadStatus = document.getElementById("loadStatus");
-const searchBox = document.getElementById("searchBox");
-const results = document.getElementById("results");
-const reportBox = document.getElementById("reportBox");
-
-const REPORT_FIELDS = [
-  { key: "eta_datetime", label: "F.CRUCE LIMITE DE PUERTO" },
-  { key: "pilot_on_board_arrival_datetime", label: "F.PILOTO ABORDO AL ARRIBO" },
-  { key: "breakwater_crossing_arrival_datetime", label: "F.CRUCE DE ESCOLLERAS" },
-  { key: "berthed_datetime", label: "F.TOTALMENTE ATRACADO", tramo: true },
-  { key: "operation_start_datetime", label: "F.INICIO OPERACIONES" },
-  { key: "operation_end_datetime", label: "F.TERMINO DE OPERACIONES" },
-  { key: "pilot_on_board_departure_datetime", label: "F. PILOTO ABORDO AL ZARPE" },
-  { key: "unberthed_datetime", label: "F.LIBRE DE CABOS [DESATRAQUE]" },
-  { key: "breakwater_crossing_departure_datetime", label: "F.CRUCE ESCOLLERAS" },
-  { key: "pilot_disembark_datetime", label: "F. DESEMBARQUE DE PILOTO" }
+const API_BASE="https://bat-api-production.up.railway.app";
+let currentRows=[],selectedRecord=null,searchTimer=null;
+const btnRefresh=document.getElementById("btnRefresh"),btnClear=document.getElementById("btnClear"),btnCopy=document.getElementById("btnCopy"),btnUploadExcel=document.getElementById("btnUploadExcel"),excelFile=document.getElementById("excelFile"),loadStatus=document.getElementById("loadStatus"),searchBox=document.getElementById("searchBox"),results=document.getElementById("results"),reportBox=document.getElementById("reportBox");
+const REPORT_FIELDS=[
+{key:"eta_datetime",label:"F.CRUCE LIMITE DE PUERTO"},
+{key:"pilot_on_board_arrival_datetime",label:"F.PILOTO ABORDO AL ARRIBO"},
+{key:"breakwater_crossing_arrival_datetime",label:"F.CRUCE DE ESCOLLERAS"},
+{key:"berthed_datetime",label:"F.TOTALMENTE ATRACADO",tramo:true},
+{key:"operation_start_datetime",label:"F.INICIO OPERACIONES"},
+{key:"operation_end_datetime",label:"F.TERMINO DE OPERACIONES"},
+{key:"pilot_on_board_departure_datetime",label:"F. PILOTO ABORDO AL ZARPE"},
+{key:"unberthed_datetime",label:"F.LIBRE DE CABOS [DESATRAQUE]"},
+{key:"breakwater_crossing_departure_datetime",label:"F.CRUCE ESCOLLERAS"},
+{key:"pilot_disembark_datetime",label:"F. DESEMBARQUE DE PILOTO"}
 ];
-
-function clean(value) { return String(value || "").trim(); }
-function normalizeText(value) { return clean(value).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase(); }
-function apiRoot() { return API_BASE.replace(/\/$/, ""); }
-
-function pick(record, keys) {
-  for (const key of keys) if (record[key]) return record[key];
-  return "";
-}
-
-function formatDateTime(value) {
-  if (!value) return "";
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return clean(value);
-  return date.toLocaleString("es-MX", { dateStyle: "short", timeStyle: "short" });
-}
-
-function normalizeRecords(payload) {
-  if (Array.isArray(payload)) return payload;
-  if (payload && Array.isArray(payload.records)) return payload.records;
-  if (payload && Array.isArray(payload.data)) return payload.data;
-  if (payload && Array.isArray(payload.rows)) return payload.rows;
-  return [];
-}
-
-async function fetchJson(url) {
-  const res = await fetch(url, { cache: "no-store" });
-  if (!res.ok) throw new Error(url);
-  return res.json();
-}
-
-async function loadLocalData() {
-  const storageKeys = ["bat_arribos_zarpes_v060_current", "BAT_ARRIBOS_ZARPES_CURRENT", "arribos_zarpes_data"];
-  for (const key of storageKeys) {
-    try {
-      const raw = localStorage.getItem(key);
-      if (raw) {
-        const rows = normalizeRecords(JSON.parse(raw));
-        if (rows.length) return rows;
-      }
-    } catch (_) {}
-  }
-  return [];
-}
-
-async function loadData() {
-  loadStatus.textContent = "Cargando datos operativos...";
-  try {
-    const data = await fetchJson(`${apiRoot()}/api/v1/vessel-calls?limit=1000`);
-    currentRows = normalizeRecords(data);
-    loadStatus.textContent = `Base vigente desde BAT-API | Registros: ${currentRows.length}`;
-    if (searchBox.value.trim()) await searchRecords();
-    return;
-  } catch (error) {
-    console.warn("BAT-API no disponible.", error);
-  }
-
-  currentRows = await loadLocalData();
-  selectedRecord = null;
-  results.innerHTML = "";
-  reportBox.value = "";
-  loadStatus.textContent = currentRows.length
-    ? `Modo web recuperado | Registros locales: ${currentRows.length}`
-    : "Modo web activo, pero no se encontro base local de Arribos y Zarpes.";
-  if (searchBox.value.trim()) await searchRecords();
-}
-
-async function uploadExcel() {
-  const file = excelFile && excelFile.files ? excelFile.files[0] : null;
-  if (!file) {
-    loadStatus.textContent = "Selecciona primero un archivo Excel.";
-    alert("Selecciona primero un archivo Excel.");
-    return;
-  }
-
-  const form = new FormData();
-  form.append("file", file);
-  btnUploadExcel.disabled = true;
-  loadStatus.textContent = `Subiendo Excel a BAT-API: ${file.name}`;
-
-  try {
-    const response = await fetch(`${apiRoot()}/api/v1/imports/arribos-zarpes`, { method: "POST", body: form });
-    const payload = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(payload.detail || `Error HTTP ${response.status}`);
-    loadStatus.textContent = `Excel importado correctamente | Creados: ${payload.created} | Actualizados: ${payload.updated} | Omitidos: ${payload.skipped}`;
-    await loadData();
-  } catch (error) {
-    console.error("Error importando Excel:", error);
-    loadStatus.textContent = `Error al importar Excel: ${error.message || error}`;
-    alert(`Error al importar Excel: ${error.message || error}`);
-  } finally {
-    btnUploadExcel.disabled = false;
-  }
-}
-
-function getVessel(record) { return pick(record, ["vessel_name", "BUQUE", "Buque", "buque", "vessel"]); }
-function getVoyage(record) { return pick(record, ["voyage", "VIAJE", "Viaje", "viaje"]); }
-function getService(record) { return pick(record, ["service_name", "SERVICIO", "Servicio", "servicio"]); }
-function getPort(record) { return pick(record, ["arrival_port_name", "PUERTO", "Puerto", "puerto"]); }
-function getStatus(record) { return pick(record, ["status_code", "ESTADO", "Estado", "estado"]); }
-function getTramo(record) { return pick(record, ["berth", "terminal", "TRAMO", "Tramo", "tramo", "arrival_port_name"]); }
-
-async function searchApiRecords(query) {
-  const payload = await fetchJson(`${apiRoot()}/api/v1/vessel-calls?q=${encodeURIComponent(query)}&limit=30`);
-  return normalizeRecords(payload);
-}
-
-function localSearch(query) {
-  const q = normalizeText(query);
-  return currentRows.filter((r) => normalizeText(Object.values(r).join(" ")).includes(q)).slice(0, 30);
-}
-
-async function searchRecords() {
-  const rawQuery = searchBox.value.trim();
-  results.innerHTML = "";
-
-  if (!rawQuery) {
-    results.innerHTML = '<div class="az-status">Escribe para buscar una escala.</div>';
-    return;
-  }
-
-  results.innerHTML = '<div class="az-status">Consultando BAT-API...</div>';
-
-  let matches = [];
-  try {
-    matches = await searchApiRecords(rawQuery);
-  } catch (error) {
-    console.warn("Busqueda BAT-API no disponible, usando datos cargados.", error);
-    matches = localSearch(rawQuery);
-  }
-
-  results.innerHTML = "";
-  if (!matches.length) {
-    results.innerHTML = '<div class="az-status">Sin coincidencias.</div>';
-    return;
-  }
-
-  for (const record of matches) {
-    const item = document.createElement("div");
-    item.className = "az-result";
-    item.innerHTML = `<strong>${getVessel(record)} ${getVoyage(record)}</strong><span>Servicio: ${getService(record) || "-"} | Puerto: ${getPort(record) || "-"} | Estado: ${getStatus(record) || "-"}</span>`;
-    item.addEventListener("click", () => { selectedRecord = record; generateReport(record); });
-    results.appendChild(item);
-  }
-}
-
-function readField(record, key) {
-  const aliases = {
-    eta_datetime: ["eta_datetime", "F.CRUCE LIMITE DE PUERTO", "CRUCE LIMITE DE PUERTO"],
-    pilot_on_board_arrival_datetime: ["pilot_on_board_arrival_datetime", "F.PILOTO ABORDO AL ARRIBO"],
-    breakwater_crossing_arrival_datetime: ["breakwater_crossing_arrival_datetime", "F.CRUCE DE ESCOLLERAS"],
-    berthed_datetime: ["berthed_datetime", "F.TOTALMENTE ATRACADO"],
-    operation_start_datetime: ["operation_start_datetime", "F.INICIO OPERACIONES"],
-    operation_end_datetime: ["operation_end_datetime", "F.TERMINO DE OPERACIONES"],
-    pilot_on_board_departure_datetime: ["pilot_on_board_departure_datetime", "F. PILOTO ABORDO AL ZARPE"],
-    unberthed_datetime: ["unberthed_datetime", "F.LIBRE DE CABOS [DESATRAQUE]"],
-    breakwater_crossing_departure_datetime: ["breakwater_crossing_departure_datetime", "F.CRUCE ESCOLLERAS"],
-    pilot_disembark_datetime: ["pilot_disembark_datetime", "F. DESEMBARQUE DE PILOTO"]
-  };
-  return pick(record, aliases[key] || [key]);
-}
-
-function generateReport(record) {
-  const header = `${getVessel(record)} ${getVoyage(record)}`.trim();
-  const lines = [header, ""];
-  for (const field of REPORT_FIELDS) {
-    const value = formatDateTime(readField(record, field.key));
-    const tramo = field.tramo ? ` ${getTramo(record)}`.trimEnd() : "";
-    lines.push(`${field.label}${tramo ? " " + tramo : ""}: ${value || "PENDIENTE"}`);
-  }
-  reportBox.value = lines.join("\n");
-}
-
-btnUploadExcel?.addEventListener("click", uploadExcel);
-btnRefresh?.addEventListener("click", loadData);
-btnClear?.addEventListener("click", () => { searchBox.value = ""; results.innerHTML = ""; reportBox.value = ""; selectedRecord = null; });
-btnCopy?.addEventListener("click", async () => {
-  const text = reportBox.value.trim();
-  if (!text) { alert("Primero genera un reporte."); return; }
-  await navigator.clipboard.writeText(reportBox.value);
-  alert("Reporte copiado.");
-});
-searchBox?.addEventListener("input", () => {
-  clearTimeout(searchTimer);
-  searchTimer = setTimeout(() => searchRecords(), 250);
-});
-loadData();
+function clean(v){return String(v||"").trim()}
+function normalizeText(v){return clean(v).normalize("NFD").replace(/[\u0300-\u036f]/g,"").toUpperCase()}
+function apiRoot(){return API_BASE.replace(/\/$/,"")}
+function pick(r,keys){for(const k of keys)if(r&&r[k])return r[k];return ""}
+function formatDateTime(v){if(!v)return "";const d=new Date(v);if(Number.isNaN(d.getTime()))return clean(v);return d.toLocaleString("es-MX",{dateStyle:"short",timeStyle:"short"})}
+function formatDateTimePlain(v){if(!v)return "";const d=new Date(v);if(Number.isNaN(d.getTime()))return clean(v);const p=n=>String(n).padStart(2,"0");return `${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`}
+function normalizeRecords(p){if(Array.isArray(p))return p;if(p&&Array.isArray(p.records))return p.records;if(p&&Array.isArray(p.data))return p.data;if(p&&Array.isArray(p.rows))return p.rows;return []}
+async function fetchJson(url){const r=await fetch(url,{cache:"no-store"});if(!r.ok)throw new Error(url);return r.json()}
+async function loadLocalData(){for(const k of["bat_arribos_zarpes_v060_current","BAT_ARRIBOS_ZARPES_CURRENT","arribos_zarpes_data"]){try{const raw=localStorage.getItem(k);if(raw){const rows=normalizeRecords(JSON.parse(raw));if(rows.length)return rows}}catch(_){}}return []}
+async function loadData(){loadStatus.textContent="Cargando datos operativos...";try{const data=await fetchJson(`${apiRoot()}/api/v1/vessel-calls?limit=1000`);currentRows=normalizeRecords(data);loadStatus.textContent=`Base vigente desde BAT-API | Registros: ${currentRows.length}`;if(searchBox.value.trim())await searchRecords();return}catch(e){console.warn("BAT-API no disponible.",e)}currentRows=await loadLocalData();selectedRecord=null;results.innerHTML="";reportBox.value="";loadStatus.textContent=currentRows.length?`Modo web recuperado | Registros locales: ${currentRows.length}`:"Modo web activo, pero no se encontro base local de Arribos y Zarpes.";if(searchBox.value.trim())await searchRecords()}
+async function uploadExcel(){const file=excelFile&&excelFile.files?excelFile.files[0]:null;if(!file){loadStatus.textContent="Selecciona primero un archivo Excel.";alert("Selecciona primero un archivo Excel.");return}const form=new FormData();form.append("file",file);btnUploadExcel.disabled=true;loadStatus.textContent=`Subiendo Excel a BAT-API: ${file.name}`;try{const response=await fetch(`${apiRoot()}/api/v1/imports/arribos-zarpes`,{method:"POST",body:form});const payload=await response.json().catch(()=>({}));if(!response.ok)throw new Error(payload.detail||`Error HTTP ${response.status}`);loadStatus.textContent=`Excel importado correctamente | Creados: ${payload.created} | Actualizados: ${payload.updated} | Omitidos: ${payload.skipped}`;await loadData()}catch(error){console.error("Error importando Excel:",error);loadStatus.textContent=`Error al importar Excel: ${error.message||error}`;alert(`Error al importar Excel: ${error.message||error}`)}finally{btnUploadExcel.disabled=false}}
+function getVessel(r){return pick(r,["vessel_name","BUQUE","Buque","buque","vessel"])}
+function getVoyage(r){return pick(r,["voyage","VIAJE","Viaje","viaje"])}
+function getService(r){return pick(r,["service_name","SERVICIO","Servicio","servicio"])}
+function getPort(r){return pick(r,["arrival_port_name","PUERTO","Puerto","puerto"])}
+function getStatus(r){return pick(r,["status_code","ESTADO","Estado","estado"])}
+function getTramo(r){return pick(r,["berth","terminal","TRAMO","Tramo","tramo","arrival_port_name"])}
+async function searchApiRecords(q){const p=await fetchJson(`${apiRoot()}/api/v1/vessel-calls?q=${encodeURIComponent(q)}&limit=30`);return normalizeRecords(p)}
+function localSearch(q){const nq=normalizeText(q);return currentRows.filter(r=>normalizeText(Object.values(r).join(" ")).includes(nq)).slice(0,30)}
+async function searchRecords(){const rawQuery=searchBox.value.trim();results.innerHTML="";if(!rawQuery){results.innerHTML='<div class="az-status">Escribe para buscar una escala.</div>';return}results.innerHTML='<div class="az-status">Consultando BAT-API...</div>';let matches=[];try{matches=await searchApiRecords(rawQuery)}catch(e){console.warn("Busqueda BAT-API no disponible, usando datos cargados.",e);matches=localSearch(rawQuery)}results.innerHTML="";if(!matches.length){results.innerHTML='<div class="az-status">Sin coincidencias.</div>';return}for(const record of matches){const item=document.createElement("div");item.className="az-result";item.innerHTML=`<strong>${getVessel(record)} ${getVoyage(record)}</strong><span>Servicio: ${getService(record)||"-"} | Puerto: ${getPort(record)||"-"} | Tramo: ${getTramo(record)||"-"} | Estado: ${getStatus(record)||"-"}</span>`;item.addEventListener("click",()=>{selectedRecord=record;generateReport(record)});results.appendChild(item)}}
+function readField(r,key){const a={eta_datetime:["eta_datetime","F.CRUCE LIMITE DE PUERTO","CRUCE LIMITE DE PUERTO"],pilot_on_board_arrival_datetime:["pilot_on_board_arrival_datetime","F.PILOTO ABORDO AL ARRIBO"],breakwater_crossing_arrival_datetime:["breakwater_crossing_arrival_datetime","F.CRUCE DE ESCOLLERAS"],berthed_datetime:["berthed_datetime","F.TOTALMENTE ATRACADO"],operation_start_datetime:["operation_start_datetime","F.INICIO OPERACIONES"],operation_end_datetime:["operation_end_datetime","F.TERMINO DE OPERACIONES"],pilot_on_board_departure_datetime:["pilot_on_board_departure_datetime","F. PILOTO ABORDO AL ZARPE"],unberthed_datetime:["unberthed_datetime","F.LIBRE DE CABOS [DESATRAQUE]"],breakwater_crossing_departure_datetime:["breakwater_crossing_departure_datetime","F.CRUCE ESCOLLERAS"],pilot_disembark_datetime:["pilot_disembark_datetime","F. DESEMBARQUE DE PILOTO"],pairo_reason:["pairo_reason","MOTIVO PAIRO","MOTIVO DE PAIRO"],pairo_start_datetime:["pairo_start_datetime","INICIO PAIRO"],pairo_end_datetime:["pairo_end_datetime","FIN PAIRO"]};return pick(r,a[key]||[key])}
+function generateReport(record){const tramo=getTramo(record);const headerBase=`${getVessel(record)} ${getVoyage(record)}`.trim();const lines=[tramo?`${headerBase} / ${tramo}`:headerBase,""];for(const f of REPORT_FIELDS){const v=formatDateTime(readField(record,f.key));const t=f.tramo&&tramo?` ${tramo}`:"";lines.push(`${f.label}${t}: ${v||"PENDIENTE"}`)}lines.push("","","-PAIRO-");lines.push(`MOTIVO PAIRO: ${readField(record,"pairo_reason")||"PENDIENTE"}`);lines.push(`INICIO PAIRO: ${formatDateTimePlain(readField(record,"pairo_start_datetime"))||"PENDIENTE"}`);lines.push(`FIN PAIRO: ${formatDateTimePlain(readField(record,"pairo_end_datetime"))||"PENDIENTE"}`);reportBox.value=lines.join("\n")}
+btnUploadExcel?.addEventListener("click",uploadExcel);btnRefresh?.addEventListener("click",loadData);btnClear?.addEventListener("click",()=>{searchBox.value="";results.innerHTML="";reportBox.value="";selectedRecord=null});btnCopy?.addEventListener("click",async()=>{const text=reportBox.value.trim();if(!text){alert("Primero genera un reporte.");return}await navigator.clipboard.writeText(reportBox.value);alert("Reporte copiado.")});searchBox?.addEventListener("input",()=>{clearTimeout(searchTimer);searchTimer=setTimeout(()=>searchRecords(),250)});loadData();
