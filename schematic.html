@@ -4,27 +4,27 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Schematic | Boarding Agent Tools</title>
-  <link rel="stylesheet" href="./schematic.css" />
+  <link rel="stylesheet" href="./schematic.css?v=155" />
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
   <main class="sc-shell">
     <section class="sc-card sc-hero">
       <div>
-        <p class="sc-kicker">BOARDING AGENT TOOLS v1.4.1</p>
+        <p class="sc-kicker">BOARDING AGENT TOOLS | BAT-API</p>
         <h1>Schematic</h1>
-        <p class="sc-subtitle">Carga o pega el Live Schedule, genera el bloque operativo y consulta buques por rango de fecha o por nombre.</p>
+        <p class="sc-subtitle">Carga o pega el Live Schedule, guárdalo en BAT-API y consulta desde cualquier dispositivo.</p>
       </div>
       <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-        <a class="sc-back" href="./buques.html?v=141">← Volver a Buques</a>
-        <a class="sc-back" href="./index.html?v=141">🏠 Inicio</a>
+        <a class="sc-back" href="./buques.html?v=155">Volver a Buques</a>
+        <a class="sc-back" href="./index.html?v=155">Inicio</a>
       </div>
     </section>
 
     <section class="sc-grid">
       <div class="sc-card">
         <h2>1. Cargar / pegar Schematic</h2>
-        <p class="sc-help">Puedes subir el archivo Excel del Live Schedule o pegar datos desde Excel. Se leerán: Vessel, Voyage Imp, Prev, Next, ETB, ETD y Terminal.</p>
+        <p class="sc-help">Puedes subir el archivo Excel del Live Schedule o pegar datos desde Excel. La carga sustituye el Schematic central vigente.</p>
         <input id="schematicFile" type="file" accept=".xlsx,.xls" />
         <textarea id="schematicInput" rows="14" placeholder="También puedes pegar aquí el contenido del schematic..."></textarea>
         <div class="sc-actions">
@@ -74,6 +74,6 @@
     </section>
   </main>
 
-  <script src="./schematic.js"></script>
+  <script src="./schematic.js?v=155"></script>
 </body>
 </html>
