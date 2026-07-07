@@ -1,6 +1,7 @@
 const API_BASE = "https://bat-api-production.up.railway.app";
 let currentRows = [];
 let selectedRecord = null;
+let searchTimer = null;
 
 const btnRefresh = document.getElementById("btnRefresh");
 const btnClear = document.getElementById("btnClear");
@@ -25,18 +26,12 @@ const REPORT_FIELDS = [
   { key: "pilot_disembark_datetime", label: "F. DESEMBARQUE DE PILOTO" }
 ];
 
-function clean(value) {
-  return String(value || "").trim();
-}
-
-function normalizeText(value) {
-  return clean(value).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
-}
+function clean(value) { return String(value || "").trim(); }
+function normalizeText(value) { return clean(value).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase(); }
+function apiRoot() { return API_BASE.replace(/\/$/, ""); }
 
 function pick(record, keys) {
-  for (const key of keys) {
-    if (record[key]) return record[key];
-  }
+  for (const key of keys) if (record[key]) return record[key];
   return "";
 }
 
@@ -63,7 +58,6 @@ async function fetchJson(url) {
 
 async function loadLocalData() {
   const storageKeys = ["bat_arribos_zarpes_v060_current", "BAT_ARRIBOS_ZARPES_CURRENT", "arribos_zarpes_data"];
-
   for (const key of storageKeys) {
     try {
       const raw = localStorage.getItem(key);
@@ -73,91 +67,50 @@ async function loadLocalData() {
       }
     } catch (_) {}
   }
-
-  const files = [
-    "arribos-zarpes-data.json?v=" + Date.now(),
-    "data/arribos-zarpes.json?v=" + Date.now(),
-    "vessel-calls.json?v=" + Date.now(),
-    "data/vessel-calls.json?v=" + Date.now()
-  ];
-
-  for (const file of files) {
-    try {
-      const rows = normalizeRecords(await fetchJson(file));
-      if (rows.length) return rows;
-    } catch (_) {}
-  }
-
   return [];
 }
 
 async function loadData() {
   loadStatus.textContent = "Cargando datos operativos...";
-
-      try {
-      const data = await fetchJson(`${API_BASE.replace(/\/$/, "")}/api/v1/vessel-calls?limit=200`);
-      currentRows = normalizeRecords(data);
-      loadStatus.textContent =
-          `Base vigente desde BAT-API | Registros: ${currentRows.length}`;
-
-      if (searchBox.value.trim()) {
-          searchRecords();
-      }
-
-      return;
-
+  try {
+    const data = await fetchJson(`${apiRoot()}/api/v1/vessel-calls?limit=1000`);
+    currentRows = normalizeRecords(data);
+    loadStatus.textContent = `Base vigente desde BAT-API | Registros: ${currentRows.length}`;
+    if (searchBox.value.trim()) await searchRecords();
+    return;
   } catch (error) {
-      console.warn("BAT-API no disponible.", error);
+    console.warn("BAT-API no disponible.", error);
   }
 
   currentRows = await loadLocalData();
   selectedRecord = null;
   results.innerHTML = "";
   reportBox.value = "";
-
-  if (currentRows.length) {
-    loadStatus.textContent = `Modo web recuperado | Registros locales: ${currentRows.length}`;
-  } else {
-    loadStatus.textContent = "Modo web activo, pero no se encontro base local de Arribos y Zarpes.";
-  }
-
-  if (searchBox.value.trim()) searchRecords();
+  loadStatus.textContent = currentRows.length
+    ? `Modo web recuperado | Registros locales: ${currentRows.length}`
+    : "Modo web activo, pero no se encontro base local de Arribos y Zarpes.";
+  if (searchBox.value.trim()) await searchRecords();
 }
 
 async function uploadExcel() {
   const file = excelFile && excelFile.files ? excelFile.files[0] : null;
-
   if (!file) {
     loadStatus.textContent = "Selecciona primero un archivo Excel.";
     alert("Selecciona primero un archivo Excel.");
     return;
   }
 
-  const apiUrl = `${API_BASE.replace(/\/$/, "")}/api/v1/imports/arribos-zarpes`;
-
   const form = new FormData();
   form.append("file", file);
-
   btnUploadExcel.disabled = true;
   loadStatus.textContent = `Subiendo Excel a BAT-API: ${file.name}`;
 
   try {
-    const response = await fetch(apiUrl, {
-      method: "POST",
-      body: form
-    });
-
+    const response = await fetch(`${apiRoot()}/api/v1/imports/arribos-zarpes`, { method: "POST", body: form });
     const payload = await response.json().catch(() => ({}));
-
-    if (!response.ok) {
-      throw new Error(payload.detail || `Error HTTP ${response.status}`);
-    }
-
-    loadStatus.textContent =
-      `Excel importado correctamente | Creados: ${payload.created} | Actualizados: ${payload.updated} | Omitidos: ${payload.skipped}`;
-
+    if (!response.ok) throw new Error(payload.detail || `Error HTTP ${response.status}`);
+    loadStatus.textContent = `Excel importado correctamente | Creados: ${payload.created} | Actualizados: ${payload.updated} | Omitidos: ${payload.skipped}`;
     await loadData();
-
   } catch (error) {
     console.error("Error importando Excel:", error);
     loadStatus.textContent = `Error al importar Excel: ${error.message || error}`;
@@ -167,46 +120,43 @@ async function uploadExcel() {
   }
 }
 
-function getVessel(record) {
-  return pick(record, ["vessel_name", "BUQUE", "Buque", "buque", "vessel"]);
+function getVessel(record) { return pick(record, ["vessel_name", "BUQUE", "Buque", "buque", "vessel"]); }
+function getVoyage(record) { return pick(record, ["voyage", "VIAJE", "Viaje", "viaje"]); }
+function getService(record) { return pick(record, ["service_name", "SERVICIO", "Servicio", "servicio"]); }
+function getPort(record) { return pick(record, ["arrival_port_name", "PUERTO", "Puerto", "puerto"]); }
+function getStatus(record) { return pick(record, ["status_code", "ESTADO", "Estado", "estado"]); }
+function getTramo(record) { return pick(record, ["berth", "terminal", "TRAMO", "Tramo", "tramo", "arrival_port_name"]); }
+
+async function searchApiRecords(query) {
+  const payload = await fetchJson(`${apiRoot()}/api/v1/vessel-calls?q=${encodeURIComponent(query)}&limit=30`);
+  return normalizeRecords(payload);
 }
 
-function getVoyage(record) {
-  return pick(record, ["voyage", "VIAJE", "Viaje", "viaje"]);
+function localSearch(query) {
+  const q = normalizeText(query);
+  return currentRows.filter((r) => normalizeText(Object.values(r).join(" ")).includes(q)).slice(0, 30);
 }
 
-function getService(record) {
-  return pick(record, ["service_name", "SERVICIO", "Servicio", "servicio"]);
-}
-
-function getPort(record) {
-  return pick(record, ["arrival_port_name", "PUERTO", "Puerto", "puerto"]);
-}
-
-function getStatus(record) {
-  return pick(record, ["status_code", "ESTADO", "Estado", "estado"]);
-}
-
-function getTramo(record) {
-  return pick(record, ["berth", "terminal", "TRAMO", "Tramo", "tramo", "arrival_port_name"]);
-}
-
-function searchRecords() {
-  const q = normalizeText(searchBox.value);
+async function searchRecords() {
+  const rawQuery = searchBox.value.trim();
   results.innerHTML = "";
 
-  if (!q) {
+  if (!rawQuery) {
     results.innerHTML = '<div class="az-status">Escribe para buscar una escala.</div>';
     return;
   }
 
-  if (!currentRows.length) {
-    results.innerHTML = '<div class="az-status">No hay datos cargados.</div>';
-    return;
+  results.innerHTML = '<div class="az-status">Consultando BAT-API...</div>';
+
+  let matches = [];
+  try {
+    matches = await searchApiRecords(rawQuery);
+  } catch (error) {
+    console.warn("Busqueda BAT-API no disponible, usando datos cargados.", error);
+    matches = localSearch(rawQuery);
   }
 
-  const matches = currentRows.filter((r) => normalizeText(Object.values(r).join(" ")).includes(q)).slice(0, 30);
-
+  results.innerHTML = "";
   if (!matches.length) {
     results.innerHTML = '<div class="az-status">Sin coincidencias.</div>';
     return;
@@ -216,12 +166,7 @@ function searchRecords() {
     const item = document.createElement("div");
     item.className = "az-result";
     item.innerHTML = `<strong>${getVessel(record)} ${getVoyage(record)}</strong><span>Servicio: ${getService(record) || "-"} | Puerto: ${getPort(record) || "-"} | Estado: ${getStatus(record) || "-"}</span>`;
-
-    item.addEventListener("click", () => {
-      selectedRecord = record;
-      generateReport(record);
-    });
-
+    item.addEventListener("click", () => { selectedRecord = record; generateReport(record); });
     results.appendChild(item);
   }
 }
@@ -239,36 +184,31 @@ function readField(record, key) {
     breakwater_crossing_departure_datetime: ["breakwater_crossing_departure_datetime", "F.CRUCE ESCOLLERAS"],
     pilot_disembark_datetime: ["pilot_disembark_datetime", "F. DESEMBARQUE DE PILOTO"]
   };
-
   return pick(record, aliases[key] || [key]);
 }
 
 function generateReport(record) {
   const header = `${getVessel(record)} ${getVoyage(record)}`.trim();
   const lines = [header, ""];
-
   for (const field of REPORT_FIELDS) {
     const value = formatDateTime(readField(record, field.key));
     const tramo = field.tramo ? ` ${getTramo(record)}`.trimEnd() : "";
     lines.push(`${field.label}${tramo ? " " + tramo : ""}: ${value || "PENDIENTE"}`);
   }
-
   reportBox.value = lines.join("\n");
 }
 
 btnUploadExcel?.addEventListener("click", uploadExcel);
 btnRefresh?.addEventListener("click", loadData);
-btnClear?.addEventListener("click", () => {
-  selectedRecord = null;
-  searchBox.value = "";
-  results.innerHTML = "";
-  reportBox.value = "";
-});
+btnClear?.addEventListener("click", () => { searchBox.value = ""; results.innerHTML = ""; reportBox.value = ""; selectedRecord = null; });
 btnCopy?.addEventListener("click", async () => {
-  if (!reportBox.value) return;
+  const text = reportBox.value.trim();
+  if (!text) { alert("Primero genera un reporte."); return; }
   await navigator.clipboard.writeText(reportBox.value);
+  alert("Reporte copiado.");
 });
-searchBox?.addEventListener("input", searchRecords);
-
-document.addEventListener("DOMContentLoaded", loadData);
+searchBox?.addEventListener("input", () => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => searchRecords(), 250);
+});
 loadData();
